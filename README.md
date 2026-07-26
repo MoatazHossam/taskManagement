@@ -100,3 +100,22 @@ Prohibited categories include Firebase, cloud databases, cloud AI clients, exter
 - Test policy: [`TESTING.md`](TESTING.md)
 - Seed scenario contracts: [`DEMO_SCENARIOS.md`](DEMO_SCENARIOS.md)
 - Phase tracking: [`IMPLEMENTATION_PROGRESS.md`](IMPLEMENTATION_PROGRESS.md)
+
+## Phase 01 Flutter foundation
+
+Phase 01 establishes the runnable Android/iOS application foundation. The project was generated with Flutter 3.38.9 and Dart 3.10.8 (the generator-recorded SDK constraint was `^3.10.8`; this repository uses the equivalent explicit constraint `>=3.10.0 <4.0.0`). The current execution container does not expose either SDK command on `PATH`; install Flutter 3.38.9 stable before running validation.
+
+```bash
+flutter pub get
+flutter gen-l10n
+dart format .
+flutter analyze
+flutter test
+flutter run
+```
+
+Android needs an Android SDK/device. iOS builds require macOS, Xcode, and CocoaPods. The temporary Android/iOS identifier is `com.example.organizationtaskmanager`; replace it before production signing.
+
+ARB catalogs in `lib/l10n` are the source of truth. Run `flutter gen-l10n` after translation changes and treat any entries in `build/untranslated_messages.json` as failures. Arabic and English switch immediately and drive RTL/LTR direction.
+
+Five in-memory demo profiles are available from the simulated login. Profile/settings can switch language, light/dark/system theme, and online/offline/unstable simulation. No credential is validated or persisted. **Task entities, task workflows, task data, persistence, synchronization, reports, administration behavior, backend integration, and AI are not implemented in Phase 01.**

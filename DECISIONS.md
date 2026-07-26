@@ -141,3 +141,11 @@ These decisions apply to the initial demo and are revisited only under their sta
 **Consequences.** Local implementations remain authoritative only for the demo. IDs/version/sync metadata are future-compatible, and infrastructure DTOs never leak into presentation.
 
 **Reconsider when.** An approved on-premises API contract and integration phase exist; even then, the abstractions and offline capability remain unless explicitly revised.
+
+## ADR-011 — Phase 01 package and platform baseline
+
+**Context.** A Flutter project was generated after Phase 00, but it included unsupported desktop/web boilerplate and used the template identifier/name.
+
+**Decision.** Retain only Android and iOS projects, name the Dart package `organization_task_manager`, and temporarily use `com.example.organizationtaskmanager` on both platforms. This identifier must be replaced before production signing. The generator records Flutter 3.38.9, Dart 3.10.8, and SDK constraint `>=3.10.0 <4.0.0`. Phase 01 constraints are `flutter_riverpod ^2.6.1`, `go_router ^16.2.1`, `intl ^0.20.2`, `flutter_lints ^6.0.0`, and `mocktail ^1.0.4`; exact resolution must be refreshed by `flutter pub get` in an SDK-equipped environment.
+
+**Consequences.** No web/desktop platform is advertised or maintained. No database, networking, cloud, Firebase, storage, serialization, AI, or analytics dependency is introduced.

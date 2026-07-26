@@ -1,0 +1,10 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../app/dependency_injection/app_providers.dart';
+import '../../../app/localization/localization_extensions.dart';
+import '../../../app/theme/app_tokens.dart';
+import '../../../shared/enums/app_enums.dart';
+
+class RoleHomePage extends ConsumerWidget { const RoleHomePage({super.key,required this.title}); final String title; @override Widget build(BuildContext context,WidgetRef ref){final p=ref.watch(currentDemoProfileProvider)!; final lang=Localizations.localeOf(context).languageCode; final connectivity=ref.watch(connectivityProvider); return ListView(padding:const EdgeInsets.all(AppSpacing.medium),children:[Text('${context.l10n.welcome}, ${p.localizedName(lang)}',style:Theme.of(context).textTheme.headlineSmall),Text(title,style:Theme.of(context).textTheme.titleLarge),const SizedBox(height:AppSpacing.medium),Card(child:Padding(padding:const EdgeInsets.all(AppSpacing.medium),child:Column(crossAxisAlignment:CrossAxisAlignment.start,children:[Text('${context.l10n.currentRole}: ${roleLabel(context,p.role)}'),Text('${context.l10n.department}: ${p.localizedDepartment(lang)}'),Text('${context.l10n.currentLanguage}: $lang'),Text('${context.l10n.connectivity}: ${connectivityLabel(context,connectivity)}')]))),const SizedBox(height:AppSpacing.medium),Card(color:Theme.of(context).colorScheme.secondaryContainer,child:Padding(padding:const EdgeInsets.all(AppSpacing.medium),child:Row(children:[const Icon(Icons.science_outlined),const SizedBox(width:AppSpacing.small),Expanded(child:Text(context.l10n.demoNotice))])))]); } }
+String roleLabel(BuildContext c,DemoUserRole r)=>switch(r){DemoUserRole.employee=>c.l10n.employee,DemoUserRole.manager=>c.l10n.manager,DemoUserRole.seniorManagement=>c.l10n.seniorManagement,DemoUserRole.administrator=>c.l10n.systemAdministrator};
+String connectivityLabel(BuildContext c,SimulatedConnectivityStatus s)=>switch(s){SimulatedConnectivityStatus.online=>c.l10n.online,SimulatedConnectivityStatus.offline=>c.l10n.offline,SimulatedConnectivityStatus.unstable=>c.l10n.unstableConnection};

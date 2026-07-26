@@ -60,3 +60,7 @@ A phase cannot be considered complete when:
 - documentation, decisions, scenario status, or progress tracking is outdated.
 
 Environment limitations must be reported as warnings, never represented as passing commands. Failures caused by a change must be fixed before completion.
+
+## Phase 01 executable suites
+
+Run `flutter pub get`, `flutter gen-l10n`, `dart format .`, `flutter analyze`, and `flutter test`. Unit tests live under `test/unit`; widget/navigation tests live under `test/widget`. Provider containers exercise in-memory state transitions without persistence. Locale tests inspect `Directionality` rather than relying on English text. Router policy is tested as a pure role/path decision, while widget tests enter shells through overridden session state. Test both Arabic and English and include a large `TextScaler` on primary foundation layouts.
