@@ -15,6 +15,7 @@ import '../../core/storage/database/daos/notification_dao.dart';
 import '../../core/storage/database/daos/audit_dao.dart';
 import '../../core/storage/database/daos/sync_dao.dart';
 import '../../core/storage/database/seed/demo_data_service.dart';
+import '../../core/storage/database/seed/demo_seed_ids.dart';
 import '../../core/storage/repositories/local_settings_repository.dart';
 import '../../core/storage/repositories/local_user_repository.dart';
 import '../../core/storage/repositories/local_organization_repository.dart';
@@ -35,55 +36,148 @@ final themeModeProvider = StateProvider<ThemeMode>((ref) => ThemeMode.system);
 final connectivityProvider = StateProvider<SimulatedConnectivityStatus>((ref) => SimulatedConnectivityStatus.online);
 
 class SessionState {
-  const SessionState(this.status, [this.profile, this.session, this.failure]);
+  const SessionState(
+    this.status, {
+    this.profile,
+    this.session,
+    this.user,
+    this.role,
+    this.failure,
+  });
   final AuthenticationStatus status;
   final DemoUserProfile? profile;
   final AuthenticationSession? session;
+  final OrganizationUser? user;
+  final DemoUserRole? role;
   final AuthenticationFailure? failure;
 }
 
 class SessionController extends StateNotifier<SessionState> {
-  SessionController([this.service]) : super(const SessionState(AuthenticationStatus.unauthenticated));
+  SessionController([this.service, this.users])
+      : super(const SessionState(AuthenticationStatus.initializing));
   final AuthenticationService? service;
+  final UserRepository? users;
+  Future<void>? _initialization;
+
   void beginProfileSelection() => state = const SessionState(AuthenticationStatus.selectingProfile);
-  void authenticate(DemoUserProfile profile) => state = SessionState(AuthenticationStatus.authenticated, profile);
-  Future<void> initialize({required bool offline}) async {
-    if (service == null) return;
-    state = const SessionState(AuthenticationStatus.initializing);
+  void authenticate(DemoUserProfile profile) => state = SessionState(
+        AuthenticationStatus.authenticated,
+        profile: profile,
+        role: profile.role,
+      );
+
+  /// Restores at most once for this controller. The composition root awaits the
+  /// database gate before calling this method.
+  Future<void> initialize({required bool offline}) =>
+      _initialization ??= _initialize(offline: offline);
+
+  Future<void> _initialize({required bool offline}) async {
+    if (service == null) {
+      state = const SessionState(AuthenticationStatus.unauthenticated);
+      return;
+    }
     final session = await service!.restoreSession(offline: offline);
-    if (session == null) { state = const SessionState(AuthenticationStatus.unauthenticated); return; }
-    final profile = demoProfiles.where((p)=>p.id==session.demoProfileId).firstOrNull;
-    state = SessionState(session.requiresUnlock ? AuthenticationStatus.locked : AuthenticationStatus.authenticated, profile, session);
+    if (session == null) {
+      state = const SessionState(AuthenticationStatus.unauthenticated);
+      return;
+    }
+    await _apply(AuthenticationResult.success(session));
   }
+
   Future<void> signInProfile(DemoUserProfile profile) async {
-    if (service == null) { authenticate(profile); return; }
-    state = SessionState(AuthenticationStatus.authenticating, profile);
-    _apply(await service!.signInWithDemoProfile(profile.id), profile);
+    if (service == null) {
+      authenticate(profile);
+      return;
+    }
+    state = SessionState(AuthenticationStatus.authenticating, profile: profile);
+    await _apply(await service!.signInWithDemoProfile(profile.id));
   }
-  Future<void> signInCredentials(String username,String password) async {
+
+  Future<void> signInCredentials(String username, String password) async {
     state = const SessionState(AuthenticationStatus.authenticating);
-    final result=await service!.signInWithDemoCredentials(username:username,password:password);
-    final profile=result.session==null?null:demoProfiles.where((p)=>p.id==result.session!.demoProfileId).firstOrNull;
-    _apply(result,profile);
+    await _apply(await service!.signInWithDemoCredentials(
+      username: username,
+      password: password,
+    ));
   }
-  Future<void> unlockPin(String pin) async => _apply(await service!.unlockWithPin(pin),state.profile);
-  Future<void> unlockBiometric(bool success) async => _apply(await service!.unlockWithBiometrics(simulateSuccess:success),state.profile);
-  void _apply(AuthenticationResult result,DemoUserProfile? profile){
-    if(result.isSuccess){state=SessionState(AuthenticationStatus.authenticated,profile,result.session);}
-    else {state=SessionState(state.status==AuthenticationStatus.locked?AuthenticationStatus.locked:AuthenticationStatus.failure,profile,state.session,result.failure);}
+
+  Future<void> unlockPin(String pin) async =>
+      _apply(await service!.unlockWithPin(pin));
+  Future<void> unlockBiometric(bool success) async => _apply(
+        await service!.unlockWithBiometrics(simulateSuccess: success),
+      );
+
+  Future<void> _apply(AuthenticationResult result) async {
+    if (!result.isSuccess) {
+      state = SessionState(
+        state.status == AuthenticationStatus.locked
+            ? AuthenticationStatus.locked
+            : AuthenticationStatus.failure,
+        profile: state.profile,
+        session: state.session,
+        user: state.user,
+        role: state.role,
+        failure: result.failure,
+      );
+      return;
+    }
+    final session = result.session!;
+    final profile = demoProfiles
+        .where((candidate) => candidate.id == session.demoProfileId)
+        .firstOrNull;
+    final user = await users?.getUserById(session.userId);
+    final role = user == null ? profile?.role : _databaseRole(user.roleId);
+    if (profile == null || role == null || profile.role != role) {
+      await service?.signOut();
+      state = const SessionState(
+        AuthenticationStatus.failure,
+        failure: AuthenticationFailure.roleMismatch,
+      );
+      return;
+    }
+    state = SessionState(
+      session.requiresUnlock
+          ? AuthenticationStatus.locked
+          : AuthenticationStatus.authenticated,
+      profile: profile,
+      session: session,
+      user: user,
+      role: role,
+    );
   }
-  Future<void> switchProfile(DemoUserProfile profile) async => _apply(await service!.switchProfile(profile.id),profile);
-  Future<void> expire() { state = const SessionState(AuthenticationStatus.expired); return service?.expireSession() ?? Future.value(); }
-  Future<void> logout() { state = const SessionState(AuthenticationStatus.unauthenticated); return service?.signOut() ?? Future.value(); }
+
+  Future<void> switchProfile(DemoUserProfile profile) async =>
+      _apply(await service!.switchProfile(profile.id));
+  Future<void> expire() {
+    state = const SessionState(AuthenticationStatus.expired);
+    return service?.expireSession() ?? Future.value();
+  }
+
+  Future<void> logout() {
+    state = const SessionState(AuthenticationStatus.unauthenticated);
+    return service?.signOut() ?? Future.value();
+  }
 }
 
 final authenticationServiceProvider=Provider<AuthenticationService>((ref)=>LocalDemoAuthenticationService(users:ref.watch(userRepositoryProvider),settings:ref.watch(settingsRepositoryProvider),audit:ref.watch(auditRepositoryProvider),clock:const SystemAppClock(),isOffline:()=>ref.read(connectivityProvider)==SimulatedConnectivityStatus.offline));
-final sessionProvider = StateNotifierProvider<SessionController, SessionState>((ref) => SessionController(ref.watch(authenticationServiceProvider)));
+final sessionProvider = StateNotifierProvider<SessionController, SessionState>(
+  (ref) => SessionController(
+    ref.watch(authenticationServiceProvider),
+    ref.watch(userRepositoryProvider),
+  ),
+);
 final currentDemoProfileProvider = Provider<DemoUserProfile?>((ref) => ref.watch(sessionProvider).profile);
 final activeSessionProvider=Provider<AuthenticationSession?>((ref)=>ref.watch(sessionProvider).session);
-final currentOrganizationUserProvider=FutureProvider<OrganizationUser?>((ref) async {final session=ref.watch(activeSessionProvider);if(session==null)return null;await ref.watch(databaseInitializationProvider.future);return ref.watch(userRepositoryProvider).getUserById(session.userId);});
-final currentSystemRoleProvider=Provider<DemoUserRole?>((ref){final profile=ref.watch(currentDemoProfileProvider);final session=ref.watch(activeSessionProvider);if(profile==null||session==null||demoProfileUserIds[profile.id]!=session.userId)return null;return profile.role;});
-final canRestoreOfflineSessionProvider=FutureProvider<bool>((ref) async {final settings=ref.watch(settingsRepositoryProvider);final value=await settings.getSetting('authentication.offline_expires_at');return value!=null&&DateTime.now().toUtc().isBefore(DateTime.parse(value));});
+final currentOrganizationUserProvider = Provider<OrganizationUser?>((ref) => ref.watch(sessionProvider).user);
+final currentSystemRoleProvider = Provider<DemoUserRole?>((ref) => ref.watch(sessionProvider).role);
+final canRestoreOfflineSessionProvider = FutureProvider<bool>((ref) async {
+  final value = await ref
+      .watch(settingsRepositoryProvider)
+      .getSetting('authentication.offline_expires_at');
+  if (value == null) return false;
+  final expiry = DateTime.tryParse(value)?.toUtc();
+  return expiry != null && DateTime.now().toUtc().isBefore(expiry);
+});
 
 // Phase 02 infrastructure providers. Presentation consumes repository contracts,
 // never these Drift implementation details directly.
@@ -102,3 +196,11 @@ final databaseInitializationProvider=FutureProvider<void>((ref) async {
  try { await ref.read(demoDataServiceProvider).ensureSeeded(); }
  catch (_) { throw const DataLayerException(); }
 });
+
+DemoUserRole? _databaseRole(String roleId) => switch (roleId) {
+  DemoSeedIds.roleEmployee => DemoUserRole.employee,
+  DemoSeedIds.roleManager => DemoUserRole.manager,
+  DemoSeedIds.roleSenior => DemoUserRole.seniorManagement,
+  DemoSeedIds.roleAdministrator => DemoUserRole.administrator,
+  _ => null,
+};

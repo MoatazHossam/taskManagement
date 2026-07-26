@@ -36,3 +36,17 @@ A future internal identity implementation can replace `AuthenticationService` in
 composition root. Router authorization consumes session state and the database-derived
 role, not credential maps or the concrete local service. No external integration is
 implemented in this phase.
+
+## Phase 03B validation hardening
+
+`SessionController` is the single authoritative runtime authentication state. Its
+session, database user, database-derived role, presentation profile, and safe failure
+code move together. Initialization begins in `initializing`, is gated by database
+seeding, and is memoized per controller so rebuilds cannot repeat restoration. Locale
+and theme state remain independent of authentication failures and logout.
+
+Restoration requires every active-session field, validates the persisted role against
+the active database user, parses timestamps as UTC, and fails closed for missing or
+malformed values. Normal and offline expiry use exclusive boundaries. Invalid restore
+clears only active authentication keys; language, theme, and the non-sensitive last
+profile are preserved. Audit writes use workflow codes and are isolated from UI errors.

@@ -11,6 +11,7 @@ import 'package:organization_task_manager/core/storage/repositories/local_settin
 import 'package:organization_task_manager/core/storage/repositories/local_user_repository.dart';
 import 'package:organization_task_manager/features/authentication/data/local_demo_authentication_service.dart';
 import 'package:organization_task_manager/features/authentication/domain/authentication_models.dart';
+import 'package:organization_task_manager/shared/models/demo_user_profile.dart';
 
 void main() {
   late AppDatabase database;
@@ -43,6 +44,29 @@ void main() {
     expect(manager.session?.systemRoleCode, 'manager');
   });
 
+  test('all five profiles and credential aliases resolve seeded identities', () async {
+    const credentials = <String, String>{
+      'employee': 'employee',
+      'manager': 'manager',
+      'executive': 'senior',
+      'admin': 'administrator',
+      'support': 'queue',
+    };
+    for (final profile in demoProfiles) {
+      final result = await service.signInWithDemoProfile(profile.id);
+      expect(result.isSuccess, isTrue, reason: profile.id);
+      await service.signOut();
+    }
+    for (final entry in credentials.entries) {
+      final result = await service.signInWithDemoCredentials(
+        username: entry.key,
+        password: 'demo123',
+      );
+      expect(result.session?.demoProfileId, entry.value);
+      await service.signOut();
+    }
+  });
+
   test('invalid credentials are rejected and never audited', () async {
     final result = await service.signInWithDemoCredentials(
       username: 'employee', password: 'secret-value');
@@ -50,6 +74,46 @@ void main() {
     final rows = await database.select(database.auditEvents).get();
     expect(rows.map((row) => row.reason).join(), isNot(contains('secret-value')));
     expect(rows.map((row) => row.reason).join(), isNot(contains('1234')));
+  });
+
+  test('audit and settings serialization contain no credential material', () async {
+    await service.signInWithDemoCredentials(
+      username: 'employee',
+      password: 'demo123',
+    );
+    await service.unlockWithPin('9876');
+    await service.unlockWithPin('1234');
+    final settings = await database.select(database.appSettings).get();
+    final audits = await database.select(database.auditEvents).get();
+    final serialized = [
+      ...settings.expand((row) => [row.key, row.value]),
+      ...audits.expand((row) => [row.reason ?? '', row.entityId]),
+    ].join('|').toLowerCase();
+    for (final forbidden in ['demo123', '1234', '9876', 'password']) {
+      expect(serialized, isNot(contains(forbidden)));
+    }
+  });
+
+  test('malformed and partially missing persisted sessions fail closed', () async {
+    await service.signInWithDemoProfile('employee');
+    await database.into(database.appSettings).insertOnConflictUpdate(
+      AppSettingsCompanion.insert(
+        key: 'authentication.expires_at',
+        value: 'not-a-date',
+        updatedAt: clock.now(),
+      ),
+    );
+    expect(await service.restoreSession(offline: false), isNull);
+    expect(
+      await LocalSettingsRepository(SettingsDao(database))
+          .getSetting('authentication.active_user_id'),
+      isNull,
+    );
+
+    await service.signInWithDemoProfile('employee');
+    await LocalSettingsRepository(SettingsDao(database))
+        .removeSetting('authentication.session_id');
+    expect(await service.restoreSession(offline: false), isNull);
   });
 
   test('session restores, locks, unlocks and expires locally', () async {

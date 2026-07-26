@@ -14,9 +14,10 @@ class RoleHomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final profile = ref.watch(currentDemoProfileProvider)!;
+    final role = ref.watch(currentSystemRoleProvider)!;
     final language = Localizations.localeOf(context).languageCode;
     final arabic = language == 'ar';
-    final manager = profile.role == DemoUserRole.manager || profile.role == DemoUserRole.seniorManagement;
+    final manager = role == DemoUserRole.manager || role == DemoUserRole.seniorManagement;
     final name = profile.localizedName(language).split(' ').first;
 
     return LayoutBuilder(builder: (context, constraints) {

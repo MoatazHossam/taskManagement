@@ -16,6 +16,7 @@ class ProfilePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final profile = ref.watch(currentDemoProfileProvider)!;
+    final role = ref.watch(currentSystemRoleProvider)!;
     final language = Localizations.localeOf(context).languageCode;
     return AppPrimaryScrollView(children: [
       AppPageHeader(eyebrow: context.l10n.settings, title: context.l10n.profile, subtitle: context.l10n.demoMode),
@@ -33,7 +34,7 @@ class ProfilePage extends ConsumerWidget {
           Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text(profile.localizedName(language), style: Theme.of(context).textTheme.titleLarge),
             const SizedBox(height: 2),
-            Text(roleLabel(context, profile.role), style: Theme.of(context).textTheme.labelLarge?.copyWith(color: Theme.of(context).colorScheme.primary)),
+            Text(roleLabel(context, role), style: Theme.of(context).textTheme.labelLarge?.copyWith(color: Theme.of(context).colorScheme.primary)),
             Text(profile.localizedDepartment(language), style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant)),
             const SizedBox(height: AppSpacing.xSmall),
             AppBadge(label: context.l10n.online, tone: AppBadgeTone.success, icon: Icons.circle),

@@ -76,7 +76,7 @@ class DemoLoginPage extends ConsumerStatefulWidget {
   @override ConsumerState<DemoLoginPage> createState()=>_DemoLoginPageState();
 }
 class _DemoLoginPageState extends ConsumerState<DemoLoginPage> {
-  final username=TextEditingController();final password=TextEditingController();bool obscure=true;
+  final username=TextEditingController();final password=TextEditingController();final formKey=GlobalKey<FormState>();bool obscure=true;
   @override void dispose(){username.dispose();password.dispose();super.dispose();}
   @override
   Widget build(BuildContext context) {
@@ -85,7 +85,7 @@ class _DemoLoginPageState extends ConsumerState<DemoLoginPage> {
       appBar: AppBar(title: Text(context.l10n.appName), actions: [IconButton(onPressed: () => ref.read(localeProvider.notifier).state = Locale(Localizations.localeOf(context).languageCode == 'ar' ? 'en' : 'ar'), icon: const Icon(Icons.translate), tooltip: context.l10n.language), const SizedBox(width: AppSpacing.small)]),
       body: SafeArea(child: Center(child: ConstrainedBox(constraints: const BoxConstraints(maxWidth: AppSizes.pageMax), child: LayoutBuilder(builder: (context, constraints) {
         final wide = constraints.maxWidth >= AppBreakpoints.tablet;
-        final form = _LoginForm(expired: expired, loading:session.status==AuthenticationStatus.authenticating,error:session.failure,username:username,password:password,obscure:obscure,onToggle:()=>setState(()=>obscure=!obscure),onLogin: () => ref.read(sessionProvider.notifier).signInCredentials(username.text,password.text));
+        final form = _LoginForm(formKey:formKey,expired: expired, loading:session.status==AuthenticationStatus.authenticating,error:session.failure,username:username,password:password,obscure:obscure,onToggle:()=>setState(()=>obscure=!obscure),onLogin: () {if(formKey.currentState!.validate()){ref.read(sessionProvider.notifier).signInCredentials(username.text,password.text);}});
         final profiles = _ProfilePicker(onSelected: (profile) => ref.read(sessionProvider.notifier).signInProfile(profile));
         return SingleChildScrollView(padding: const EdgeInsets.all(AppSpacing.large), child: wide
             ? Row(crossAxisAlignment: CrossAxisAlignment.start, children: [Expanded(flex: 4, child: form), const SizedBox(width: AppSpacing.large), Expanded(flex: 6, child: profiles)])
@@ -95,22 +95,23 @@ class _DemoLoginPageState extends ConsumerState<DemoLoginPage> {
 }
 
 class _LoginForm extends StatelessWidget {
-  const _LoginForm({required this.expired,required this.loading,required this.error,required this.username,required this.password,required this.obscure,required this.onToggle,required this.onLogin});
+  const _LoginForm({required this.formKey,required this.expired,required this.loading,required this.error,required this.username,required this.password,required this.obscure,required this.onToggle,required this.onLogin});
+  final GlobalKey<FormState> formKey;
   final bool expired,loading,obscure;final AuthenticationFailure? error;final TextEditingController username,password;final VoidCallback onToggle;
   final VoidCallback onLogin;
   @override
-  Widget build(BuildContext context) => Card(child: Padding(padding: const EdgeInsets.all(AppSpacing.large), child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+  Widget build(BuildContext context) => Card(child: Padding(padding: const EdgeInsets.all(AppSpacing.large), child: Form(key:formKey,child:Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         AppPageHeader(eyebrow: context.l10n.demoMode, title: context.l10n.login, subtitle: context.l10n.authenticationSimulated),
         if (expired) ...[const SizedBox(height: AppSpacing.medium), AppBadge(label: context.l10n.sessionExpired, tone: AppBadgeTone.danger, icon: Icons.timer_off_outlined)],
         if(error!=null)...[const SizedBox(height:AppSpacing.medium),Text(_authenticationError(context,error!),style:TextStyle(color:Theme.of(context).colorScheme.error))],
         const SizedBox(height: AppSpacing.large),
-        TextField(controller:username,decoration: InputDecoration(labelText: context.l10n.username, prefixIcon: const Icon(Icons.person_outline))),
+        TextFormField(key:const Key('username-input'),controller:username,validator:(value)=>(value??'').trim().isEmpty?context.l10n.username:null,decoration: InputDecoration(labelText: context.l10n.username, prefixIcon: const Icon(Icons.person_outline))),
         const SizedBox(height: AppSpacing.medium),
-        TextField(controller:password,obscureText: obscure, decoration: InputDecoration(labelText: context.l10n.password, prefixIcon: const Icon(Icons.lock_outline),suffixIcon:IconButton(onPressed:onToggle,tooltip:obscure?context.l10n.showPassword:context.l10n.hidePassword,icon:Icon(obscure?Icons.visibility:Icons.visibility_off)))),
+        TextFormField(key:const Key('password-input'),controller:password,validator:(value)=>(value??'').isEmpty?context.l10n.password:null,obscureText: obscure, decoration: InputDecoration(labelText: context.l10n.password, prefixIcon: const Icon(Icons.lock_outline),suffixIcon:IconButton(key:const Key('password-visibility'),onPressed:onToggle,tooltip:obscure?context.l10n.showPassword:context.l10n.hidePassword,icon:Icon(obscure?Icons.visibility:Icons.visibility_off)))),
         const SizedBox(height: AppSpacing.medium),
         Text(context.l10n.demoCredentialsHelper,style:Theme.of(context).textTheme.bodySmall),const SizedBox(height:AppSpacing.medium),
         FilledButton(onPressed: loading?null:onLogin, child: loading?const SizedBox.square(dimension:20,child:CircularProgressIndicator(strokeWidth:2)):Text(context.l10n.login)),
-      ])));
+      ]))));
 }
 
 String _authenticationError(BuildContext context,AuthenticationFailure failure)=>switch(failure){AuthenticationFailure.invalidCredentials=>context.l10n.invalidCredentials,AuthenticationFailure.inactiveUser=>context.l10n.userInactive,AuthenticationFailure.pinInvalid=>context.l10n.incorrectPin,AuthenticationFailure.tooManyPinAttempts=>context.l10n.tooManyAttempts,AuthenticationFailure.offlineAccessExpired=>context.l10n.offlineAccessExpired,AuthenticationFailure.roleMismatch=>context.l10n.permissionError,AuthenticationFailure.databaseUnavailable=>context.l10n.storageError,_=>context.l10n.unknownError};

@@ -83,3 +83,14 @@ No conflict with the master specification was found. The pre-change repository w
 **Status: In Progress.** Added Flutter-independent authentication session/result/state models, the replaceable service boundary, database-backed local implementation, safe settings persistence, authentication audit events, credential/profile login, restore/offline validation, expiry/logout/profile switching, PIN and biometric simulations, controller/providers, guarded startup/router behavior, bilingual UI/catalog additions, tests, and documentation. Phase 02 is Completed by project-owner confirmation; Phase 04 remains Not Started.
 
 Changed sources include the authentication domain/data/presentation layers, Riverpod composition, router, profile logout controls, audit enums, localization catalogs, and documentation. Added `test/authentication/local_demo_authentication_service_test.dart`. On 2026-07-26, `git diff --check` passed. `flutter clean`, `flutter pub get`, `flutter gen-l10n`, build runner, formatter, analyzer, tests, debug APK build, and runtime launch were attempted but could not execute because this container has neither `flutter` nor `dart` on `PATH`. Therefore Phase 03 is not marked Completed and its SDK acceptance gates remain open.
+
+### Phase 03B authentication validation update — 2026-07-26
+
+Phase 03 remains **In Progress**. Phase 03B hardened the single authoritative session
+controller, memoized restoration after database initialization, derived active user
+and role from the database, added stable Riverpod-to-`go_router` refresh, validated
+persisted role/UTC expiry and malformed settings, isolated audit failures, and added
+service/provider/router/widget/integration test sources. ARB catalogs parse and have
+matching keys/placeholders. This container still has no Flutter or Dart executable, so
+analysis, SDK tests, integration-device execution, debug APK, and runtime acceptance
+remain open. Phase 04 remains **Not Started**.

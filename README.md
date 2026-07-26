@@ -123,3 +123,11 @@ Five in-memory demo profiles are available from the simulated login. Profile/set
 ## Phase 03 demo authentication
 
 Authentication is a local workflow simulation, not production security. The main path is one-tap selection of one of the five database-backed demo profiles. Credential login accepts `employee`, `manager`, `executive`, `admin`, or `support` with demo-only password `demo123`. The password is never stored or audited. PIN unlock uses simulated PIN `1234`; no PIN or biometric data is stored, and no device biometric API is used. See [`AUTHENTICATION.md`](AUTHENTICATION.md).
+
+## Phase 03B validation status
+
+Authentication provider, router, widget, and local integration test structures are now
+present, with fail-closed session restoration and reactive router refresh hardening.
+Phase 03 remains in progress until an SDK-equipped environment passes generation,
+analysis, all tests, debug APK build, and runtime validation. Phase 04 remains not
+started.
