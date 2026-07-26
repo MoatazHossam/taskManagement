@@ -1,4 +1,9 @@
-import 'package:drift/native.dart'; import 'package:flutter_test/flutter_test.dart'; import 'package:organization_task_manager/core/domain/app_clock.dart'; import 'package:organization_task_manager/core/storage/database/app_database.dart'; import 'package:organization_task_manager/core/storage/database/seed/demo_data_service.dart'; import 'package:organization_task_manager/core/storage/database/seed/demo_seed_validator.dart';
+import 'package:drift/native.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:organization_task_manager/core/domain/app_clock.dart';
+import 'package:organization_task_manager/core/storage/database/app_database.dart';
+import 'package:organization_task_manager/core/storage/database/seed/demo_data_service.dart';
+import 'package:organization_task_manager/core/storage/database/seed/demo_seed_validator.dart';
 void main(){late AppDatabase db;late DemoDataService seed;setUp((){db=AppDatabase.forTesting(NativeDatabase.memory());seed=DemoDataService(db,FixedAppClock(DateTime.utc(2026,1,15,10)));});tearDown(() async=>db.close());
  test('schema, foreign keys, seed and all scenario invariants succeed',() async {await seed.ensureSeeded();expect((await db.customSelect('PRAGMA foreign_keys').getSingle()).read<int>('foreign_keys'),1);expect((await DemoSeedValidator(db).validate()).isValid,isTrue);});
  test('seed is idempotent and reset can repeat',() async {await seed.ensureSeeded();await seed.ensureSeeded();await seed.resetAndSeed();await seed.resetAndSeed();expect((await DemoSeedValidator(db).validate()).isValid,isTrue);});
