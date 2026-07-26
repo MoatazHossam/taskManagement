@@ -152,3 +152,7 @@ a quick view, and open details/timeline. Sara receives organization-aware result
 Omar can inspect critical/restricted work granted by permissions, while Laila remains
 separated from operational tasks. Saved filters are an in-memory simulation and reset
 when the application restarts.
+
+## Phase 05B task experience
+
+The read-only task experience provides role-specific task pages, manager scope selection, senior-management critical triage, compact responsive cards, advanced filters and sorting, session-only saved filters, and localized grouped details. Task progress retains left-to-right mathematical direction in both locales. No task actions, backend, database, cloud, or real synchronization are included; Phase 06 has not started.

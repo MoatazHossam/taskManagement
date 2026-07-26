@@ -185,5 +185,164 @@
   "localOnly": "Local only",
   "dueToday": "Due today",
   "dueTomorrow": "Due tomorrow",
-  "taskActionsLater": "Task actions will be enabled later."
+  "taskActionsLater": "Task actions will be enabled later.",
+  "myTasksTitle": "My Tasks",
+  "teamTasksTitle": "Team Tasks",
+  "criticalTasksTitle": "Critical Tasks",
+  "allTasksTitle": "All Tasks",
+  "searchMyTasks": "Search my tasks",
+  "searchTeamTasks": "Search team tasks",
+  "searchCriticalTasks": "Search critical tasks",
+  "resultsCount": "{count} results",
+  "@resultsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "savedFilters": "Saved filters",
+  "runtimeOnlyFilters": "Saved filters are available only during this app session.",
+  "apply": "Apply",
+  "reset": "Reset",
+  "saveCurrentFilter": "Save current filter",
+  "nameRequired": "Enter a filter name.",
+  "setAsDefault": "Set as default",
+  "delete": "Delete",
+  "myActiveTasks": "My Active Tasks",
+  "dueThisWeekPreset": "Due This Week",
+  "highPriorityPreset": "High Priority",
+  "awaitingApprovalPreset": "Awaiting Approval",
+  "blockedTasksPreset": "Blocked Tasks",
+  "myScope": "My Tasks",
+  "teamScopeTask": "Team",
+  "departmentScopeTask": "Department",
+  "organizationScopeTask": "Organization",
+  "criticalTasksExplanation": "Urgent, overdue, blocked, and approval-sensitive tasks.",
+  "status": "Status",
+  "priority": "Priority",
+  "confidentiality": "Confidentiality",
+  "assignmentMode": "Assignment mode",
+  "approvalStatus": "Approval status",
+  "dueDateRange": "Due-date range",
+  "creationDateRange": "Creation-date range",
+  "creator": "Creator",
+  "owner": "Owner",
+  "contributor": "Contributor",
+  "team": "Team",
+  "category": "Category",
+  "blocked": "Blocked",
+  "recurring": "Recurring",
+  "locallyModified": "Locally modified",
+  "pendingSync": "Pending synchronization",
+  "any": "Any",
+  "yes": "Yes",
+  "no": "No",
+  "ascending": "Ascending",
+  "descending": "Descending",
+  "creationDate": "Creation date",
+  "lastUpdated": "Last updated",
+  "estimatedEffortSort": "Estimated effort",
+  "taskNumberSort": "Task number",
+  "description": "Description",
+  "assignment": "Assignment",
+  "datesAndPlanning": "Dates and planning",
+  "progressAndExecution": "Progress and execution",
+  "attention": "Attention",
+  "assignedTeam": "Assigned team",
+  "approver": "Approver",
+  "noChecklistItems": "No checklist items",
+  "checklistProgress": "{completed} of {total} completed",
+  "@checklistProgress": {
+    "placeholders": {
+      "completed": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "createdDate": "Created date",
+  "recurrence": "Recurrence",
+  "notRecurring": "Not recurring",
+  "minutesValue": "{count} minutes",
+  "@minutesValue": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "taskActionsLaterDetailed": "Task actions will be enabled in later workflow phases.",
+  "timelineByActor": "By {actor}",
+  "@timelineByActor": {
+    "placeholders": {
+      "actor": {
+        "type": "String"
+      }
+    }
+  },
+  "offlineEvent": "Recorded offline",
+  "dueThisWeek": "Due this week",
+  "overdueDays": "Overdue by {count} days",
+  "@overdueDays": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "completedOnTime": "Completed on time",
+  "completedLate": "Completed {count} days late",
+  "@completedLate": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noDueDate": "No due date",
+  "more": "More",
+  "auditSync": "Audit / Sync",
+  "statusDraft": "Draft",
+  "statusAssigned": "Assigned",
+  "statusAcknowledged": "Acknowledged",
+  "statusInProgress": "In progress",
+  "statusPaused": "Paused",
+  "statusBlocked": "Blocked",
+  "statusCompletionRequested": "Completion requested",
+  "statusReturned": "Returned for correction",
+  "statusCompleted": "Completed",
+  "statusDeclined": "Declined",
+  "statusCancelled": "Cancelled",
+  "statusReopened": "Reopened",
+  "statusExpired": "Expired",
+  "statusUpcoming": "Upcoming",
+  "unknownLabel": "Unknown",
+  "priorityNormal": "Normal",
+  "priorityLow": "Low",
+  "priorityHigh": "High",
+  "priorityUrgent": "Urgent",
+  "priorityCritical": "Critical",
+  "publicLabel": "Public",
+  "internalLabel": "Internal",
+  "syncPending": "Pending",
+  "syncFailed": "Failed",
+  "syncConflict": "Conflict",
+  "syncLocalOnly": "Local only",
+  "approvalNotRequired": "Not required",
+  "approvalPending": "Pending approval",
+  "approvalApproved": "Approved",
+  "approvalReturned": "Returned",
+  "approvalRejected": "Rejected",
+  "eventCreated": "Task created",
+  "eventUpdated": "Task updated",
+  "eventAssigned": "Task assigned",
+  "eventReassigned": "Task reassigned",
+  "eventStatusChanged": "Status changed",
+  "eventApproved": "Task approved",
+  "eventReturned": "Task returned",
+  "eventDeleted": "Task deleted",
+  "eventSyncConflict": "Synchronization conflict"
 }

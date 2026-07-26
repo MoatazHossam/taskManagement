@@ -117,3 +117,7 @@ sorting, runtime saved-filter operations, Riverpod composition, guarded routes, 
 list/details presentation, bilingual catalog source, tests, and documentation. Flutter and
 Dart are unavailable in this container, so generation, analysis, tests, APK, runtime, and
 manual device acceptance remain open. Phase 06 remains Not Started.
+
+## Phase 05B — In Progress
+
+Implemented the task UX refinement source: localized presentation metadata, role identity, manager query scope, critical preset, compact responsive cards, advanced controls, runtime saved-filter UI, grouped read-only details, assignment summaries, rich due labels, localized timeline, and five-destination primary navigation. Local Flutter validation remains required. Phase 06 is **Not Started**.

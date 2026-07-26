@@ -57,7 +57,7 @@ void main() {
   test('quick view, Arabic search, and stable sort are deterministic', () async {
     final arabic = await service.queryTasks(
       userId: DemoSeedIds.omar,
-      query: TaskQuery(searchText: 'السيناريو 4'),
+      query: TaskQuery(searchText: 'تأخر المورد'),
     );
     expect(arabic.items.single.task.id, 'scenario-04');
     final blocked = await service.queryTasks(
@@ -70,6 +70,33 @@ void main() {
       query: TaskQuery(sortField: TaskSortField.priority),
     );
     expect(sorted.items, isNotEmpty);
+  });
+
+  test('manager scopes and executive critical preset remain authorized', () async {
+    final mine = await service.queryTasks(
+      userId: DemoSeedIds.sara,
+      query: TaskQuery(scope: TaskQueryScope.self),
+    );
+    final team = await service.queryTasks(
+      userId: DemoSeedIds.sara,
+      query: TaskQuery(scope: TaskQueryScope.team),
+    );
+    expect(team.items.length, greaterThanOrEqualTo(mine.items.length));
+
+    final critical = await service.queryTasks(
+      userId: DemoSeedIds.omar,
+      query: TaskQuery(view: TaskListView.critical),
+    );
+    expect(critical.items, isNotEmpty);
+    expect(
+      critical.items.every((item) =>
+          item.priority?.code == 'critical' ||
+          item.priority?.code == 'urgent' ||
+          item.isOverdue ||
+          item.hasActiveBlocker ||
+          item.task.approvalStatus.name == 'pending'),
+      isTrue,
+    );
   });
 
   test('details fail closed and saved filters are isolated', () async {

@@ -185,5 +185,164 @@
   "localOnly": "محلي فقط",
   "dueToday": "مستحقة اليوم",
   "dueTomorrow": "مستحقة غداً",
-  "taskActionsLater": "سيتم تمكين إجراءات المهمة لاحقاً."
+  "taskActionsLater": "سيتم تمكين إجراءات المهمة لاحقاً.",
+  "myTasksTitle": "مهامي",
+  "teamTasksTitle": "مهام الفريق",
+  "criticalTasksTitle": "المهام الحرجة",
+  "allTasksTitle": "جميع المهام",
+  "searchMyTasks": "ابحث في مهامي",
+  "searchTeamTasks": "ابحث في مهام الفريق",
+  "searchCriticalTasks": "ابحث في المهام الحرجة",
+  "resultsCount": "{count} نتيجة",
+  "@resultsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "savedFilters": "عوامل التصفية المحفوظة",
+  "runtimeOnlyFilters": "عوامل التصفية المحفوظة متاحة خلال جلسة التطبيق الحالية فقط.",
+  "apply": "تطبيق",
+  "reset": "إعادة ضبط",
+  "saveCurrentFilter": "حفظ التصفية الحالية",
+  "nameRequired": "أدخل اسماً لعامل التصفية.",
+  "setAsDefault": "تعيين كافتراضي",
+  "delete": "حذف",
+  "myActiveTasks": "مهامي النشطة",
+  "dueThisWeekPreset": "مستحقة هذا الأسبوع",
+  "highPriorityPreset": "أولوية عالية",
+  "awaitingApprovalPreset": "بانتظار الاعتماد",
+  "blockedTasksPreset": "المهام المتوقفة",
+  "myScope": "مهامي",
+  "teamScopeTask": "الفريق",
+  "departmentScopeTask": "الإدارة",
+  "organizationScopeTask": "المؤسسة",
+  "criticalTasksExplanation": "المهام العاجلة والمتأخرة والمتوقفة والمنتظرة للاعتماد.",
+  "status": "الحالة",
+  "priority": "الأولوية",
+  "confidentiality": "السرية",
+  "assignmentMode": "نمط الإسناد",
+  "approvalStatus": "حالة الاعتماد",
+  "dueDateRange": "نطاق تاريخ الاستحقاق",
+  "creationDateRange": "نطاق تاريخ الإنشاء",
+  "creator": "المنشئ",
+  "owner": "المسؤول",
+  "contributor": "المساهم",
+  "team": "الفريق",
+  "category": "الفئة",
+  "blocked": "متوقفة",
+  "recurring": "متكررة",
+  "locallyModified": "معدلة محلياً",
+  "pendingSync": "بانتظار المزامنة",
+  "any": "الكل",
+  "yes": "نعم",
+  "no": "لا",
+  "ascending": "تصاعدي",
+  "descending": "تنازلي",
+  "creationDate": "تاريخ الإنشاء",
+  "lastUpdated": "آخر تحديث",
+  "estimatedEffortSort": "الجهد المقدر",
+  "taskNumberSort": "رقم المهمة",
+  "description": "وصف المهمة",
+  "assignment": "الإسناد",
+  "datesAndPlanning": "التواريخ والتخطيط",
+  "progressAndExecution": "التقدم والتنفيذ",
+  "attention": "يتطلب الانتباه",
+  "assignedTeam": "الفريق المكلف",
+  "approver": "المعتمد",
+  "noChecklistItems": "لا توجد عناصر في قائمة التحقق",
+  "checklistProgress": "اكتمل {completed} من {total}",
+  "@checklistProgress": {
+    "placeholders": {
+      "completed": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "createdDate": "تاريخ الإنشاء",
+  "recurrence": "التكرار",
+  "notRecurring": "غير متكررة",
+  "minutesValue": "{count} دقيقة",
+  "@minutesValue": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "taskActionsLaterDetailed": "سيتم تفعيل إجراءات المهمة في مراحل سير العمل اللاحقة.",
+  "timelineByActor": "بواسطة {actor}",
+  "@timelineByActor": {
+    "placeholders": {
+      "actor": {
+        "type": "String"
+      }
+    }
+  },
+  "offlineEvent": "سُجل دون اتصال",
+  "dueThisWeek": "مستحقة هذا الأسبوع",
+  "overdueDays": "متأخرة {count} أيام",
+  "@overdueDays": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "completedOnTime": "أُنجزت في الموعد",
+  "completedLate": "أُنجزت متأخرة {count} أيام",
+  "@completedLate": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noDueDate": "لا يوجد موعد استحقاق",
+  "more": "المزيد",
+  "auditSync": "التدقيق / المزامنة",
+  "statusDraft": "مسودة",
+  "statusAssigned": "معينة",
+  "statusAcknowledged": "تم الاستلام",
+  "statusInProgress": "قيد التنفيذ",
+  "statusPaused": "متوقفة مؤقتاً",
+  "statusBlocked": "متوقفة",
+  "statusCompletionRequested": "طُلب إكمالها",
+  "statusReturned": "معادة للتصحيح",
+  "statusCompleted": "مكتملة",
+  "statusDeclined": "مرفوضة",
+  "statusCancelled": "ملغاة",
+  "statusReopened": "أعيد فتحها",
+  "statusExpired": "منتهية",
+  "statusUpcoming": "قادمة",
+  "unknownLabel": "غير معروفة",
+  "priorityNormal": "عادية",
+  "priorityLow": "منخفضة",
+  "priorityHigh": "عالية",
+  "priorityUrgent": "عاجلة",
+  "priorityCritical": "حرجة",
+  "publicLabel": "عامة",
+  "internalLabel": "داخلية",
+  "syncPending": "معلقة",
+  "syncFailed": "فشلت",
+  "syncConflict": "تعارض",
+  "syncLocalOnly": "محلية فقط",
+  "approvalNotRequired": "غير مطلوب",
+  "approvalPending": "بانتظار الاعتماد",
+  "approvalApproved": "معتمدة",
+  "approvalReturned": "معادة",
+  "approvalRejected": "مرفوضة",
+  "eventCreated": "تم إنشاء المهمة",
+  "eventUpdated": "تم تحديث المهمة",
+  "eventAssigned": "تم إسناد المهمة",
+  "eventReassigned": "أعيد إسناد المهمة",
+  "eventStatusChanged": "تم تغيير الحالة",
+  "eventApproved": "تم اعتماد المهمة",
+  "eventReturned": "تمت إعادة المهمة",
+  "eventDeleted": "تم حذف المهمة",
+  "eventSyncConflict": "تعارض في المزامنة"
 }
