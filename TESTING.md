@@ -103,3 +103,7 @@ assert authorization before search, AND semantics across filters, every sort fie
 stable task-number ties, null placement, immutable results, and fail-closed details.
 Provider/router/widget tests should override repository/service boundaries rather than
 reading `DemoDataStore` from widgets.
+
+## Phase 05B validation matrix
+
+Validate English and Arabic task identities, enum-label localization, manager scopes, the critical preset, filters/sort/runtime saved filters, compact cards, details sections, assignment labels, checklist empty state, timeline ordering/localization, LTR progress semantics, and the five-tab navigation cap. Exercise 320 px phone and 700+ px tablet surfaces in light and dark themes. Phase 05 remains in progress until Flutter analysis, tests, debug APK build, and simulator run succeed locally.

@@ -11,6 +11,7 @@ import '../localization/localization_extensions.dart';
 import 'app_router.dart';
 import '../../features/organization/presentation/organization_pages.dart';
 import '../../features/tasks/presentation/task_pages.dart';
+import '../../features/tasks/presentation/task_presentation.dart';
 
 class RoleDestination {
   const RoleDestination(this.segment, this.icon, this.label);
@@ -37,11 +38,6 @@ List<RoleDestination> destinationsForRole(DemoUserRole role) => switch (role) {
   ],
   DemoUserRole.manager => [
     RoleDestination('home', Icons.home_outlined, (c) => c.l10n.home),
-    RoleDestination(
-      'organization',
-      Icons.corporate_fare_outlined,
-      (c) => c.l10n.organization,
-    ),
     RoleDestination('team', Icons.groups_outlined, (c) => c.l10n.teamTasks),
     RoleDestination('create', Icons.add_task, (c) => c.l10n.createTask),
     RoleDestination(
@@ -49,8 +45,7 @@ List<RoleDestination> destinationsForRole(DemoUserRole role) => switch (role) {
       Icons.approval_outlined,
       (c) => c.l10n.approvals,
     ),
-    RoleDestination('reports', Icons.bar_chart_outlined, (c) => c.l10n.reports),
-    RoleDestination('profile', Icons.person_outline, (c) => c.l10n.profile),
+    RoleDestination('more', Icons.more_horiz, (c) => TaskPresentation.text(c, 'More', 'المزيد')),
   ],
   DemoUserRole.seniorManagement => [
     RoleDestination(
@@ -59,15 +54,11 @@ List<RoleDestination> destinationsForRole(DemoUserRole role) => switch (role) {
       (c) => c.l10n.executiveDashboard,
     ),
     RoleDestination(
-      'departments',
-      Icons.account_tree_outlined,
-      (c) => c.l10n.departments,
-    ),
-    RoleDestination(
       'critical',
       Icons.priority_high,
       (c) => c.l10n.criticalTasks,
     ),
+    RoleDestination('departments', Icons.account_tree_outlined, (c) => c.l10n.departments),
     RoleDestination('reports', Icons.bar_chart_outlined, (c) => c.l10n.reports),
     RoleDestination('profile', Icons.person_outline, (c) => c.l10n.profile),
   ],
@@ -83,14 +74,8 @@ List<RoleDestination> destinationsForRole(DemoUserRole role) => switch (role) {
       Icons.corporate_fare_outlined,
       (c) => c.l10n.organization,
     ),
-    RoleDestination('configuration', Icons.tune, (c) => c.l10n.configuration),
-    RoleDestination('sync', Icons.sync, (c) => c.l10n.synchronization),
-    RoleDestination('audit', Icons.history, (c) => c.l10n.auditLog),
-    RoleDestination(
-      'settings',
-      Icons.settings_outlined,
-      (c) => c.l10n.settings,
-    ),
+    RoleDestination('sync', Icons.sync, (c) => TaskPresentation.text(c, 'Audit / Sync', 'التدقيق / المزامنة')),
+    RoleDestination('more', Icons.more_horiz, (c) => TaskPresentation.text(c, 'More', 'المزيد')),
   ],
 };
 
@@ -113,8 +98,14 @@ class RoleShellPage extends ConsumerWidget {
     final isOrganization =
         section == 'organization' || section == 'departments';
     final isTasks = section == 'tasks' || section == 'team' || section == 'critical';
+    final taskContext = switch (role) {
+      DemoUserRole.employee => const TaskPageContext(TaskPageKind.employee),
+      DemoUserRole.manager => const TaskPageContext(TaskPageKind.manager),
+      DemoUserRole.seniorManagement => const TaskPageContext(TaskPageKind.seniorManagement),
+      DemoUserRole.administrator => const TaskPageContext(TaskPageKind.generic),
+    };
     final child = isTasks
-        ? const TaskListPage()
+        ? TaskListPage(pageContext: taskContext)
         : isOrganization
         ? const OrganizationOverviewPage()
         : isHome

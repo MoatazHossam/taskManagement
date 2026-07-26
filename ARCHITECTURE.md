@@ -147,3 +147,7 @@ read-only details aggregate and newest-first immutable timeline. Riverpod derive
 user from the authoritative session and retains the query in runtime state while a
 detail route is open. A future on-premises adapter can implement the same service
 contract without changing task presentation.
+
+### Phase 05B task presentation boundary
+
+`TaskPageContext` configures employee, manager, senior-management, and generic task destinations without role-name checks in reusable widgets. `TaskPresentation` is the centralized locale-aware mapping for domain codes. Manager scope is query state and therefore updates without reconstructing the route. Runtime saved filters remain in `RepositoryTaskQueryService`; no persistence, networking, or mutation layer was added.

@@ -4,7 +4,8 @@ import '../../../core/domain/authorization_models.dart';
 import '../../../core/domain/domain_enums.dart';
 import '../../../core/domain/entities.dart';
 
-enum TaskListView { all, today, thisWeek, overdue, blocked, awaitingApproval, teamQueue, completed, drafts }
+enum TaskListView { all, today, thisWeek, overdue, blocked, awaitingApproval, teamQueue, completed, drafts, critical }
+enum TaskQueryScope { self, team, department, organization }
 enum TaskSortField { dueDate, priority, creationDate, lastUpdate, progress, estimatedEffort, taskNumber }
 enum SortDirection { ascending, descending }
 enum TaskBooleanFilter { any, yes, no }
@@ -19,7 +20,7 @@ const closedTaskStatuses = <TaskStatus>{
 
 class TaskQuery {
   TaskQuery({
-    this.searchText = '', this.view = TaskListView.all,
+    this.searchText = '', this.view = TaskListView.all, this.scope = TaskQueryScope.organization,
     Set<TaskStatus> statuses = const {}, Set<String> priorities = const {},
     this.dueDateFrom, this.dueDateTo, this.creationDateFrom, this.creationDateTo,
     Set<String> creatorIds = const {}, Set<String> ownerIds = const {},
@@ -42,6 +43,7 @@ class TaskQuery {
        confidentialityLevels = UnmodifiableSetView(Set.of(confidentialityLevels));
   final String searchText;
   final TaskListView view;
+  final TaskQueryScope scope;
   final Set<TaskStatus> statuses;
   final Set<String> priorities, creatorIds, ownerIds, contributorIds, teamIds, departmentIds, categoryIds, confidentialityLevels;
   final Set<AssignmentMode> assignmentModes;
@@ -53,16 +55,27 @@ class TaskQuery {
   int get activeFilterCount => [statuses, priorities, creatorIds, ownerIds, contributorIds, teamIds, departmentIds, categoryIds, assignmentModes, approvalStatuses, confidentialityLevels].where((e) => e.isNotEmpty).length +
       [dueDateFrom, dueDateTo, creationDateFrom, creationDateTo].where((e) => e != null).length +
       [blockedState, recurringState, locallyModifiedState, pendingSynchronizationState].where((e) => e != TaskBooleanFilter.any).length;
-  TaskQuery copyWith({String? searchText, TaskListView? view, Set<TaskStatus>? statuses, Set<String>? priorities,
+  TaskQuery copyWith({String? searchText, TaskListView? view, TaskQueryScope? scope,
+    Set<TaskStatus>? statuses, Set<String>? priorities, DateTime? dueDateFrom, DateTime? dueDateTo,
+    DateTime? creationDateFrom, DateTime? creationDateTo, Set<String>? creatorIds, Set<String>? ownerIds,
+    Set<String>? contributorIds, Set<String>? teamIds, Set<String>? departmentIds, Set<String>? categoryIds,
+    Set<AssignmentMode>? assignmentModes, Set<ApprovalStatus>? approvalStatuses,
+    Set<String>? confidentialityLevels, TaskBooleanFilter? blockedState, TaskBooleanFilter? recurringState,
+    TaskBooleanFilter? locallyModifiedState, TaskBooleanFilter? pendingSynchronizationState,
     TaskSortField? sortField, SortDirection? sortDirection}) => TaskQuery(
-      searchText: searchText ?? this.searchText, view: view ?? this.view, statuses: statuses ?? this.statuses,
-      priorities: priorities ?? this.priorities, dueDateFrom: dueDateFrom, dueDateTo: dueDateTo,
-      creationDateFrom: creationDateFrom, creationDateTo: creationDateTo, creatorIds: creatorIds, ownerIds: ownerIds,
-      contributorIds: contributorIds, teamIds: teamIds, departmentIds: departmentIds, categoryIds: categoryIds,
-      assignmentModes: assignmentModes, approvalStatuses: approvalStatuses, confidentialityLevels: confidentialityLevels,
-      blockedState: blockedState, recurringState: recurringState, locallyModifiedState: locallyModifiedState,
-      pendingSynchronizationState: pendingSynchronizationState, sortField: sortField ?? this.sortField,
-      sortDirection: sortDirection ?? this.sortDirection);
+      searchText: searchText ?? this.searchText, view: view ?? this.view, scope: scope ?? this.scope,
+      statuses: statuses ?? this.statuses, priorities: priorities ?? this.priorities,
+      dueDateFrom: dueDateFrom ?? this.dueDateFrom, dueDateTo: dueDateTo ?? this.dueDateTo,
+      creationDateFrom: creationDateFrom ?? this.creationDateFrom, creationDateTo: creationDateTo ?? this.creationDateTo,
+      creatorIds: creatorIds ?? this.creatorIds, ownerIds: ownerIds ?? this.ownerIds,
+      contributorIds: contributorIds ?? this.contributorIds, teamIds: teamIds ?? this.teamIds,
+      departmentIds: departmentIds ?? this.departmentIds, categoryIds: categoryIds ?? this.categoryIds,
+      assignmentModes: assignmentModes ?? this.assignmentModes, approvalStatuses: approvalStatuses ?? this.approvalStatuses,
+      confidentialityLevels: confidentialityLevels ?? this.confidentialityLevels,
+      blockedState: blockedState ?? this.blockedState, recurringState: recurringState ?? this.recurringState,
+      locallyModifiedState: locallyModifiedState ?? this.locallyModifiedState,
+      pendingSynchronizationState: pendingSynchronizationState ?? this.pendingSynchronizationState,
+      sortField: sortField ?? this.sortField, sortDirection: sortDirection ?? this.sortDirection);
 }
 
 class TaskListItem {
@@ -108,8 +121,10 @@ class TaskDetails {
     required List<TaskAssignment> assignments, required this.category, required this.priority, required this.confidentiality,
     required this.checklistSummary, required this.subtaskCount, required this.activeBlocker, required this.approval,
     required this.attachmentCount, required this.commentCount, required List<TaskTimelineEntry> timeline,
-    required this.authorizationDecision}) : assignments = List.unmodifiable(assignments), timeline = List.unmodifiable(timeline);
+    required Map<String, OrganizationUser> assignmentUsers, required this.authorizationDecision}) : assignments = List.unmodifiable(assignments),
+      assignmentUsers = Map.unmodifiable(assignmentUsers), timeline = List.unmodifiable(timeline);
   final Task task; final OrganizationUser? creator, leadOwner; final Team? assignedTeam; final List<TaskAssignment> assignments;
+  final Map<String, OrganizationUser> assignmentUsers;
   final TaskCategory? category; final TaskPriority? priority; final ConfidentialityLevel? confidentiality;
   final ChecklistSummary checklistSummary; final int subtaskCount, attachmentCount, commentCount;
   final TaskBlocker? activeBlocker; final TaskApproval? approval; final List<TaskTimelineEntry> timeline;
