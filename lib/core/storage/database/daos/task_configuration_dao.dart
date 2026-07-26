@@ -1,0 +1,5 @@
+import 'package:drift/drift.dart';
+import '../app_database.dart';
+@DriftAccessor()
+class TaskConfigurationDao extends DatabaseAccessor<AppDatabase> { TaskConfigurationDao(AppDatabase db):super(db);
+ Future<List<Priority>> getPriorities()=>db.select(db.priorities).get(); Future<Priority?> getPriorityById(String id)=>(db.select(db.priorities)..where((t)=>t.id.equals(id))).getSingleOrNull(); Future<List<Category>> getCategories()=>db.select(db.categories).get(); Future<Category?> getCategoryById(String id)=>(db.select(db.categories)..where((t)=>t.id.equals(id))).getSingleOrNull(); Future<List<ConfidentialityLevel>> getConfidentialityLevels()=>db.select(db.confidentialityLevels).get(); Future<List<ApprovalRule>> getApprovalRules()=>db.select(db.approvalRules).get(); Future<List<EscalationRule>> getEscalationRules()=>db.select(db.escalationRules).get(); Future<List<NotificationTemplate>> getNotificationTemplates()=>db.select(db.notificationTemplates).get(); Future<List<TaskTemplate>> getTaskTemplates()=>db.select(db.taskTemplates).get(); }

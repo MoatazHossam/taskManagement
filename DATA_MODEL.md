@@ -45,3 +45,11 @@ erDiagram
 ## Explicit non-model
 
 Projects, milestones, portfolios, Gantt structures, and project relationships do not exist. No task has a `projectId`.
+
+## Phase 02B local data boundary
+
+Focused typed Drift DAOs own query composition: `UserDao`, `OrganizationDao`, `TaskDao`, `TaskConfigurationDao`, `NotificationDao`, `AuditDao`, `SyncDao`, and `SettingsDao`. DAOs return generated storage rows only and contain no lifecycle rules. Explicit mapper extensions are the only Drift-row/domain boundary; repositories return Drift-independent domain entities and are the only data contracts exposed to presentation.
+
+The deterministic versioned seed contains the five personas, twelve synthetic employees, all departments and teams, memberships, roles/permissions, five priorities, ten categories, four confidentiality levels, rules and templates. SCN-01 includes checklist/history; SCN-02 pending approval/evidence configuration; SCN-03 returned approval/history; SCN-04 active external blocker/comment; SCN-05 lead and cross-department contributors; SCN-06 twelve independent batch copies; SCN-07 claimed and unclaimed queue tasks; SCN-08 reassignment history; SCN-09 extension request; SCN-10 three independent recurrence occurrences; SCN-11 restricted data; SCN-12 pending offline operation; SCN-13 conflict operation; SCN-14 stored AI-demo draft text only; and SCN-15 effort/blocker/count context records.
+
+Reset is one transaction and deletes children before parents: role permissions/memberships, task collaboration records, audit/sync/notifications, tasks/recurrence/configuration, organization records, filters, then settings. The schema remains intact and the seed-version setting is recreated last. Tests use `NativeDatabase.memory()`, a `FixedAppClock`, provider overrides, and close every database. `app_database.g.dart` is build-runner output: never hand-edit or fabricate it; regenerate after table or DAO changes.

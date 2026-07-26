@@ -64,3 +64,7 @@ Environment limitations must be reported as warnings, never represented as passi
 ## Phase 01 executable suites
 
 Run `flutter pub get`, `flutter gen-l10n`, `dart format .`, `flutter analyze`, and `flutter test`. Unit tests live under `test/unit`; widget/navigation tests live under `test/widget`. Provider containers exercise in-memory state transitions without persistence. Locale tests inspect `Directionality` rather than relying on English text. Router policy is tested as a pure role/path decision, while widget tests enter shells through overridden session state. Test both Arabic and English and include a large `TextScaler` on primary foundation layouts.
+
+## Phase 02 database tests
+
+Database/DAO/repository/mapper tests use `NativeDatabase.memory()`, `FixedAppClock`, `addTearDown(database.close)`, and repository contracts rather than presentation. Cover schema constraints, foreign keys, idempotent seed/reset, all scenario invariants, typed DAO queries, UTC/nullable/unknown-code mapping, soft-delete and sync metadata. Audit tests assert that its repository has append/read operations but no update/delete API. Regenerate Drift before analysis and tests.

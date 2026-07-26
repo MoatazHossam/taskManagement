@@ -1,0 +1,8 @@
+import 'package:drift/drift.dart';
+import '../../../domain/domain_enums.dart'; import '../../../domain/entities.dart' as domain; import '../app_database.dart' as data;
+DateTime _utc(DateTime value)=>value.toUtc();
+extension UserRowMapper on data.User { domain.OrganizationUser toDomain()=>domain.OrganizationUser(id:id,employeeNumber:employeeNumber,nameAr:nameAr,nameEn:nameEn,departmentId:departmentId,managerId:managerId,roleId:roleId,status:UserStatus.fromCode(status)); }
+extension UserDomainMapper on domain.OrganizationUser { data.UsersCompanion toCompanion({required DateTime updatedAt})=>data.UsersCompanion(id:Value(id),employeeNumber:Value(employeeNumber),nameAr:Value(nameAr),nameEn:Value(nameEn),jobTitleAr:const Value(''),departmentId:Value(departmentId),managerId:Value(managerId),roleId:Value(roleId),avatarInitials:Value(nameEn?.split(' ').map((e)=>e[0]).take(2).join()??''),status:Value(status.code),isActive:Value(status==UserStatus.active),createdAt:Value(_utc(updatedAt)),updatedAt:Value(_utc(updatedAt))); }
+extension DepartmentRowMapper on data.Department { domain.Department toDomain()=>domain.Department(id:id,code:code,nameAr:nameAr,nameEn:nameEn,parentDepartmentId:parentDepartmentId,managerUserId:managerUserId); }
+extension TeamRowMapper on data.Team { domain.Team toDomain()=>domain.Team(id:id,code:code,departmentId:departmentId,nameAr:nameAr,nameEn:nameEn,managerUserId:managerUserId,isQueueEnabled:isQueueEnabled); }
+extension MembershipRowMapper on data.TeamMembership { domain.TeamMembership toDomain()=>domain.TeamMembership(id:id,teamId:teamId,userId:userId,membershipRole:TeamMembershipRole.fromCode(membershipRole),joinedAt:_utc(joinedAt),leftAt:leftAt?.toUtc()); }

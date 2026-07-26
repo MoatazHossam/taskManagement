@@ -12,3 +12,9 @@ extension AppErrorLocalization on AppError {
     AppErrorType.unknown => l10n.unknownError,
   };
 }
+
+final class DataLayerException implements Exception {
+  const DataLayerException([this.error=const AppError(AppErrorType.localStorage)]);
+  final AppError error;
+  @override String toString()=>'DataLayerException(${error.type.name})';
+}

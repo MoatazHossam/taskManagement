@@ -104,3 +104,7 @@ The composition root uses `ProviderScope`; Riverpod providers own locale, theme,
 Foundation screens use `AppPrimaryScrollView` rather than screen-specific bottom padding. On phones it derives its final inset from the centralized navigation height, the device safe-area inset, and standard content spacing; tablet content omits phone-only clearance. Surface roles are centralized in `AppSurfaceColors` as page, standard, elevated/selected, border, and disabled layers for consistent light/dark rendering.
 
 `AppMetricCard`, `AppPanel`, settings selectors, and `AppTaskPreviewTile` remain display-only presentation primitives. The task preview accepts optional visual fields for progress, category, assignee, and offline state, but deliberately has no dependency on a task entity or repository before the approved task phase.
+
+## Phase 02B database architecture
+
+Presentation depends on repository interfaces. Riverpod binds those interfaces to local repositories; local repositories depend on focused DAOs and explicit mapper extensions; DAOs alone compose typed Drift queries. `appDatabaseProvider` owns and closes the database, while `databaseInitializationProvider` gates the one-time, post-schema seed and translates startup failures to `DataLayerException`/`AppError`. Tests can override `appDatabaseProvider` with an in-memory database.
