@@ -98,3 +98,9 @@ Do not add Firebase, cloud storage/database/AI/authentication, outbound analytic
 The composition root uses `ProviderScope`; Riverpod providers own locale, theme, connectivity, and the replaceable in-memory session boundary. `go_router` defines public and authenticated role paths, with pure role-access decisions and redirects. `MaterialApp.router` consumes generated-compatible ARB localization, centralized Material 3 light/dark themes, and system theme mode.
 
 `AppResponsiveShell` selects bottom navigation below the tablet breakpoint and a navigation rail on tablets while constraining readable content width. Employee, manager, senior-management, and administrator configurations share this shell. Connectivity is explicitly a deterministic UI simulation: it performs no network checks, queues no work, and has no persistence. Authentication similarly stores no credentials and is designed to be replaced behind providers.
+
+## Phase 01.5B reusable presentation architecture
+
+Foundation screens use `AppPrimaryScrollView` rather than screen-specific bottom padding. On phones it derives its final inset from the centralized navigation height, the device safe-area inset, and standard content spacing; tablet content omits phone-only clearance. Surface roles are centralized in `AppSurfaceColors` as page, standard, elevated/selected, border, and disabled layers for consistent light/dark rendering.
+
+`AppMetricCard`, `AppPanel`, settings selectors, and `AppTaskPreviewTile` remain display-only presentation primitives. The task preview accepts optional visual fields for progress, category, assignee, and offline state, but deliberately has no dependency on a task entity or repository before the approved task phase.

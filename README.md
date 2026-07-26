@@ -4,7 +4,7 @@
 
 This repository will contain a mobile-first organization task-management demo for Android and iOS, with responsive tablet layouts. Its purpose is to validate product concepts, role-aware workflows, navigation, Arabic/English user experience, management reporting, assignment and approval behavior, and local offline demonstrations before an on-premises backend exists.
 
-**Current status:** Phase 00 (governance and repository foundation) is complete. The repository is not yet an initialized Flutter project and contains no runnable application or implemented business feature. Phase 01 will create the Flutter foundation.
+**Current status:** Phase 01.5B visual-density and mobile-UX refinement is implemented for local review but remains In Progress until Flutter SDK validation and device review are completed. Phase 02 has not started.
 
 The authoritative product and business-rules source is [`TASK_MANAGEMENT_DEMO_MASTER_SPEC.md`](TASK_MANAGEMENT_DEMO_MASTER_SPEC.md). Changes must be delivered one explicit phase at a time; no later phase should begin automatically.
 
@@ -45,7 +45,7 @@ flutter analyze
 flutter test
 ```
 
-The repository currently has no `pubspec.yaml`, Dart sources, platform projects, or tests, so those commands are not yet valid here.
+The repository contains the Android/iOS Flutter foundation, ARB catalogs, and widget tests. The current execution container does not expose Flutter or Dart on `PATH`; run the commands below in an SDK-equipped environment before marking Phase 01.5B complete.
 
 ## Planned repository structure
 

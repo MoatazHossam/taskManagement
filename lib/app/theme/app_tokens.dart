@@ -5,6 +5,7 @@ abstract final class AppSpacing {
   static const double xSmall = 4;
   static const double small = 8;
   static const double medium = 16;
+  static const double section = 20;
   static const double large = 24;
   static const double xLarge = 32;
   static const double xxLarge = 48;
@@ -19,7 +20,10 @@ abstract final class AppRadii {
 
 abstract final class AppSizes {
   static const double control = 48;
+  static const double compactControl = 40;
   static const double avatar = 44;
+  static const double phoneNavigation = 64;
+  static const double compactHeader = 52;
   static const double navigationRail = 240;
   static const double pageMax = 1120;
 }
@@ -48,6 +52,51 @@ abstract final class AppPalette {
   static const ink = Color(0xFF17201F);
   static const canvas = Color(0xFFF5F7F6);
   static const darkCanvas = Color(0xFF101514);
+  static const darkSurface = Color(0xFF18201E);
+  static const darkElevatedSurface = Color(0xFF202B28);
+  static const darkDisabledSurface = Color(0xFF151B1A);
+  static const darkOutline = Color(0xFF3B4A46);
+}
+
+@immutable
+class AppSurfaceColors extends ThemeExtension<AppSurfaceColors> {
+  const AppSurfaceColors({
+    required this.page,
+    required this.standard,
+    required this.elevated,
+    required this.border,
+    required this.disabled,
+  });
+
+  final Color page;
+  final Color standard;
+  final Color elevated;
+  final Color border;
+  final Color disabled;
+
+  @override
+  AppSurfaceColors copyWith({Color? page, Color? standard, Color? elevated, Color? border, Color? disabled}) => AppSurfaceColors(
+        page: page ?? this.page,
+        standard: standard ?? this.standard,
+        elevated: elevated ?? this.elevated,
+        border: border ?? this.border,
+        disabled: disabled ?? this.disabled,
+      );
+
+  @override
+  AppSurfaceColors lerp(covariant AppSurfaceColors? other, double t) => other == null
+      ? this
+      : AppSurfaceColors(
+          page: Color.lerp(page, other.page, t)!,
+          standard: Color.lerp(standard, other.standard, t)!,
+          elevated: Color.lerp(elevated, other.elevated, t)!,
+          border: Color.lerp(border, other.border, t)!,
+          disabled: Color.lerp(disabled, other.disabled, t)!,
+        );
+}
+
+extension AppSurfaceTheme on BuildContext {
+  AppSurfaceColors get surfaces => Theme.of(this).extension<AppSurfaceColors>()!;
 }
 
 abstract final class AppSemanticColors {

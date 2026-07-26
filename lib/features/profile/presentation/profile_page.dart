@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../../../app/dependency_injection/app_providers.dart';
 import '../../../app/localization/localization_extensions.dart';
 import '../../../app/theme/app_tokens.dart';
@@ -8,6 +9,139 @@ import '../../../shared/enums/app_enums.dart';
 import '../../authentication/presentation/authentication_pages.dart';
 import '../../home/presentation/home_page.dart';
 
-class ProfilePage extends ConsumerWidget { const ProfilePage({super.key,required this.openGallery}); final VoidCallback openGallery; @override Widget build(BuildContext context,WidgetRef ref){final p=ref.watch(currentDemoProfileProvider)!; final lang=Localizations.localeOf(context).languageCode; return ListView(padding:const EdgeInsets.all(AppSpacing.large),children:[AppPageHeader(eyebrow:context.l10n.settings,title:context.l10n.profile,subtitle:context.l10n.demoMode,trailing:AppAvatar(initials:p.avatarInitials,size:56,online:true)),const SizedBox(height:AppSpacing.large),Card(child:Padding(padding:const EdgeInsets.all(AppSpacing.large),child:Row(children:[AppAvatar(initials:p.avatarInitials,size:64,online:true),const SizedBox(width:AppSpacing.medium),Expanded(child:Column(crossAxisAlignment:CrossAxisAlignment.start,children:[Text(p.localizedName(lang),style:Theme.of(context).textTheme.titleLarge),Text('${roleLabel(context,p.role)} • ${p.localizedDepartment(lang)}',style:Theme.of(context).textTheme.bodyMedium?.copyWith(color:Theme.of(context).colorScheme.onSurfaceVariant))]))]))),const SizedBox(height:AppSpacing.large),AppPanel(title:context.l10n.settings,child:Column(crossAxisAlignment:CrossAxisAlignment.stretch,children:[Text(context.l10n.language,style:Theme.of(context).textTheme.titleMedium),const SizedBox(height:AppSpacing.small),SegmentationLanguageSelector(locale:ref.watch(localeProvider),onChanged:(v)=>ref.read(localeProvider.notifier).state=v),const SizedBox(height:AppSpacing.medium),Text(context.l10n.theme,style:Theme.of(context).textTheme.titleMedium),const SizedBox(height:AppSpacing.small),ThemeModeSelector(value:ref.watch(themeModeProvider),onChanged:(v)=>ref.read(themeModeProvider.notifier).state=v),const SizedBox(height:AppSpacing.medium),Text(context.l10n.connectivity,style:Theme.of(context).textTheme.titleMedium),const SizedBox(height:AppSpacing.small),ConnectivitySelector(value:ref.watch(connectivityProvider),onChanged:(v)=>ref.read(connectivityProvider.notifier).state=v)])),const SizedBox(height:AppSpacing.medium),AppPanel(title:context.l10n.demoMode,child:Column(children:[ListTile(leading:const Icon(Icons.palette_outlined),title:Text(context.l10n.foundationGallery),trailing:const Icon(Icons.chevron_right),onTap:openGallery),ListTile(leading:const Icon(Icons.switch_account),title:Text(context.l10n.switchProfile),onTap:()=>ref.read(sessionProvider.notifier).beginProfileSelection()),ListTile(key:const Key('expire-session'),leading:const Icon(Icons.timer_off_outlined),title:Text(context.l10n.expireSession),onTap:()=>ref.read(sessionProvider.notifier).expire()),ListTile(key:const Key('logout'),leading:Icon(Icons.logout,color:Theme.of(context).colorScheme.error),title:Text(context.l10n.logout),onTap:()=>ref.read(sessionProvider.notifier).logout())])),const SizedBox(height:AppSpacing.medium),Center(child:AppBadge(label:'${context.l10n.demoMode} • 1.0.0'))]); } }
-class ThemeModeSelector extends StatelessWidget { const ThemeModeSelector({super.key,required this.value,required this.onChanged});final ThemeMode value;final ValueChanged<ThemeMode> onChanged; @override Widget build(BuildContext context)=>DropdownButtonFormField<ThemeMode>(value:value,items:[DropdownMenuItem(value:ThemeMode.light,child:Text(context.l10n.light)),DropdownMenuItem(value:ThemeMode.dark,child:Text(context.l10n.dark)),DropdownMenuItem(value:ThemeMode.system,child:Text(context.l10n.systemDefault))],onChanged:(v){if(v!=null)onChanged(v);}); }
-class ConnectivitySelector extends StatelessWidget { const ConnectivitySelector({super.key,required this.value,required this.onChanged});final SimulatedConnectivityStatus value;final ValueChanged<SimulatedConnectivityStatus> onChanged; @override Widget build(BuildContext context)=>SegmentedButton<SimulatedConnectivityStatus>(segments:[ButtonSegment(value:SimulatedConnectivityStatus.online,label:Text(context.l10n.online),icon:const Icon(Icons.cloud_done_outlined)),ButtonSegment(value:SimulatedConnectivityStatus.offline,label:Text(context.l10n.offline),icon:const Icon(Icons.cloud_off_outlined)),ButtonSegment(value:SimulatedConnectivityStatus.unstable,label:Text(context.l10n.unstableConnection),icon:const Icon(Icons.warning_amber))],selected:{value},onSelectionChanged:(v)=>onChanged(v.first)); }
+class ProfilePage extends ConsumerWidget {
+  const ProfilePage({super.key, required this.openGallery});
+  final VoidCallback openGallery;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final profile = ref.watch(currentDemoProfileProvider)!;
+    final language = Localizations.localeOf(context).languageCode;
+    return AppPrimaryScrollView(children: [
+      AppPageHeader(eyebrow: context.l10n.settings, title: context.l10n.profile, subtitle: context.l10n.demoMode),
+      const SizedBox(height: AppSpacing.medium),
+      Container(
+        padding: const EdgeInsets.all(AppSpacing.medium),
+        decoration: BoxDecoration(
+          color: context.surfaces.elevated,
+          borderRadius: BorderRadius.circular(AppRadii.medium),
+          border: Border.all(color: context.surfaces.border),
+        ),
+        child: Row(children: [
+          AppAvatar(initials: profile.avatarInitials, size: 56, online: true),
+          const SizedBox(width: AppSpacing.medium),
+          Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Text(profile.localizedName(language), style: Theme.of(context).textTheme.titleLarge),
+            const SizedBox(height: 2),
+            Text(roleLabel(context, profile.role), style: Theme.of(context).textTheme.labelLarge?.copyWith(color: Theme.of(context).colorScheme.primary)),
+            Text(profile.localizedDepartment(language), style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant)),
+            const SizedBox(height: AppSpacing.xSmall),
+            AppBadge(label: context.l10n.online, tone: AppBadgeTone.success, icon: Icons.circle),
+          ])),
+        ]),
+      ),
+      const SizedBox(height: AppSpacing.section),
+      AppPanel(
+        title: context.l10n.settings,
+        settings: true,
+        child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+          _SettingLabel(context.l10n.language),
+          SegmentationLanguageSelector(locale: ref.watch(localeProvider), onChanged: (value) => ref.read(localeProvider.notifier).state = value),
+          const SizedBox(height: AppSpacing.medium),
+          _SettingLabel(context.l10n.theme),
+          ThemeModeSelector(value: ref.watch(themeModeProvider), onChanged: (value) => ref.read(themeModeProvider.notifier).state = value),
+          const SizedBox(height: AppSpacing.medium),
+          _SettingLabel(context.l10n.connectivity),
+          ConnectivitySelector(value: ref.watch(connectivityProvider), onChanged: (value) => ref.read(connectivityProvider.notifier).state = value),
+        ]),
+      ),
+      const SizedBox(height: AppSpacing.medium),
+      AppPanel(
+        title: context.l10n.demoMode,
+        child: Column(children: [
+          ListTile(leading: const Icon(Icons.palette_outlined), title: Text(context.l10n.foundationGallery), trailing: const Icon(Icons.chevron_right), onTap: openGallery),
+          ListTile(leading: const Icon(Icons.switch_account), title: Text(context.l10n.switchProfile), onTap: () => ref.read(sessionProvider.notifier).beginProfileSelection()),
+          ListTile(key: const Key('expire-session'), leading: const Icon(Icons.timer_off_outlined), title: Text(context.l10n.expireSession), onTap: () => ref.read(sessionProvider.notifier).expire()),
+          ListTile(key: const Key('logout'), leading: Icon(Icons.logout, color: Theme.of(context).colorScheme.error), title: Text(context.l10n.logout), onTap: () => ref.read(sessionProvider.notifier).logout()),
+        ]),
+      ),
+      const SizedBox(height: AppSpacing.medium),
+      Center(child: AppBadge(label: '${context.l10n.demoMode} • 1.0.0')),
+    ]);
+  }
+}
+
+class _SettingLabel extends StatelessWidget {
+  const _SettingLabel(this.label);
+  final String label;
+  @override
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.only(bottom: AppSpacing.small),
+        child: Text(label, style: Theme.of(context).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700)),
+      );
+}
+
+class ThemeModeSelector extends StatelessWidget {
+  const ThemeModeSelector({super.key, required this.value, required this.onChanged});
+  final ThemeMode value;
+  final ValueChanged<ThemeMode> onChanged;
+
+  @override
+  Widget build(BuildContext context) => SegmentedButton<ThemeMode>(
+        showSelectedIcon: false,
+        style: const ButtonStyle(visualDensity: VisualDensity.compact),
+        segments: [
+          ButtonSegment(value: ThemeMode.light, icon: const Icon(Icons.light_mode_outlined), label: Text(context.l10n.light)),
+          ButtonSegment(value: ThemeMode.dark, icon: const Icon(Icons.dark_mode_outlined), label: Text(context.l10n.dark)),
+          ButtonSegment(value: ThemeMode.system, icon: const Icon(Icons.settings_brightness_outlined), label: Text(context.l10n.systemDefault)),
+        ],
+        selected: {value},
+        onSelectionChanged: (selection) => onChanged(selection.first),
+      );
+}
+
+class ConnectivitySelector extends StatelessWidget {
+  const ConnectivitySelector({super.key, required this.value, required this.onChanged});
+  final SimulatedConnectivityStatus value;
+  final ValueChanged<SimulatedConnectivityStatus> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final options = <(SimulatedConnectivityStatus, IconData, String)>[
+      (SimulatedConnectivityStatus.online, Icons.cloud_done_outlined, context.l10n.online),
+      (SimulatedConnectivityStatus.offline, Icons.cloud_off_outlined, context.l10n.offline),
+      (SimulatedConnectivityStatus.unstable, Icons.signal_wifi_statusbar_connected_no_internet_4, context.l10n.unstableConnection),
+    ];
+    return Column(children: [
+      for (final option in options)
+        Padding(
+          padding: const EdgeInsets.only(bottom: AppSpacing.small),
+          child: Semantics(
+            selected: value == option.$1,
+            button: true,
+            child: InkWell(
+              key: ValueKey(option.$1),
+              onTap: () => onChanged(option.$1),
+              borderRadius: BorderRadius.circular(AppRadii.small),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 160),
+                constraints: const BoxConstraints(minHeight: AppSizes.control),
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 9),
+                decoration: BoxDecoration(
+                  color: value == option.$1 ? context.surfaces.standard : context.surfaces.disabled,
+                  borderRadius: BorderRadius.circular(AppRadii.small),
+                  border: Border.all(color: value == option.$1 ? Theme.of(context).colorScheme.primary : context.surfaces.border, width: value == option.$1 ? 1.5 : 1),
+                ),
+                child: Row(children: [
+                  Icon(option.$2, color: value == option.$1 ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.onSurfaceVariant),
+                  const SizedBox(width: 12),
+                  Expanded(child: Text(option.$3, style: Theme.of(context).textTheme.labelLarge)),
+                  Icon(value == option.$1 ? Icons.radio_button_checked : Icons.radio_button_off, color: value == option.$1 ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.onSurfaceVariant),
+                ]),
+              ),
+            ),
+          ),
+        ),
+    ]);
+  }
+}

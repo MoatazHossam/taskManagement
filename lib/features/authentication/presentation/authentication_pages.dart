@@ -50,7 +50,20 @@ class SegmentationLanguageSelector extends StatelessWidget {
   final Locale? locale;
   final ValueChanged<Locale> onChanged;
   @override
-  Widget build(BuildContext context) => SizedBox(width: double.infinity, child: SegmentedButton<String>(segments: [ButtonSegment(value: 'ar', label: Text(context.l10n.arabic)), ButtonSegment(value: 'en', label: Text(context.l10n.english))], selected: {locale?.languageCode ?? Localizations.localeOf(context).languageCode}, onSelectionChanged: (value) => onChanged(Locale(value.first))));
+  Widget build(BuildContext context) => SizedBox(
+        width: double.infinity,
+        child: SegmentedButton<String>(
+          showSelectedIcon: false,
+          style: const ButtonStyle(
+            visualDensity: VisualDensity.compact,
+            minimumSize: WidgetStatePropertyAll(Size(0, AppSizes.compactControl)),
+            padding: WidgetStatePropertyAll(EdgeInsets.symmetric(horizontal: AppSpacing.small)),
+          ),
+          segments: [ButtonSegment(value: 'ar', label: Text(context.l10n.arabic)), ButtonSegment(value: 'en', label: Text(context.l10n.english))],
+          selected: {locale?.languageCode ?? Localizations.localeOf(context).languageCode},
+          onSelectionChanged: (value) => onChanged(Locale(value.first)),
+        ),
+      );
 }
 
 class DemoLoginPage extends ConsumerWidget {

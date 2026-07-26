@@ -21,8 +21,7 @@ class RoleHomePage extends ConsumerWidget {
 
     return LayoutBuilder(builder: (context, constraints) {
       final columns = constraints.maxWidth >= AppBreakpoints.tablet ? 4 : 2;
-      return ListView(
-        padding: const EdgeInsets.all(AppSpacing.large),
+      return AppPrimaryScrollView(
         children: [
           AppPageHeader(
             eyebrow: manager ? (arabic ? 'نظرة عامة للفريق' : 'Team overview') : (arabic ? 'مساحة عملي' : 'My workspace'),
@@ -30,16 +29,16 @@ class RoleHomePage extends ConsumerWidget {
             subtitle: manager
                 ? (arabic ? 'تابع أداء الفريق واتخذ الإجراءات ذات الأولوية.' : 'Monitor team delivery and act on what needs attention.')
                 : (arabic ? 'إليك ملخص واضح ليومك والمهام ذات الأولوية.' : 'Here is a clear view of your day and priority work.'),
-            trailing: AppAvatar(initials: profile.avatarInitials, size: 52, online: true),
+            trailing: AppAvatar(initials: profile.avatarInitials, online: true),
           ),
-          const SizedBox(height: AppSpacing.large),
+          const SizedBox(height: AppSpacing.medium),
           GridView.count(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             crossAxisCount: columns,
             mainAxisSpacing: AppSpacing.small,
             crossAxisSpacing: AppSpacing.small,
-            childAspectRatio: columns == 4 ? 1.25 : 1.05,
+            childAspectRatio: columns == 4 ? 1.75 : 1.55,
             children: manager
                 ? [
                     AppMetricCard(label: arabic ? 'مهام الفريق' : 'Team tasks', value: '42', icon: Icons.task_alt, detail: '+8%'),
@@ -54,7 +53,7 @@ class RoleHomePage extends ConsumerWidget {
                     AppMetricCard(label: arabic ? 'متأخرة' : 'Overdue', value: '1', icon: Icons.schedule),
                   ],
           ),
-          const SizedBox(height: AppSpacing.large),
+          const SizedBox(height: AppSpacing.section),
           Wrap(spacing: AppSpacing.medium, runSpacing: AppSpacing.medium, children: [
             SizedBox(
               width: constraints.maxWidth >= AppBreakpoints.tablet ? (constraints.maxWidth - AppSpacing.medium) * .62 : constraints.maxWidth,
@@ -62,11 +61,11 @@ class RoleHomePage extends ConsumerWidget {
                 title: manager ? (arabic ? 'الأعمال التي تحتاج قرارك' : 'Work needing your decision') : (arabic ? 'أولوية اليوم' : 'Today’s priority'),
                 action: TextButton(onPressed: () {}, child: Text(arabic ? 'عرض الكل' : 'View all')),
                 child: Column(children: [
-                  AppTaskPreviewTile(title: arabic ? 'مراجعة خطة التشغيل الأسبوعية' : 'Review weekly operations plan', meta: arabic ? 'اليوم، ٢:٣٠ م • العمليات' : 'Today, 2:30 PM • Operations', status: arabic ? 'عالية' : 'High', tone: AppBadgeTone.warning),
+                  AppTaskPreviewTile(title: arabic ? 'مراجعة خطة التشغيل الأسبوعية' : 'Review weekly operations plan', meta: arabic ? 'اليوم، ٢:٣٠ م' : 'Today, 2:30 PM', category: arabic ? 'العمليات' : 'Operations', status: arabic ? 'عالية' : 'High', tone: AppBadgeTone.warning, progress: .6, assigneeInitials: profile.avatarInitials),
                   const Divider(),
-                  AppTaskPreviewTile(title: arabic ? 'اعتماد طلب تحديث النظام' : 'Approve system update request', meta: arabic ? 'غداً • تقنية المعلومات' : 'Tomorrow • IT support', status: arabic ? 'اعتماد' : 'Approval', tone: AppBadgeTone.info),
+                  AppTaskPreviewTile(title: arabic ? 'اعتماد طلب تحديث النظام' : 'Approve system update request', meta: arabic ? 'غداً' : 'Tomorrow', category: arabic ? 'تقنية المعلومات' : 'IT support', status: arabic ? 'اعتماد' : 'Approval', tone: AppBadgeTone.info),
                   const Divider(),
-                  AppTaskPreviewTile(title: arabic ? 'تقرير الأداء الشهري' : 'Monthly performance report', meta: arabic ? 'الخميس • سري' : 'Thursday • Confidential', status: arabic ? 'سري' : 'Confidential', tone: AppBadgeTone.confidential),
+                  AppTaskPreviewTile(title: arabic ? 'تقرير الأداء الشهري' : 'Monthly performance report', meta: arabic ? 'الخميس' : 'Thursday', category: arabic ? 'العمليات' : 'Operations', status: arabic ? 'سري' : 'Confidential', tone: AppBadgeTone.confidential, offline: true),
                 ]),
               ),
             ),
