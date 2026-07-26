@@ -4,7 +4,7 @@
 
 This repository will contain a mobile-first organization task-management demo for Android and iOS, with responsive tablet layouts. Its purpose is to validate product concepts, role-aware workflows, navigation, Arabic/English user experience, management reporting, assignment and approval behavior, and local offline demonstrations before an on-premises backend exists.
 
-**Current status:** Phase 02 core models and local database is In Progress. Phase 01, Phase 01.5, and Phase 01.5B were locally reviewed by the project owner. This container lacks Flutter/Dart, so Phase 02 generation and quality gates remain pending; Phase 03 has not started.
+**Current status:** Phase 02 is completed and was locally generated, analyzed, tested, and run successfully by the project owner. Phase 03 local demo authentication is implemented and awaiting SDK-equipped validation in this container. Phase 04 has not started.
 
 The authoritative product and business-rules source is [`TASK_MANAGEMENT_DEMO_MASTER_SPEC.md`](TASK_MANAGEMENT_DEMO_MASTER_SPEC.md). Changes must be delivered one explicit phase at a time; no later phase should begin automatically.
 
@@ -119,3 +119,7 @@ Android needs an Android SDK/device. iOS builds require macOS, Xcode, and CocoaP
 ARB catalogs in `lib/l10n` are the source of truth. Run `flutter gen-l10n` after translation changes and treat any entries in `build/untranslated_messages.json` as failures. Arabic and English switch immediately and drive RTL/LTR direction.
 
 Five in-memory demo profiles are available from the simulated login. Profile/settings can switch language, light/dark/system theme, and online/offline/unstable simulation. No credential is validated or persisted. **Task entities, task workflows, task data, persistence, synchronization, reports, administration behavior, backend integration, and AI are not implemented in Phase 01.**
+
+## Phase 03 demo authentication
+
+Authentication is a local workflow simulation, not production security. The main path is one-tap selection of one of the five database-backed demo profiles. Credential login accepts `employee`, `manager`, `executive`, `admin`, or `support` with demo-only password `demo123`. The password is never stored or audited. PIN unlock uses simulated PIN `1234`; no PIN or biometric data is stored, and no device biometric API is used. See [`AUTHENTICATION.md`](AUTHENTICATION.md).

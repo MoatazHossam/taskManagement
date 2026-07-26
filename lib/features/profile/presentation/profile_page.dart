@@ -60,9 +60,9 @@ class ProfilePage extends ConsumerWidget {
         title: context.l10n.demoMode,
         child: Column(children: [
           ListTile(leading: const Icon(Icons.palette_outlined), title: Text(context.l10n.foundationGallery), trailing: const Icon(Icons.chevron_right), onTap: openGallery),
-          ListTile(leading: const Icon(Icons.switch_account), title: Text(context.l10n.switchProfile), onTap: () => ref.read(sessionProvider.notifier).beginProfileSelection()),
+          ListTile(leading: const Icon(Icons.switch_account), title: Text(context.l10n.switchProfile), onTap: () async {await ref.read(sessionProvider.notifier).logout();ref.read(sessionProvider.notifier).beginProfileSelection();}),
           ListTile(key: const Key('expire-session'), leading: const Icon(Icons.timer_off_outlined), title: Text(context.l10n.expireSession), onTap: () => ref.read(sessionProvider.notifier).expire()),
-          ListTile(key: const Key('logout'), leading: Icon(Icons.logout, color: Theme.of(context).colorScheme.error), title: Text(context.l10n.logout), onTap: () => ref.read(sessionProvider.notifier).logout()),
+          ListTile(key: const Key('logout'), leading: Icon(Icons.logout, color: Theme.of(context).colorScheme.error), title: Text(context.l10n.logout), onTap: () => showDialog<void>(context:context,builder:(context)=>AlertDialog(title:Text(context.l10n.confirmLogout),actions:[TextButton(onPressed:()=>Navigator.pop(context),child:Text(context.l10n.cancel)),FilledButton(onPressed:(){Navigator.pop(context);ref.read(sessionProvider.notifier).logout();},child:Text(context.l10n.logout))]))),
         ]),
       ),
       const SizedBox(height: AppSpacing.medium),
