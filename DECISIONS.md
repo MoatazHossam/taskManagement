@@ -201,3 +201,13 @@ Phase 04 was not started.
 - Managers may create for others and assign/reassign across the organization.
 - Khaled receives claim/release authority only from his Technical Support Queue membership and only for that queue.
 - UI gates improve affordance but service and router enforcement remain mandatory.
+
+## Phase 05 read-only task decisions
+
+- Phase 05 exposes no mutation actions; authorization precedes every search/filter result.
+- The runtime Riverpod query survives list-to-details navigation.
+- Saved filters are per-user, runtime-only, and duplicate names replace the prior value.
+- Null sort values are last ascending; task number is the stable secondary key.
+- Completed, cancelled, declined, and expired tasks are closed and never overdue.
+- Administrator status never implies operational task access.
+- Timeline entries are newest-first and audit records remain immutable.
