@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../app/dependency_injection/app_providers.dart';
 import '../../../core/domain/app_clock.dart';
+import '../../../core/domain/domain_enums.dart';
 import '../data/repository_task_query_service.dart';
 import '../domain/task_query_models.dart';
 import '../domain/task_query_service.dart';
@@ -34,4 +35,15 @@ final taskTimelineProvider = FutureProvider.family<List<TaskTimelineEntry>, Stri
 final savedTaskFiltersProvider = FutureProvider<List<TaskSavedFilter>>((ref) async {
   final user = ref.watch(currentOrganizationUserProvider); if (user == null) return const [];
   return ref.watch(taskQueryServiceProvider).getSavedFilters(user.id);
+});
+
+final permittedTaskScopesProvider = FutureProvider<Set<TaskQueryScope>>((ref) async {
+  final user = ref.watch(currentOrganizationUserProvider);
+  if (user == null) return const {TaskQueryScope.self};
+  final permissions = await ref.watch(authorizationServiceProvider).getEffectivePermissions(user.id);
+  final scopes = <TaskQueryScope>{TaskQueryScope.self};
+  if (permissions.contains(PermissionCode.taskViewTeam)) scopes.add(TaskQueryScope.team);
+  if (permissions.contains(PermissionCode.taskViewDepartment)) scopes.add(TaskQueryScope.department);
+  if (permissions.contains(PermissionCode.taskViewAll)) scopes.add(TaskQueryScope.organization);
+  return scopes;
 });

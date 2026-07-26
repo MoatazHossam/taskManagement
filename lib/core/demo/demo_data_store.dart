@@ -456,16 +456,34 @@ final class DemoDataStore {
         priorityId: DemoSeedIds.priorityNormal,
       ),
     );
+    const scenarioContent = <(String, String, String, String)>[
+      ('مراجعة طلب الخدمة الميدانية', 'Review field service request', 'راجع تفاصيل الطلب وتحقق من اكتمال المرفقات قبل تنسيق الزيارة.', 'Review the request details and verify the attachments before coordinating the visit.'),
+      ('إعداد حزمة الاعتماد', 'Prepare approval package', 'اجمع المستندات الداعمة وأعد الملخص التنفيذي لإرساله إلى المعتمد.', 'Collect supporting documents and prepare the executive summary for the approver.'),
+      ('متابعة اعتماد تقرير العمليات', 'Follow up operations report approval', 'تابع ملاحظات المدير وحدّث التقرير بما يلزم قبل الاعتماد النهائي.', 'Follow up on the manager’s comments and update the report before final approval.'),
+      ('معالجة تأخر المورد الخارجي', 'Resolve external supplier delay', 'تواصل مع المورد لتأكيد موعد التسليم وتوثيق خطة معالجة التأخير.', 'Contact the supplier to confirm delivery and document the delay recovery plan.'),
+      ('تنسيق زيارة ميدانية', 'Coordinate field visit', 'نسق الموعد مع الفريق والموقع وتأكد من جاهزية متطلبات السلامة.', 'Coordinate the schedule with the team and site and confirm safety readiness.'),
+      ('إعداد تقرير الأداء الأسبوعي', 'Prepare weekly performance report', 'لخص مؤشرات الأداء والمخاطر والإجراءات المطلوبة للاجتماع الأسبوعي.', 'Summarize performance indicators, risks, and actions for the weekly meeting.'),
+      ('إقرار السياسة السنوية', 'Annual policy acknowledgement', 'راجع تحديثات السياسة وأكمل الإقرار السنوي ضمن الموعد المحدد.', 'Review the policy updates and complete the annual acknowledgement on time.'),
+      ('توزيع مراجعات السجلات', 'Distribute records reviews', 'راجع قائمة السجلات الموزعة وتأكد من وضوح مسؤولية كل موظف.', 'Review the distributed records and confirm each employee’s responsibility.'),
+      ('تحديث خطة استمرارية الأعمال', 'Update business continuity plan', 'حدّث بيانات الاتصال ومسارات التصعيد وأدوار فريق الاستجابة.', 'Update contacts, escalation paths, and response-team responsibilities.'),
+      ('استكمال خطة التطوير الفردية', 'Complete individual development plan', 'حدد أهداف التطوير والأنشطة المقترحة ومواعيد المتابعة.', 'Define development goals, proposed activities, and follow-up dates.'),
+      ('حل طلب دعم تقني', 'Resolve technical support request', 'شخّص المشكلة وسجل خطوات المعالجة والنتيجة للمستخدم.', 'Diagnose the issue and record the resolution steps and outcome for the user.'),
+      ('متابعة قائمة دعم الفريق', 'Follow up team support queue', 'راجع الطلبات المفتوحة ورتبها حسب الأثر وموعد الاستحقاق.', 'Review open requests and prioritize them by impact and due date.'),
+      ('مراجعة ضوابط الوصول', 'Review access controls', 'تحقق من صلاحيات المستخدمين وارفع الاستثناءات للمراجعة.', 'Verify user permissions and raise exceptions for review.'),
+      ('إعداد ملخص المخاطر', 'Prepare risk summary', 'اجمع المخاطر النشطة وحدد المالك وخطة المعالجة لكل خطر.', 'Compile active risks and identify the owner and treatment plan for each.'),
+      ('مراجعة المبادرات الحرجة', 'Review critical initiatives', 'راجع حالة المبادرات المتأخرة والمتوقفة وحدد القرارات المطلوبة.', 'Review overdue and blocked initiatives and identify required decisions.'),
+    ];
     for (var i = 1; i <= 15; i++) {
       final id = DemoSeedIds.scenario(i);
+      final content = scenarioContent[i - 1];
       tasks.add(
         Task(
           id: id,
           taskNumber: 'SCN-${i.toString().padLeft(2, '0')}',
-          titleAr: 'السيناريو $i',
-          titleEn: 'Scenario $i',
-          descriptionAr: 'بيانات عرض حتمية',
-          descriptionEn: 'Deterministic demo data',
+          titleAr: content.$1,
+          titleEn: content.$2,
+          descriptionAr: content.$3,
+          descriptionEn: content.$4,
           creatorId: i == 15 ? DemoSeedIds.omar : DemoSeedIds.sara,
           creatorRoleCode: i == 15
               ? SystemRoleCode.seniorManagement

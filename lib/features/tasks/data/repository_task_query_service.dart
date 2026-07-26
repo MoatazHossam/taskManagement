@@ -25,11 +25,26 @@ final class RepositoryTaskQueryService implements TaskQueryService {
     final items = <TaskListItem>[];
     for (final task in visible) {
       final item = await _item(task);
-      if (_matches(item, query)) items.add(item);
+      if (await _scopeMatches(userId, item, query.scope) && _matches(item, query)) items.add(item);
     }
     items.sort((a, b) => _compare(a, b, query));
     return TaskQueryResult(items: items, totalCount: all.length, visibleCount: visible.length,
       hiddenByAuthorizationCount: all.length - visible.length, query: query, generatedAt: clock.now());
+  }
+
+  Future<bool> _scopeMatches(String userId, TaskListItem item, TaskQueryScope scope) async {
+    if (scope == TaskQueryScope.organization) return true;
+    final task = item.task;
+    final directlyAssigned = task.creatorId == userId || task.leadOwnerId == userId ||
+        item.assignments.any((assignment) => assignment.userId == userId);
+    if (scope == TaskQueryScope.self) return directlyAssigned;
+    final user = await users.getUserById(userId);
+    if (scope == TaskQueryScope.department) {
+      return item.assignedTeam?.departmentId == user?.departmentId ||
+          item.primaryOwner?.departmentId == user?.departmentId;
+    }
+    final memberships = await organization.getMembershipsForUser(userId);
+    return directlyAssigned || memberships.any((membership) => membership.teamId == task.assignedTeamId);
   }
 
   Future<AuthorizationDecision> _decision(String userId, Task task) async {
@@ -99,7 +114,9 @@ final class RepositoryTaskQueryService implements TaskQueryService {
     TaskListView.blocked => i.hasActiveBlocker || i.task.status == TaskStatus.blocked,
     TaskListView.awaitingApproval => i.task.status == TaskStatus.completionRequested || i.task.approvalStatus == ApprovalStatus.pending,
     TaskListView.teamQueue => i.task.assignmentMode == AssignmentMode.teamQueue,
-    TaskListView.completed => i.task.status == TaskStatus.completed, TaskListView.drafts => i.task.status == TaskStatus.draft };
+    TaskListView.completed => i.task.status == TaskStatus.completed, TaskListView.drafts => i.task.status == TaskStatus.draft,
+    TaskListView.critical => i.priority?.code == 'critical' || i.priority?.code == 'urgent' || i.isOverdue ||
+      i.hasActiveBlocker || i.task.approvalStatus == ApprovalStatus.pending || i.task.status == TaskStatus.completionRequested };
   bool _boolean(TaskBooleanFilter f, bool value) => f == TaskBooleanFilter.any || (f == TaskBooleanFilter.yes) == value;
   bool _range(DateTime value, DateTime? from, DateTime? to) => (from == null || !value.isBefore(from)) && (to == null || !value.isAfter(to));
   String _normalize(String value) => value.trim().toLowerCase().replaceAll(RegExp('[\u064B-\u065F\u0670]'), '').replaceAll('ـ', '');
@@ -121,6 +138,11 @@ final class RepositoryTaskQueryService implements TaskQueryService {
     final decision = await _decision(userId, task); if (!decision.allowed) return null;
     final assignments = await tasks.getTaskAssignments(taskId); final checklist = await tasks.getChecklistItems(taskId);
     final blockers = await tasks.getBlockers(taskId); final approvals = await tasks.getApprovals(taskId);
+    final assignmentUsers = <String, OrganizationUser>{};
+    for (final assignment in assignments) {
+      final user = await users.getUserById(assignment.userId);
+      if (user != null) assignmentUsers[user.id] = user;
+    }
     return TaskDetails(task: task, creator: await users.getUserById(task.creatorId),
       leadOwner: task.leadOwnerId == null ? null : await users.getUserById(task.leadOwnerId!),
       assignedTeam: task.assignedTeamId == null ? null : await organization.getTeamById(task.assignedTeamId!), assignments: assignments,
@@ -129,7 +151,8 @@ final class RepositoryTaskQueryService implements TaskQueryService {
       checklistSummary: ChecklistSummary(checklist.where((e) => e.isCompleted).length, checklist.length),
       subtaskCount: (await tasks.getSubtasks(taskId)).length, activeBlocker: blockers.where((e) => e.status == BlockerStatus.active).firstOrNull,
       approval: approvals.firstOrNull, attachmentCount: (await tasks.getAttachments(taskId)).length,
-      commentCount: (await tasks.getComments(taskId)).length, timeline: await getTaskTimeline(userId: userId, taskId: taskId), authorizationDecision: decision);
+      commentCount: (await tasks.getComments(taskId)).length, timeline: await getTaskTimeline(userId: userId, taskId: taskId),
+      assignmentUsers: assignmentUsers, authorizationDecision: decision);
   }
   @override
   Future<List<TaskTimelineEntry>> getTaskTimeline({required String userId, required String taskId}) async {

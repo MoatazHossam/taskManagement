@@ -43,3 +43,7 @@ traces are shown.
 
 There is no task mutation, real synchronization, persistence, backend, networking,
 cloud service, reporting, or administration CRUD. Synchronization states are display-only.
+
+## Phase 05B presentation refinement
+
+Task presentation now uses role-specific page contexts, authorization-aware manager scopes, and a compound senior-management critical view. The list keeps authorization before filtering and adds compact search, quick views, advanced runtime filters, sorting, and saved-filter controls. Cards use a dense number/status/title/metadata/progress/footer hierarchy and switch to two columns on tablet widths. Task details are read-only grouped surfaces with labeled assignments and localized newest-first timeline entries.

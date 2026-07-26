@@ -211,3 +211,11 @@ Phase 04 was not started.
 - Completed, cancelled, declined, and expired tasks are closed and never overdue.
 - Administrator status never implies operational task access.
 - Timeline entries are newest-first and audit records remain immutable.
+
+## Phase 05B decisions
+
+- Task progress is always rendered mathematically left-to-right, including in Arabic; surrounding layout remains locale directional and the adjacent percentage shares the same semantics.
+- A phone task card targets 185 logical pixels and tablet lists use two columns.
+- Senior-management critical tasks are an OR preset: urgent/critical, overdue, blocked, or awaiting approval.
+- Primary role navigation is capped at five destinations; secondary manager/admin destinations are represented by More.
+- Timeline labels are locale presentation metadata rather than audit storage codes.
