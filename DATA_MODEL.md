@@ -70,3 +70,11 @@ Phase 04 was not started.
 - `PermissionOverride` records a typed allow/deny, safe reason, and optional explicit scope.
 - `AccessTarget` describes generic ownership, department, team, organization, personal status, and confidentiality without depending on task UI.
 - `AuthorizationDecision` returns allow/deny, permission, required/effective scope, safe reason code, and localization key.
+
+## Phase 05 query projections
+
+`TaskQuery` is a typed, Flutter-independent value containing search, quick view,
+advanced filter sets, and sorting. `TaskQueryResult` contains immutable `TaskListItem`
+projections plus authorization counts and generation time. `TaskDetails` safely
+aggregates related repositories. `TaskTimelineEntry` is a sanitized audit projection.
+`TaskSavedFilter` binds a name and query and exists only for the process lifetime.

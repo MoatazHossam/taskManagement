@@ -95,3 +95,11 @@ Phase 04 was not started.
 ## Phase 04 test conventions
 
 Hierarchy tests use deterministic seed IDs and assert stable employee/code ordering, immutable results, missing references, and visited-set protection for manager and department cycles. Authorization tests assert both positive and negative halves of every role boundary, target-aware queue access, explicit deny precedence, allow-with-scope behavior, organization boundaries, and confidentiality fail-closed behavior. Provider tests must authenticate through the session controller rather than create duplicate current-user state. Router tests verify permission gates and redirect-loop safety independently of UI hiding. Widget tests use both locales, directions, themes, compact phone and tablet constraints, and long Arabic labels.
+
+## Task-query testing
+
+Use `FixedAppClock` for today, week, overdue, and boundary assertions. Query tests must
+assert authorization before search, AND semantics across filters, every sort field,
+stable task-number ties, null placement, immutable results, and fail-closed details.
+Provider/router/widget tests should override repository/service boundaries rather than
+reading `DemoDataStore` from widgets.

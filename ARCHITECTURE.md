@@ -136,3 +136,14 @@ Phase 04 was not started.
 `OrganizationHierarchyService` resolves paths, descendants, reporting lines, memberships, led teams, queue memberships, and immutable `OrganizationContext` snapshots through repository abstractions. Iterative visited sets bound circular department and manager references. `AuthorizationService` combines the typed role matrix, explicit overrides, organizational scope, target affiliation, queue role, and confidentiality into a safe `AuthorizationDecision`.
 
 Riverpod composes both replaceable services and derives context and permissions from the single authenticated session. Router guards and service decisions enforce protected access; `PermissionGate` is presentation affordance rather than the security boundary. Future on-premises adapters replace repository/service implementations while preserving domain contracts and widgets.
+
+## Phase 05 task-query architecture
+
+`TaskQueryService` is the replaceable read boundary over task, user, organization,
+configuration, and audit repositories. `RepositoryTaskQueryService` first resolves
+an `AccessTarget` and asks `AuthorizationService`; only the authorized subset enters
+search, quick-view, filter, and deterministic sort processing. It also assembles the
+read-only details aggregate and newest-first immutable timeline. Riverpod derives the
+user from the authoritative session and retains the query in runtime state while a
+detail route is open. A future on-premises adapter can implement the same service
+contract without changing task presentation.

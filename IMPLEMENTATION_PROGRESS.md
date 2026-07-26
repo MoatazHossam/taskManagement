@@ -10,8 +10,8 @@ Statuses: `Not Started`, `In Progress`, `Completed`, or `Blocked`. Dates use ISO
 | Phase 01.5B — Visual Density and Mobile UX Refinement | In Progress | 2026-07-26 | — | Compact headers and dashboards; layered surfaces; shorter metrics; single profile identity; direct appearance/connectivity controls; navigation clearance; richer task preview; expanded gallery | Widget coverage added for compact/large phones, bilingual profile, dark mode, large text, controls, metrics, task preview, and navigation clearance; not executable in this container | Not executable in this container (`flutter` and `dart` absent) | Local SDK validation and device screenshot review required before completion | Phase 02 remains Not Started; no domain or infrastructure scope introduced |
 | Phase 02 — Core Models and Local Database | Completed | 2026-07-26 | 2026-07-26 | Enums, entities, Drift schema, seed data, contracts, local repositories | Passed locally by project owner | Passed locally by project owner | None recorded | Phase 02 locally generated, analyzed, tested, and run successfully by project owner |
 | Phase 03 — Authentication and Role Switching | Completed | 2026-07-26 | 2026-07-26 | In-memory demo authentication, simulated sessions and unlock, audit, and guarded role navigation | Passed locally by project owner | Passed locally by project owner | None recorded | Completion confirmed by project owner before Phase 04 |
-| Phase 04 — Organization and Permissions | In Progress | 2026-07-26 | — | Departments, teams, users, reporting lines, roles, permission/confidentiality checks | Added; SDK execution unavailable | SDK execution unavailable | Flutter and Dart are not installed in this container | Phase 05 remains Not Started |
-| Phase 05 — Task Foundation | Not Started | — | — | Task models/list, filters, sorting, details, badges, timeline | Not run | Not run | None recorded | Planned |
+| Phase 04 — Organization and Permissions | Completed | 2026-07-26 | 2026-07-26 | Departments, teams, users, reporting lines, roles, permission/confidentiality checks | Added; SDK execution unavailable | SDK execution unavailable | Flutter and Dart are not installed in this container | Phase 05 remains Not Started |
+| Phase 05 — Task Foundation | In Progress | 2026-07-26 | — | Task models/list, filters, sorting, details, badges, timeline | Not run | Not run | None recorded | Planned |
 | Phase 06 — Task Creation | Not Started | — | — | Personal/organizational task creation, multi-step form, validation, review | Not run | Not run | None recorded | Planned |
 | Phase 07 — Assignment Modes | Not Started | — | — | Single owner, lead/contributors, individual copies, team queue, shared completion | Not run | Not run | None recorded | Planned |
 | Phase 08 — Task Execution | Not Started | — | — | Lifecycle actions, progress, blocker, completion/submit, correction/reopen/cancel | Not run | Not run | None recorded | Planned |
@@ -106,4 +106,14 @@ Phase 04 was not started.
 
 ## Phase 04 implementation record
 
-**Status: In Progress.** Phase 03 is Completed by project-owner validation. Phase 04 adds typed permissions, the approved separated role matrix, scopes, override and target models, hierarchy and authorization service boundaries, repository-backed in-memory implementations, target-aware queue/confidentiality decisions, Riverpod derivations, permission-aware routes and widgets, a read-only directory, access summary, bilingual catalogs, tests, and authorization documentation. Acceptance remains open until the Flutter SDK validation commands and supported runtime/integration checks pass. Phase 05 remains Not Started.
+**Status: Completed.** Phase 03 is Completed by project-owner validation. Phase 04 adds typed permissions, the approved separated role matrix, scopes, override and target models, hierarchy and authorization service boundaries, repository-backed in-memory implementations, target-aware queue/confidentiality decisions, Riverpod derivations, permission-aware routes and widgets, a read-only directory, access summary, bilingual catalogs, tests, and authorization documentation. Acceptance remains open until the Flutter SDK validation commands and supported runtime/integration checks pass. Phase 05 remains Not Started.
+
+## Phase 05 implementation record
+
+**Status: In Progress.** Phase 04 is Completed by project-owner acceptance. Phase 05
+adds the read-only repository task-query boundary, typed queries/results/details/timeline,
+authorization-first visibility, search, quick views, advanced query filters, deterministic
+sorting, runtime saved-filter operations, Riverpod composition, guarded routes, responsive
+list/details presentation, bilingual catalog source, tests, and documentation. Flutter and
+Dart are unavailable in this container, so generation, analysis, tests, APK, runtime, and
+manual device acceptance remain open. Phase 06 remains Not Started.

@@ -10,6 +10,7 @@ import '../dependency_injection/app_providers.dart';
 import '../localization/localization_extensions.dart';
 import 'app_router.dart';
 import '../../features/organization/presentation/organization_pages.dart';
+import '../../features/tasks/presentation/task_pages.dart';
 
 class RoleDestination {
   const RoleDestination(this.segment, this.icon, this.label);
@@ -111,7 +112,10 @@ class RoleShellPage extends ConsumerWidget {
         (role == DemoUserRole.administrator && section == 'settings');
     final isOrganization =
         section == 'organization' || section == 'departments';
-    final child = isOrganization
+    final isTasks = section == 'tasks' || section == 'team' || section == 'critical';
+    final child = isTasks
+        ? const TaskListPage()
+        : isOrganization
         ? const OrganizationOverviewPage()
         : isHome
         ? RoleHomePage(title: label)

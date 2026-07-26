@@ -144,3 +144,11 @@ Phase 04 was not started.
 ## Organization and permission demo (Phase 04)
 
 Use Ahmed to inspect self-level access, Sara for the full directory and manager assignment authority, Omar for executive reporting without administration, Laila for administration and directory access without executive reporting, and Khaled for Technical Support Queue-scoped claim/release diagnostics. Open **Access summary** from Profile. Managers, senior management, and administrators can browse the read-only organization structure; no organization or permission editing is included. See [AUTHORIZATION.md](AUTHORIZATION.md) for the complete matrix and scope rules.
+
+## Phase 05 demo walkthrough
+
+Sign in as Ahmed to browse his read-only tasks, search a deterministic scenario, choose
+a quick view, and open details/timeline. Sara receives organization-aware results,
+Omar can inspect critical/restricted work granted by permissions, while Laila remains
+separated from operational tasks. Saved filters are an in-memory simulation and reset
+when the application restarts.

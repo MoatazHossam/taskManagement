@@ -95,13 +95,18 @@ enum TeamMembershipRole implements StorageCoded {
 enum TaskStatus implements StorageCoded {
   draft('draft'),
   assigned('assigned'),
+  acknowledged('acknowledged'),
   inProgress('in_progress'),
+  paused('paused'),
   blocked('blocked'),
   completionRequested('completion_requested'),
   returnedForCorrection('returned_for_correction'),
   completed('completed'),
+  declined('declined'),
   cancelled('cancelled'),
-  upcoming('upcoming'),
+  reopened('reopened'),
+  expired('expired'),
+  upcoming('upcoming'), // Legacy deterministic recurrence placeholder.
   unknown('unknown');
 
   const TaskStatus(this.code);
@@ -404,6 +409,7 @@ enum LocalEntitySyncState implements StorageCoded {
   pending('pending'),
   failed('failed'),
   conflict('conflict'),
+  localOnly('local_only'),
   unknown('unknown');
 
   const LocalEntitySyncState(this.code);
