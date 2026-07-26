@@ -2,11 +2,87 @@ import '../../../core/domain/authorization_models.dart';
 import '../../../core/domain/domain_enums.dart';
 
 abstract final class PermissionCatalog {
-  static final all = Set<PermissionCode>.unmodifiable(PermissionCode.values.where((p) => p != PermissionCode.unknown));
-  static final employee = <PermissionCode>{PermissionCode.profileViewSelf, PermissionCode.organizationViewOwnContext, PermissionCode.taskViewOwn, PermissionCode.taskCreateSelf, PermissionCode.taskAssignSelf, PermissionCode.taskRequestExtension, PermissionCode.reportViewSelf};
-  static final manager = <PermissionCode>{...employee, PermissionCode.organizationViewTeam, PermissionCode.organizationViewDepartment, PermissionCode.organizationViewAll, PermissionCode.directoryViewUsers, PermissionCode.directoryViewReportingLines, PermissionCode.taskViewTeam, PermissionCode.taskViewDepartment, PermissionCode.taskCreateForOthers, PermissionCode.taskAssignTeam, PermissionCode.taskAssignDepartment, PermissionCode.taskAssignOrganization, PermissionCode.taskReassignTeam, PermissionCode.taskReassignDepartment, PermissionCode.taskReassignOrganization, PermissionCode.taskApprove, PermissionCode.taskManageRecurrence, PermissionCode.reportViewTeam, PermissionCode.reportViewDepartment, PermissionCode.reportViewEmployeePerformance};
-  static final seniorManagement = <PermissionCode>{PermissionCode.profileViewSelf, PermissionCode.organizationViewOwnContext, PermissionCode.organizationViewAll, PermissionCode.directoryViewUsers, PermissionCode.directoryViewReportingLines, PermissionCode.taskViewOwn, PermissionCode.taskViewAll, PermissionCode.taskViewConfidential, PermissionCode.taskViewRestricted, PermissionCode.taskCreateForOthers, PermissionCode.taskAssignOrganization, PermissionCode.taskReassignOrganization, PermissionCode.taskApprove, PermissionCode.reportViewSelf, PermissionCode.reportViewTeam, PermissionCode.reportViewDepartment, PermissionCode.reportViewOrganization, PermissionCode.reportViewEmployeePerformance};
-  static final administrator = <PermissionCode>{PermissionCode.profileViewSelf, PermissionCode.organizationViewOwnContext, PermissionCode.organizationViewAll, PermissionCode.directoryViewUsers, PermissionCode.directoryViewReportingLines, PermissionCode.adminView, PermissionCode.adminManageUsers, PermissionCode.adminManageOrganization, PermissionCode.adminManageRoles, PermissionCode.adminManageConfiguration, PermissionCode.adminViewAudit, PermissionCode.adminManageSync, PermissionCode.adminManageSettings};
-  static Set<PermissionCode>? forRole(SystemRoleCode role) => switch (role) { SystemRoleCode.employee => employee, SystemRoleCode.manager => manager, SystemRoleCode.seniorManagement => seniorManagement, SystemRoleCode.administrator => administrator, SystemRoleCode.unknown => null };
-  static AccessScope roleScope(SystemRoleCode role) => switch (role) { SystemRoleCode.employee => AccessScope.self, SystemRoleCode.manager || SystemRoleCode.seniorManagement => AccessScope.organization, SystemRoleCode.administrator => AccessScope.administration, SystemRoleCode.unknown => AccessScope.self };
+  static final all = Set<PermissionCode>.unmodifiable(
+    PermissionCode.values.where((p) => p != PermissionCode.unknown),
+  );
+  static final employee = <PermissionCode>{
+    PermissionCode.profileViewSelf,
+    PermissionCode.organizationViewOwnContext,
+    PermissionCode.taskViewOwn,
+    PermissionCode.taskCreateSelf,
+    PermissionCode.taskAssignSelf,
+    PermissionCode.taskRequestExtension,
+    PermissionCode.reportViewSelf,
+  };
+  static final manager = <PermissionCode>{
+    ...employee,
+    PermissionCode.organizationViewTeam,
+    PermissionCode.organizationViewDepartment,
+    PermissionCode.organizationViewAll,
+    PermissionCode.directoryViewUsers,
+    PermissionCode.directoryViewReportingLines,
+    PermissionCode.taskViewTeam,
+    PermissionCode.taskViewDepartment,
+    PermissionCode.taskCreateForOthers,
+    PermissionCode.taskAssignTeam,
+    PermissionCode.taskAssignDepartment,
+    PermissionCode.taskAssignOrganization,
+    PermissionCode.taskReassignTeam,
+    PermissionCode.taskReassignDepartment,
+    PermissionCode.taskReassignOrganization,
+    PermissionCode.taskApprove,
+    PermissionCode.taskManageRecurrence,
+    PermissionCode.reportViewTeam,
+    PermissionCode.reportViewDepartment,
+    PermissionCode.reportViewEmployeePerformance,
+  };
+  static final seniorManagement = <PermissionCode>{
+    PermissionCode.profileViewSelf,
+    PermissionCode.organizationViewOwnContext,
+    PermissionCode.organizationViewAll,
+    PermissionCode.directoryViewUsers,
+    PermissionCode.directoryViewReportingLines,
+    PermissionCode.taskViewOwn,
+    PermissionCode.taskViewAll,
+    PermissionCode.taskViewConfidential,
+    PermissionCode.taskViewRestricted,
+    PermissionCode.taskCreateForOthers,
+    PermissionCode.taskAssignOrganization,
+    PermissionCode.taskReassignOrganization,
+    PermissionCode.taskApprove,
+    PermissionCode.reportViewSelf,
+    PermissionCode.reportViewTeam,
+    PermissionCode.reportViewDepartment,
+    PermissionCode.reportViewOrganization,
+    PermissionCode.reportViewEmployeePerformance,
+  };
+  static final administrator = <PermissionCode>{
+    PermissionCode.profileViewSelf,
+    PermissionCode.organizationViewOwnContext,
+    PermissionCode.organizationViewAll,
+    PermissionCode.directoryViewUsers,
+    PermissionCode.directoryViewReportingLines,
+    PermissionCode.adminView,
+    PermissionCode.adminManageUsers,
+    PermissionCode.adminManageOrganization,
+    PermissionCode.adminManageRoles,
+    PermissionCode.adminManageConfiguration,
+    PermissionCode.adminViewAudit,
+    PermissionCode.adminManageSync,
+    PermissionCode.adminManageSettings,
+  };
+  static Set<PermissionCode>? forRole(SystemRoleCode role) => switch (role) {
+    SystemRoleCode.employee => employee,
+    SystemRoleCode.manager => manager,
+    SystemRoleCode.seniorManagement => seniorManagement,
+    SystemRoleCode.administrator => administrator,
+    SystemRoleCode.unknown => null,
+  };
+  static AccessScope roleScope(SystemRoleCode role) => switch (role) {
+    SystemRoleCode.employee => AccessScope.self,
+    SystemRoleCode.manager ||
+    SystemRoleCode.seniorManagement => AccessScope.organization,
+    SystemRoleCode.administrator => AccessScope.administration,
+    SystemRoleCode.unknown => AccessScope.self,
+  };
 }

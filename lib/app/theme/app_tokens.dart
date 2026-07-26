@@ -75,16 +75,23 @@ class AppSurfaceColors extends ThemeExtension<AppSurfaceColors> {
   final Color disabled;
 
   @override
-  AppSurfaceColors copyWith({Color? page, Color? standard, Color? elevated, Color? border, Color? disabled}) => AppSurfaceColors(
-        page: page ?? this.page,
-        standard: standard ?? this.standard,
-        elevated: elevated ?? this.elevated,
-        border: border ?? this.border,
-        disabled: disabled ?? this.disabled,
-      );
+  AppSurfaceColors copyWith({
+    Color? page,
+    Color? standard,
+    Color? elevated,
+    Color? border,
+    Color? disabled,
+  }) => AppSurfaceColors(
+    page: page ?? this.page,
+    standard: standard ?? this.standard,
+    elevated: elevated ?? this.elevated,
+    border: border ?? this.border,
+    disabled: disabled ?? this.disabled,
+  );
 
   @override
-  AppSurfaceColors lerp(covariant AppSurfaceColors? other, double t) => other == null
+  AppSurfaceColors lerp(covariant AppSurfaceColors? other, double t) =>
+      other == null
       ? this
       : AppSurfaceColors(
           page: Color.lerp(page, other.page, t)!,
@@ -96,7 +103,8 @@ class AppSurfaceColors extends ThemeExtension<AppSurfaceColors> {
 }
 
 extension AppSurfaceTheme on BuildContext {
-  AppSurfaceColors get surfaces => Theme.of(this).extension<AppSurfaceColors>()!;
+  AppSurfaceColors get surfaces =>
+      Theme.of(this).extension<AppSurfaceColors>()!;
 }
 
 abstract final class AppSemanticColors {

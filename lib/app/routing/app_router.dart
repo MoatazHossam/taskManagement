@@ -11,9 +11,23 @@ import '../../features/organization/presentation/access_summary_page.dart';
 import '../../features/organization/presentation/organization_pages.dart';
 import '../../features/organization/presentation/widgets/authorization_widgets.dart';
 
-abstract final class AppRoutes { static const splash='/splash', language='/language', login='/login', unlock='/unlock', app='/app', gallery='/gallery'; }
-String roleRoot(DemoUserRole role)=>switch(role){DemoUserRole.employee=>'/app/employee/home',DemoUserRole.manager=>'/app/manager/home',DemoUserRole.seniorManagement=>'/app/senior/executive',DemoUserRole.administrator=>'/app/admin/home'};
-bool canAccessRolePath(DemoUserRole role,String path)=>path.startsWith(roleRoot(role).split('/').take(3).join('/'));
+abstract final class AppRoutes {
+  static const splash = '/splash',
+      language = '/language',
+      login = '/login',
+      unlock = '/unlock',
+      app = '/app',
+      gallery = '/gallery';
+}
+
+String roleRoot(DemoUserRole role) => switch (role) {
+  DemoUserRole.employee => '/app/employee/home',
+  DemoUserRole.manager => '/app/manager/home',
+  DemoUserRole.seniorManagement => '/app/senior/executive',
+  DemoUserRole.administrator => '/app/admin/home',
+};
+bool canAccessRolePath(DemoUserRole role, String path) =>
+    path.startsWith(roleRoot(role).split('/').take(3).join('/'));
 
 final routerProvider = Provider<GoRouter>((ref) {
   final refresh = _RouterRefreshNotifier();
@@ -69,27 +83,68 @@ final routerProvider = Provider<GoRouter>((ref) {
         final user = session.user;
         if (user == null) return AppRoutes.login;
         PermissionCode? required;
-        if (path == '/organization') required = PermissionCode.organizationViewOwnContext;
-        if (path.startsWith('/organization/departments/') || path.startsWith('/organization/teams/') || path.startsWith('/organization/users/')) required = PermissionCode.organizationViewAll;
-        if (path.contains('/reports')) required = role == DemoUserRole.seniorManagement ? PermissionCode.reportViewOrganization : PermissionCode.reportViewDepartment;
+        if (path == '/organization')
+          required = PermissionCode.organizationViewOwnContext;
+        if (path.startsWith('/organization/departments/') ||
+            path.startsWith('/organization/teams/') ||
+            path.startsWith('/organization/users/'))
+          required = PermissionCode.organizationViewAll;
+        if (path.contains('/reports'))
+          required = role == DemoUserRole.seniorManagement
+              ? PermissionCode.reportViewOrganization
+              : PermissionCode.reportViewDepartment;
         if (path.startsWith('/app/admin/')) required = PermissionCode.adminView;
-        if (required != null && !await ref.read(authorizationServiceProvider).hasPermission(user.id, required)) return '/access-denied';
+        if (required != null &&
+            !await ref
+                .read(authorizationServiceProvider)
+                .hasPermission(user.id, required))
+          return '/access-denied';
       }
       return null;
     },
     routes: [
       GoRoute(path: AppRoutes.splash, builder: (c, s) => const SplashPage()),
-      GoRoute(path: AppRoutes.language, builder: (c, s) => const LanguageSelectionPage()),
+      GoRoute(
+        path: AppRoutes.language,
+        builder: (c, s) => const LanguageSelectionPage(),
+      ),
       GoRoute(path: AppRoutes.login, builder: (c, s) => const DemoLoginPage()),
       GoRoute(path: AppRoutes.unlock, builder: (c, s) => const PinUnlockPage()),
-      GoRoute(path: '/app/:role/:section', builder: (c, s) => RoleShellPage(section: s.pathParameters['section']!)),
-      GoRoute(path: AppRoutes.gallery, builder: (c, s) => const FoundationGalleryPage()),
-      GoRoute(path: '/access-denied', builder: (c, s) => const Scaffold(body: AccessDeniedState())),
-      GoRoute(path: '/access-summary', builder: (c, s) => const AccessSummaryPage()),
-      GoRoute(path: '/organization', builder: (c, s) => const OrganizationOverviewPage()),
-      GoRoute(path: '/organization/departments/:departmentId', builder: (c, s) => DepartmentDetailsPage(departmentId: s.pathParameters['departmentId']!)),
-      GoRoute(path: '/organization/teams/:teamId', builder: (c, s) => TeamDetailsPage(teamId: s.pathParameters['teamId']!)),
-      GoRoute(path: '/organization/users/:userId', builder: (c, s) => OrganizationUserPage(userId: s.pathParameters['userId']!)),
+      GoRoute(
+        path: '/app/:role/:section',
+        builder: (c, s) => RoleShellPage(section: s.pathParameters['section']!),
+      ),
+      GoRoute(
+        path: AppRoutes.gallery,
+        builder: (c, s) => const FoundationGalleryPage(),
+      ),
+      GoRoute(
+        path: '/access-denied',
+        builder: (c, s) => const Scaffold(body: AccessDeniedState()),
+      ),
+      GoRoute(
+        path: '/access-summary',
+        builder: (c, s) => const AccessSummaryPage(),
+      ),
+      GoRoute(
+        path: '/organization',
+        builder: (c, s) => const OrganizationOverviewPage(),
+      ),
+      GoRoute(
+        path: '/organization/departments/:departmentId',
+        builder: (c, s) => DepartmentDetailsPage(
+          departmentId: s.pathParameters['departmentId']!,
+        ),
+      ),
+      GoRoute(
+        path: '/organization/teams/:teamId',
+        builder: (c, s) => TeamDetailsPage(teamId: s.pathParameters['teamId']!),
+      ),
+      GoRoute(
+        path: '/organization/users/:userId',
+        builder: (c, s) =>
+            OrganizationUserPage(userId: s.pathParameters['userId']!),
+      ),
     ],
   );
 });

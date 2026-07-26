@@ -5,7 +5,10 @@ abstract final class DemoAuthenticationConfig {
   static const offlineAccessDuration = Duration(days: 7);
   static const maximumPinAttempts = 3;
   static const credentialProfiles = <String, String>{
-    'employee': 'employee', 'manager': 'manager', 'executive': 'senior',
-    'admin': 'administrator', 'support': 'queue',
+    'employee': 'employee',
+    'manager': 'manager',
+    'executive': 'senior',
+    'admin': 'administrator',
+    'support': 'queue',
   };
 }

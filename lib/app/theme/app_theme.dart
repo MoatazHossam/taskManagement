@@ -31,21 +31,48 @@ abstract final class AppTheme {
       scaffoldBackgroundColor: surfaces.page,
       extensions: [surfaces],
       fontFamily: 'sans-serif',
-      textTheme: Typography.material2021(platform: TargetPlatform.android)
-          .black
+      textTheme: Typography.material2021(platform: TargetPlatform.android).black
           .apply(
             bodyColor: scheme.onSurface,
             displayColor: scheme.onSurface,
             fontFamily: 'sans-serif',
           )
           .copyWith(
-            headlineMedium: const TextStyle(fontSize: 26, fontWeight: FontWeight.w700, height: 1.25),
-            headlineSmall: const TextStyle(fontSize: 22, fontWeight: FontWeight.w700, height: 1.3),
-            titleLarge: const TextStyle(fontSize: 19, fontWeight: FontWeight.w700, height: 1.35),
-            titleMedium: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700, height: 1.4),
-            bodyLarge: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400, height: 1.55),
-            bodyMedium: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400, height: 1.5),
-            labelLarge: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700, height: 1.3),
+            headlineMedium: const TextStyle(
+              fontSize: 26,
+              fontWeight: FontWeight.w700,
+              height: 1.25,
+            ),
+            headlineSmall: const TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.w700,
+              height: 1.3,
+            ),
+            titleLarge: const TextStyle(
+              fontSize: 19,
+              fontWeight: FontWeight.w700,
+              height: 1.35,
+            ),
+            titleMedium: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w700,
+              height: 1.4,
+            ),
+            bodyLarge: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w400,
+              height: 1.55,
+            ),
+            bodyMedium: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+              height: 1.5,
+            ),
+            labelLarge: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w700,
+              height: 1.3,
+            ),
           ),
       appBarTheme: AppBarTheme(
         centerTitle: false,
@@ -53,7 +80,11 @@ abstract final class AppTheme {
         scrolledUnderElevation: 0,
         backgroundColor: surfaces.page,
         toolbarHeight: AppSizes.compactHeader,
-        titleTextStyle: TextStyle(color: scheme.onSurface, fontSize: 20, fontWeight: FontWeight.w700),
+        titleTextStyle: TextStyle(
+          color: scheme.onSurface,
+          fontSize: 20,
+          fontWeight: FontWeight.w700,
+        ),
       ),
       cardTheme: CardThemeData(
         elevation: AppElevations.none,
@@ -65,34 +96,69 @@ abstract final class AppTheme {
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: surfaces.standard,
-        contentPadding: const EdgeInsets.symmetric(horizontal: AppSpacing.medium, vertical: 14),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(AppRadii.medium)),
-        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(AppRadii.medium), borderSide: BorderSide(color: outline)),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.medium,
+          vertical: 14,
+        ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppRadii.medium),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppRadii.medium),
+          borderSide: BorderSide(color: outline),
+        ),
       ),
       filledButtonTheme: FilledButtonThemeData(
-        style: FilledButton.styleFrom(minimumSize: const Size(0, AppSizes.control), shape: rounded, padding: const EdgeInsets.symmetric(horizontal: AppSpacing.large)),
+        style: FilledButton.styleFrom(
+          minimumSize: const Size(0, AppSizes.control),
+          shape: rounded,
+          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.large),
+        ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
-        style: OutlinedButton.styleFrom(minimumSize: const Size(0, AppSizes.control), shape: rounded, padding: const EdgeInsets.symmetric(horizontal: AppSpacing.large)),
+        style: OutlinedButton.styleFrom(
+          minimumSize: const Size(0, AppSizes.control),
+          shape: rounded,
+          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.large),
+        ),
       ),
       navigationBarTheme: NavigationBarThemeData(
         elevation: 0,
         height: AppSizes.phoneNavigation,
         backgroundColor: surfaces.standard,
         indicatorColor: scheme.primaryContainer.withValues(alpha: .72),
-        indicatorShape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadii.pill)),
-        labelTextStyle: WidgetStateProperty.resolveWith((states) => TextStyle(fontSize: 11, fontWeight: states.contains(WidgetState.selected) ? FontWeight.w700 : FontWeight.w500)),
+        indicatorShape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppRadii.pill),
+        ),
+        labelTextStyle: WidgetStateProperty.resolveWith(
+          (states) => TextStyle(
+            fontSize: 11,
+            fontWeight: states.contains(WidgetState.selected)
+                ? FontWeight.w700
+                : FontWeight.w500,
+          ),
+        ),
       ),
       navigationRailTheme: NavigationRailThemeData(
         elevation: 0,
         backgroundColor: scheme.surface,
-        indicatorShape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadii.medium)),
+        indicatorShape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppRadii.medium),
+        ),
         selectedLabelTextStyle: const TextStyle(fontWeight: FontWeight.w700),
       ),
-      dialogTheme: DialogThemeData(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadii.large))),
+      dialogTheme: DialogThemeData(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppRadii.large),
+        ),
+      ),
       bottomSheetTheme: BottomSheetThemeData(
         showDragHandle: true,
-        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadii.large))),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(AppRadii.large),
+          ),
+        ),
       ),
       visualDensity: VisualDensity.standard,
     );

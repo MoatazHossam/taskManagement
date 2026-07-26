@@ -1,29 +1,447 @@
-abstract interface class StorageCoded { String get code; }
+abstract interface class StorageCoded {
+  String get code;
+}
 
-enum UserStatus implements StorageCoded { active('active'), inactive('inactive'), suspended('suspended'), unknown('unknown'); const UserStatus(this.code); @override final String code; static UserStatus fromCode(String? v)=>values.firstWhere((e)=>e.code==v,orElse:()=>unknown); }
-enum SystemRoleCode implements StorageCoded { employee('employee'), manager('manager'), seniorManagement('senior_management'), administrator('administrator'), unknown('unknown'); const SystemRoleCode(this.code); @override final String code; static SystemRoleCode fromCode(String? v)=>values.firstWhere((e)=>e.code==v,orElse:()=>unknown); }
-enum PermissionCode implements StorageCoded { profileViewSelf('profile.view_self'), organizationViewOwnContext('organization.view_own_context'), organizationViewTeam('organization.view_team'), organizationViewDepartment('organization.view_department'), organizationViewAll('organization.view_all'), directoryViewUsers('directory.view_users'), directoryViewReportingLines('directory.view_reporting_lines'), taskViewOwn('task.view_own'), taskViewTeam('task.view_team'), taskViewDepartment('task.view_department'), taskViewAll('task.view_all'), taskCreateSelf('task.create_self'), taskCreateForOthers('task.create_for_others'), taskAssignSelf('task.assign_self'), taskAssignTeam('task.assign_team'), taskAssignDepartment('task.assign_department'), taskAssignOrganization('task.assign_organization'), taskReassignTeam('task.reassign_team'), taskReassignDepartment('task.reassign_department'), taskReassignOrganization('task.reassign_organization'), taskClaimTeamQueue('task.claim_team_queue'), taskReleaseTeamQueue('task.release_team_queue'), taskApprove('task.approve'), taskRequestExtension('task.request_extension'), taskManageRecurrence('task.manage_recurrence'), taskViewConfidential('task.view_confidential'), taskViewRestricted('task.view_restricted'), reportViewSelf('report.view_self'), reportViewTeam('report.view_team'), reportViewDepartment('report.view_department'), reportViewOrganization('report.view_organization'), reportViewEmployeePerformance('report.view_employee_performance'), adminView('admin.view'), adminManageUsers('admin.manage_users'), adminManageOrganization('admin.manage_organization'), adminManageRoles('admin.manage_roles'), adminManageConfiguration('admin.manage_configuration'), adminViewAudit('admin.view_audit'), adminManageSync('admin.manage_sync'), adminManageSettings('admin.manage_settings'), unknown('unknown'); const PermissionCode(this.code); @override final String code; static PermissionCode fromCode(String? v)=>values.firstWhere((e)=>e.code==v,orElse:()=>unknown); }
-enum TeamMembershipRole implements StorageCoded { member('member'), lead('lead'), queueMember('queue_member'), unknown('unknown'); const TeamMembershipRole(this.code); @override final String code; static TeamMembershipRole fromCode(String? v)=>values.firstWhere((e)=>e.code==v,orElse:()=>unknown); }
-enum TaskStatus implements StorageCoded { draft('draft'), assigned('assigned'), inProgress('in_progress'), blocked('blocked'), completionRequested('completion_requested'), returnedForCorrection('returned_for_correction'), completed('completed'), cancelled('cancelled'), upcoming('upcoming'), unknown('unknown'); const TaskStatus(this.code); @override final String code; static TaskStatus fromCode(String? v)=>values.firstWhere((e)=>e.code==v,orElse:()=>unknown); }
-enum AssignmentMode implements StorageCoded { singleOwner('single_owner'), leadWithContributors('lead_with_contributors'), individualCopies('individual_copies'), teamQueue('team_queue'), shared('shared'), unknown('unknown'); const AssignmentMode(this.code); @override final String code; static AssignmentMode fromCode(String? v)=>values.firstWhere((e)=>e.code==v,orElse:()=>unknown); }
-enum AssignmentRole implements StorageCoded { owner('owner'), leadOwner('lead_owner'), contributor('contributor'), sharedAssignee('shared_assignee'), follower('follower'), queueClaimant('queue_claimant'), approver('approver'), unknown('unknown'); const AssignmentRole(this.code); @override final String code; static AssignmentRole fromCode(String? v)=>values.firstWhere((e)=>e.code==v,orElse:()=>unknown); }
-enum AssignmentStatus implements StorageCoded { assigned('assigned'), acknowledged('acknowledged'), active('active'), completed('completed'), declined('declined'), unknown('unknown'); const AssignmentStatus(this.code); @override final String code; static AssignmentStatus fromCode(String? v)=>values.firstWhere((e)=>e.code==v,orElse:()=>unknown); }
-enum ApprovalStatus implements StorageCoded { notRequired('not_required'), pending('pending'), approved('approved'), returned('returned'), rejected('rejected'), unknown('unknown'); const ApprovalStatus(this.code); @override final String code; static ApprovalStatus fromCode(String? v)=>values.firstWhere((e)=>e.code==v,orElse:()=>unknown); }
-enum TaskCreationSource implements StorageCoded { manual('manual'), template('template'), recurrence('recurrence'), aiDraft('ai_draft'), unknown('unknown'); const TaskCreationSource(this.code); @override final String code; static TaskCreationSource fromCode(String? v)=>values.firstWhere((e)=>e.code==v,orElse:()=>unknown); }
-enum TaskVisibilityType implements StorageCoded { organization('organization'), department('department'), assignedUsers('assigned_users'), restricted('restricted'), personal('personal'), unknown('unknown'); const TaskVisibilityType(this.code); @override final String code; static TaskVisibilityType fromCode(String? v)=>values.firstWhere((e)=>e.code==v,orElse:()=>unknown); }
-enum AttachmentCategory implements StorageCoded { evidence('evidence'), document('document'), image('image'), audio('audio'), other('other'), unknown('unknown'); const AttachmentCategory(this.code); @override final String code; static AttachmentCategory fromCode(String? v)=>values.firstWhere((e)=>e.code==v,orElse:()=>unknown); }
-enum BlockerStatus implements StorageCoded { active('active'), resolved('resolved'), unknown('unknown'); const BlockerStatus(this.code); @override final String code; static BlockerStatus fromCode(String? v)=>values.firstWhere((e)=>e.code==v,orElse:()=>unknown); }
-enum BlockerType implements StorageCoded { externalDependency('external_dependency'), missingInformation('missing_information'), resource('resource'), technical('technical'), other('other'), unknown('unknown'); const BlockerType(this.code); @override final String code; static BlockerType fromCode(String? v)=>values.firstWhere((e)=>e.code==v,orElse:()=>unknown); }
-enum ExtensionRequestStatus implements StorageCoded { pending('pending'), approved('approved'), rejected('rejected'), cancelled('cancelled'), unknown('unknown'); const ExtensionRequestStatus(this.code); @override final String code; static ExtensionRequestStatus fromCode(String? v)=>values.firstWhere((e)=>e.code==v,orElse:()=>unknown); }
-enum ChecklistRequirement implements StorageCoded { optional('optional'), mandatory('mandatory'), unknown('unknown'); const ChecklistRequirement(this.code); @override final String code; static ChecklistRequirement fromCode(String? v)=>values.firstWhere((e)=>e.code==v,orElse:()=>unknown); }
-enum CommentSyncState implements StorageCoded { synced('synced'), pending('pending'), failed('failed'), conflict('conflict'), unknown('unknown'); const CommentSyncState(this.code); @override final String code; static CommentSyncState fromCode(String? v)=>values.firstWhere((e)=>e.code==v,orElse:()=>unknown); }
-enum RecurrenceFrequency implements StorageCoded { daily('daily'), weekly('weekly'), monthly('monthly'), quarterly('quarterly'), annually('annually'), customWeekdays('custom_weekdays'), lastWorkingDay('last_working_day'), unknown('unknown'); const RecurrenceFrequency(this.code); @override final String code; static RecurrenceFrequency fromCode(String? v)=>values.firstWhere((e)=>e.code==v,orElse:()=>unknown); }
-enum RecurrenceEndType implements StorageCoded { never('never'), onDate('on_date'), afterOccurrences('after_occurrences'), unknown('unknown'); const RecurrenceEndType(this.code); @override final String code; static RecurrenceEndType fromCode(String? v)=>values.firstWhere((e)=>e.code==v,orElse:()=>unknown); }
-enum NotificationType implements StorageCoded { taskAssigned('task_assigned'), reminder('reminder'), overdue('overdue'), approval('approval'), comment('comment'), escalation('escalation'), sync('sync'), unknown('unknown'); const NotificationType(this.code); @override final String code; static NotificationType fromCode(String? v)=>values.firstWhere((e)=>e.code==v,orElse:()=>unknown); }
-enum NotificationDeliveryChannel implements StorageCoded { inApp('in_app'), pushSimulation('push_simulation'), emailSimulation('email_simulation'), unknown('unknown'); const NotificationDeliveryChannel(this.code); @override final String code; static NotificationDeliveryChannel fromCode(String? v)=>values.firstWhere((e)=>e.code==v,orElse:()=>unknown); }
-enum NotificationDeliveryStatus implements StorageCoded { pending('pending'), delivered('delivered'), failed('failed'), unknown('unknown'); const NotificationDeliveryStatus(this.code); @override final String code; static NotificationDeliveryStatus fromCode(String? v)=>values.firstWhere((e)=>e.code==v,orElse:()=>unknown); }
-enum SyncOperationType implements StorageCoded { create('create'), update('update'), delete('delete'), unknown('unknown'); const SyncOperationType(this.code); @override final String code; static SyncOperationType fromCode(String? v)=>values.firstWhere((e)=>e.code==v,orElse:()=>unknown); }
-enum SyncOperationStatus implements StorageCoded { pending('pending'), processing('processing'), completed('completed'), failed('failed'), conflict('conflict'), unknown('unknown'); const SyncOperationStatus(this.code); @override final String code; static SyncOperationStatus fromCode(String? v)=>values.firstWhere((e)=>e.code==v,orElse:()=>unknown); }
-enum SyncConflictType implements StorageCoded { none('none'), version('version'), assignment('assignment'), deletion('deletion'), unknown('unknown'); const SyncConflictType(this.code); @override final String code; static SyncConflictType fromCode(String? v)=>values.firstWhere((e)=>e.code==v,orElse:()=>unknown); }
-enum LocalEntitySyncState implements StorageCoded { synced('synced'), pending('pending'), failed('failed'), conflict('conflict'), unknown('unknown'); const LocalEntitySyncState(this.code); @override final String code; static LocalEntitySyncState fromCode(String? v)=>values.firstWhere((e)=>e.code==v,orElse:()=>unknown); }
-enum AuditEventType implements StorageCoded { created('created'), updated('updated'), assigned('assigned'), reassigned('reassigned'), statusChanged('status_changed'), approved('approved'), returned('returned'), deleted('deleted'), syncConflict('sync_conflict'), authenticationLoginSucceeded('authentication_login_succeeded'), authenticationLoginFailed('authentication_login_failed'), authenticationProfileSelected('authentication_profile_selected'), authenticationSessionRestored('authentication_session_restored'), authenticationSessionLocked('authentication_session_locked'), authenticationSessionExpired('authentication_session_expired'), authenticationOfflineUsed('authentication_offline_used'), authenticationOfflineDenied('authentication_offline_denied'), authenticationPinSucceeded('authentication_pin_succeeded'), authenticationPinFailed('authentication_pin_failed'), authenticationBiometricSucceeded('authentication_biometric_succeeded'), authenticationBiometricFailed('authentication_biometric_failed'), authenticationProfileSwitched('authentication_profile_switched'), authenticationLogout('authentication_logout'), unknown('unknown'); const AuditEventType(this.code); @override final String code; static AuditEventType fromCode(String? v)=>values.firstWhere((e)=>e.code==v,orElse:()=>unknown); }
+enum UserStatus implements StorageCoded {
+  active('active'),
+  inactive('inactive'),
+  suspended('suspended'),
+  unknown('unknown');
+
+  const UserStatus(this.code);
+  @override
+  final String code;
+  static UserStatus fromCode(String? v) =>
+      values.firstWhere((e) => e.code == v, orElse: () => unknown);
+}
+
+enum SystemRoleCode implements StorageCoded {
+  employee('employee'),
+  manager('manager'),
+  seniorManagement('senior_management'),
+  administrator('administrator'),
+  unknown('unknown');
+
+  const SystemRoleCode(this.code);
+  @override
+  final String code;
+  static SystemRoleCode fromCode(String? v) =>
+      values.firstWhere((e) => e.code == v, orElse: () => unknown);
+}
+
+enum PermissionCode implements StorageCoded {
+  profileViewSelf('profile.view_self'),
+  organizationViewOwnContext('organization.view_own_context'),
+  organizationViewTeam('organization.view_team'),
+  organizationViewDepartment('organization.view_department'),
+  organizationViewAll('organization.view_all'),
+  directoryViewUsers('directory.view_users'),
+  directoryViewReportingLines('directory.view_reporting_lines'),
+  taskViewOwn('task.view_own'),
+  taskViewTeam('task.view_team'),
+  taskViewDepartment('task.view_department'),
+  taskViewAll('task.view_all'),
+  taskCreateSelf('task.create_self'),
+  taskCreateForOthers('task.create_for_others'),
+  taskAssignSelf('task.assign_self'),
+  taskAssignTeam('task.assign_team'),
+  taskAssignDepartment('task.assign_department'),
+  taskAssignOrganization('task.assign_organization'),
+  taskReassignTeam('task.reassign_team'),
+  taskReassignDepartment('task.reassign_department'),
+  taskReassignOrganization('task.reassign_organization'),
+  taskClaimTeamQueue('task.claim_team_queue'),
+  taskReleaseTeamQueue('task.release_team_queue'),
+  taskApprove('task.approve'),
+  taskRequestExtension('task.request_extension'),
+  taskManageRecurrence('task.manage_recurrence'),
+  taskViewConfidential('task.view_confidential'),
+  taskViewRestricted('task.view_restricted'),
+  reportViewSelf('report.view_self'),
+  reportViewTeam('report.view_team'),
+  reportViewDepartment('report.view_department'),
+  reportViewOrganization('report.view_organization'),
+  reportViewEmployeePerformance('report.view_employee_performance'),
+  adminView('admin.view'),
+  adminManageUsers('admin.manage_users'),
+  adminManageOrganization('admin.manage_organization'),
+  adminManageRoles('admin.manage_roles'),
+  adminManageConfiguration('admin.manage_configuration'),
+  adminViewAudit('admin.view_audit'),
+  adminManageSync('admin.manage_sync'),
+  adminManageSettings('admin.manage_settings'),
+  unknown('unknown');
+
+  const PermissionCode(this.code);
+  @override
+  final String code;
+  static PermissionCode fromCode(String? v) =>
+      values.firstWhere((e) => e.code == v, orElse: () => unknown);
+}
+
+enum TeamMembershipRole implements StorageCoded {
+  member('member'),
+  lead('lead'),
+  queueMember('queue_member'),
+  unknown('unknown');
+
+  const TeamMembershipRole(this.code);
+  @override
+  final String code;
+  static TeamMembershipRole fromCode(String? v) =>
+      values.firstWhere((e) => e.code == v, orElse: () => unknown);
+}
+
+enum TaskStatus implements StorageCoded {
+  draft('draft'),
+  assigned('assigned'),
+  inProgress('in_progress'),
+  blocked('blocked'),
+  completionRequested('completion_requested'),
+  returnedForCorrection('returned_for_correction'),
+  completed('completed'),
+  cancelled('cancelled'),
+  upcoming('upcoming'),
+  unknown('unknown');
+
+  const TaskStatus(this.code);
+  @override
+  final String code;
+  static TaskStatus fromCode(String? v) =>
+      values.firstWhere((e) => e.code == v, orElse: () => unknown);
+}
+
+enum AssignmentMode implements StorageCoded {
+  singleOwner('single_owner'),
+  leadWithContributors('lead_with_contributors'),
+  individualCopies('individual_copies'),
+  teamQueue('team_queue'),
+  shared('shared'),
+  unknown('unknown');
+
+  const AssignmentMode(this.code);
+  @override
+  final String code;
+  static AssignmentMode fromCode(String? v) =>
+      values.firstWhere((e) => e.code == v, orElse: () => unknown);
+}
+
+enum AssignmentRole implements StorageCoded {
+  owner('owner'),
+  leadOwner('lead_owner'),
+  contributor('contributor'),
+  sharedAssignee('shared_assignee'),
+  follower('follower'),
+  queueClaimant('queue_claimant'),
+  approver('approver'),
+  unknown('unknown');
+
+  const AssignmentRole(this.code);
+  @override
+  final String code;
+  static AssignmentRole fromCode(String? v) =>
+      values.firstWhere((e) => e.code == v, orElse: () => unknown);
+}
+
+enum AssignmentStatus implements StorageCoded {
+  assigned('assigned'),
+  acknowledged('acknowledged'),
+  active('active'),
+  completed('completed'),
+  declined('declined'),
+  unknown('unknown');
+
+  const AssignmentStatus(this.code);
+  @override
+  final String code;
+  static AssignmentStatus fromCode(String? v) =>
+      values.firstWhere((e) => e.code == v, orElse: () => unknown);
+}
+
+enum ApprovalStatus implements StorageCoded {
+  notRequired('not_required'),
+  pending('pending'),
+  approved('approved'),
+  returned('returned'),
+  rejected('rejected'),
+  unknown('unknown');
+
+  const ApprovalStatus(this.code);
+  @override
+  final String code;
+  static ApprovalStatus fromCode(String? v) =>
+      values.firstWhere((e) => e.code == v, orElse: () => unknown);
+}
+
+enum TaskCreationSource implements StorageCoded {
+  manual('manual'),
+  template('template'),
+  recurrence('recurrence'),
+  aiDraft('ai_draft'),
+  unknown('unknown');
+
+  const TaskCreationSource(this.code);
+  @override
+  final String code;
+  static TaskCreationSource fromCode(String? v) =>
+      values.firstWhere((e) => e.code == v, orElse: () => unknown);
+}
+
+enum TaskVisibilityType implements StorageCoded {
+  organization('organization'),
+  department('department'),
+  assignedUsers('assigned_users'),
+  restricted('restricted'),
+  personal('personal'),
+  unknown('unknown');
+
+  const TaskVisibilityType(this.code);
+  @override
+  final String code;
+  static TaskVisibilityType fromCode(String? v) =>
+      values.firstWhere((e) => e.code == v, orElse: () => unknown);
+}
+
+enum AttachmentCategory implements StorageCoded {
+  evidence('evidence'),
+  document('document'),
+  image('image'),
+  audio('audio'),
+  other('other'),
+  unknown('unknown');
+
+  const AttachmentCategory(this.code);
+  @override
+  final String code;
+  static AttachmentCategory fromCode(String? v) =>
+      values.firstWhere((e) => e.code == v, orElse: () => unknown);
+}
+
+enum BlockerStatus implements StorageCoded {
+  active('active'),
+  resolved('resolved'),
+  unknown('unknown');
+
+  const BlockerStatus(this.code);
+  @override
+  final String code;
+  static BlockerStatus fromCode(String? v) =>
+      values.firstWhere((e) => e.code == v, orElse: () => unknown);
+}
+
+enum BlockerType implements StorageCoded {
+  externalDependency('external_dependency'),
+  missingInformation('missing_information'),
+  resource('resource'),
+  technical('technical'),
+  other('other'),
+  unknown('unknown');
+
+  const BlockerType(this.code);
+  @override
+  final String code;
+  static BlockerType fromCode(String? v) =>
+      values.firstWhere((e) => e.code == v, orElse: () => unknown);
+}
+
+enum ExtensionRequestStatus implements StorageCoded {
+  pending('pending'),
+  approved('approved'),
+  rejected('rejected'),
+  cancelled('cancelled'),
+  unknown('unknown');
+
+  const ExtensionRequestStatus(this.code);
+  @override
+  final String code;
+  static ExtensionRequestStatus fromCode(String? v) =>
+      values.firstWhere((e) => e.code == v, orElse: () => unknown);
+}
+
+enum ChecklistRequirement implements StorageCoded {
+  optional('optional'),
+  mandatory('mandatory'),
+  unknown('unknown');
+
+  const ChecklistRequirement(this.code);
+  @override
+  final String code;
+  static ChecklistRequirement fromCode(String? v) =>
+      values.firstWhere((e) => e.code == v, orElse: () => unknown);
+}
+
+enum CommentSyncState implements StorageCoded {
+  synced('synced'),
+  pending('pending'),
+  failed('failed'),
+  conflict('conflict'),
+  unknown('unknown');
+
+  const CommentSyncState(this.code);
+  @override
+  final String code;
+  static CommentSyncState fromCode(String? v) =>
+      values.firstWhere((e) => e.code == v, orElse: () => unknown);
+}
+
+enum RecurrenceFrequency implements StorageCoded {
+  daily('daily'),
+  weekly('weekly'),
+  monthly('monthly'),
+  quarterly('quarterly'),
+  annually('annually'),
+  customWeekdays('custom_weekdays'),
+  lastWorkingDay('last_working_day'),
+  unknown('unknown');
+
+  const RecurrenceFrequency(this.code);
+  @override
+  final String code;
+  static RecurrenceFrequency fromCode(String? v) =>
+      values.firstWhere((e) => e.code == v, orElse: () => unknown);
+}
+
+enum RecurrenceEndType implements StorageCoded {
+  never('never'),
+  onDate('on_date'),
+  afterOccurrences('after_occurrences'),
+  unknown('unknown');
+
+  const RecurrenceEndType(this.code);
+  @override
+  final String code;
+  static RecurrenceEndType fromCode(String? v) =>
+      values.firstWhere((e) => e.code == v, orElse: () => unknown);
+}
+
+enum NotificationType implements StorageCoded {
+  taskAssigned('task_assigned'),
+  reminder('reminder'),
+  overdue('overdue'),
+  approval('approval'),
+  comment('comment'),
+  escalation('escalation'),
+  sync('sync'),
+  unknown('unknown');
+
+  const NotificationType(this.code);
+  @override
+  final String code;
+  static NotificationType fromCode(String? v) =>
+      values.firstWhere((e) => e.code == v, orElse: () => unknown);
+}
+
+enum NotificationDeliveryChannel implements StorageCoded {
+  inApp('in_app'),
+  pushSimulation('push_simulation'),
+  emailSimulation('email_simulation'),
+  unknown('unknown');
+
+  const NotificationDeliveryChannel(this.code);
+  @override
+  final String code;
+  static NotificationDeliveryChannel fromCode(String? v) =>
+      values.firstWhere((e) => e.code == v, orElse: () => unknown);
+}
+
+enum NotificationDeliveryStatus implements StorageCoded {
+  pending('pending'),
+  delivered('delivered'),
+  failed('failed'),
+  unknown('unknown');
+
+  const NotificationDeliveryStatus(this.code);
+  @override
+  final String code;
+  static NotificationDeliveryStatus fromCode(String? v) =>
+      values.firstWhere((e) => e.code == v, orElse: () => unknown);
+}
+
+enum SyncOperationType implements StorageCoded {
+  create('create'),
+  update('update'),
+  delete('delete'),
+  unknown('unknown');
+
+  const SyncOperationType(this.code);
+  @override
+  final String code;
+  static SyncOperationType fromCode(String? v) =>
+      values.firstWhere((e) => e.code == v, orElse: () => unknown);
+}
+
+enum SyncOperationStatus implements StorageCoded {
+  pending('pending'),
+  processing('processing'),
+  completed('completed'),
+  failed('failed'),
+  conflict('conflict'),
+  unknown('unknown');
+
+  const SyncOperationStatus(this.code);
+  @override
+  final String code;
+  static SyncOperationStatus fromCode(String? v) =>
+      values.firstWhere((e) => e.code == v, orElse: () => unknown);
+}
+
+enum SyncConflictType implements StorageCoded {
+  none('none'),
+  version('version'),
+  assignment('assignment'),
+  deletion('deletion'),
+  unknown('unknown');
+
+  const SyncConflictType(this.code);
+  @override
+  final String code;
+  static SyncConflictType fromCode(String? v) =>
+      values.firstWhere((e) => e.code == v, orElse: () => unknown);
+}
+
+enum LocalEntitySyncState implements StorageCoded {
+  synced('synced'),
+  pending('pending'),
+  failed('failed'),
+  conflict('conflict'),
+  unknown('unknown');
+
+  const LocalEntitySyncState(this.code);
+  @override
+  final String code;
+  static LocalEntitySyncState fromCode(String? v) =>
+      values.firstWhere((e) => e.code == v, orElse: () => unknown);
+}
+
+enum AuditEventType implements StorageCoded {
+  created('created'),
+  updated('updated'),
+  assigned('assigned'),
+  reassigned('reassigned'),
+  statusChanged('status_changed'),
+  approved('approved'),
+  returned('returned'),
+  deleted('deleted'),
+  syncConflict('sync_conflict'),
+  authenticationLoginSucceeded('authentication_login_succeeded'),
+  authenticationLoginFailed('authentication_login_failed'),
+  authenticationProfileSelected('authentication_profile_selected'),
+  authenticationSessionRestored('authentication_session_restored'),
+  authenticationSessionLocked('authentication_session_locked'),
+  authenticationSessionExpired('authentication_session_expired'),
+  authenticationOfflineUsed('authentication_offline_used'),
+  authenticationOfflineDenied('authentication_offline_denied'),
+  authenticationPinSucceeded('authentication_pin_succeeded'),
+  authenticationPinFailed('authentication_pin_failed'),
+  authenticationBiometricSucceeded('authentication_biometric_succeeded'),
+  authenticationBiometricFailed('authentication_biometric_failed'),
+  authenticationProfileSwitched('authentication_profile_switched'),
+  authenticationLogout('authentication_logout'),
+  unknown('unknown');
+
+  const AuditEventType(this.code);
+  @override
+  final String code;
+  static AuditEventType fromCode(String? v) =>
+      values.firstWhere((e) => e.code == v, orElse: () => unknown);
+}

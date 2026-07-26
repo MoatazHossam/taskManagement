@@ -5,8 +5,12 @@ import '../../../shared/repositories/repositories.dart';
 import '../domain/organization_hierarchy_service.dart';
 import '../domain/permission_catalog.dart';
 
-final class RepositoryOrganizationHierarchyService implements OrganizationHierarchyService {
-  const RepositoryOrganizationHierarchyService({required this.users, required this.organization});
+final class RepositoryOrganizationHierarchyService
+    implements OrganizationHierarchyService {
+  const RepositoryOrganizationHierarchyService({
+    required this.users,
+    required this.organization,
+  });
   final UserRepository users;
   final OrganizationRepository organization;
 
@@ -30,10 +34,15 @@ final class RepositoryOrganizationHierarchyService implements OrganizationHierar
     final visited = <String>{departmentId};
     final pending = <String>[departmentId];
     while (pending.isNotEmpty) {
-      final children = await organization.getChildDepartments(pending.removeAt(0));
+      final children = await organization.getChildDepartments(
+        pending.removeAt(0),
+      );
       children.sort((a, b) => a.code.compareTo(b.code));
       for (final child in children) {
-        if (visited.add(child.id)) { result.add(child); pending.add(child.id); }
+        if (visited.add(child.id)) {
+          result.add(child);
+          pending.add(child.id);
+        }
       }
     }
     return List.unmodifiable(result);
@@ -53,7 +62,10 @@ final class RepositoryOrganizationHierarchyService implements OrganizationHierar
     final pending = <String>[managerId];
     while (pending.isNotEmpty) {
       for (final report in await getDirectReports(pending.removeAt(0))) {
-        if (visited.add(report.id)) { result.add(report); pending.add(report.id); }
+        if (visited.add(report.id)) {
+          result.add(report);
+          pending.add(report.id);
+        }
       }
     }
     return List.unmodifiable(result);
@@ -100,11 +112,35 @@ final class RepositoryOrganizationHierarchyService implements OrganizationHierar
     final role = await organization.getRoleById(user.roleId);
     if (role == null) throw StateError('authorization.role_not_found');
     final department = await organization.getDepartmentById(user.departmentId);
-    final manager = user.managerId == null ? null : await users.getUserById(user.managerId!);
+    final manager = user.managerId == null
+        ? null
+        : await users.getUserById(user.managerId!);
     final memberships = await organization.getMembershipsForUser(user.id);
     final teams = await getUserTeams(user.id);
-    final ledIds = memberships.where((m) => m.membershipRole == TeamMembershipRole.lead).map((m) => m.teamId).toSet();
-    final queueIds = memberships.where((m) => m.membershipRole == TeamMembershipRole.queueMember).map((m) => m.teamId).toSet();
-    return OrganizationContext(user: user, role: role, organization: root, department: department, departmentPath: department == null ? const [] : await getDepartmentPath(department.id), manager: manager, directReports: await getDirectReports(user.id), allReports: await getAllReports(user.id), teams: teams, ledTeams: teams.where((t) => ledIds.contains(t.id)).toList(), queueMemberships: teams.where((t) => queueIds.contains(t.id)).toList(), effectivePermissions: PermissionCatalog.forRole(role.code) ?? const {}, maximumAccessScope: await resolveScope(user.id));
+    final ledIds = memberships
+        .where((m) => m.membershipRole == TeamMembershipRole.lead)
+        .map((m) => m.teamId)
+        .toSet();
+    final queueIds = memberships
+        .where((m) => m.membershipRole == TeamMembershipRole.queueMember)
+        .map((m) => m.teamId)
+        .toSet();
+    return OrganizationContext(
+      user: user,
+      role: role,
+      organization: root,
+      department: department,
+      departmentPath: department == null
+          ? const []
+          : await getDepartmentPath(department.id),
+      manager: manager,
+      directReports: await getDirectReports(user.id),
+      allReports: await getAllReports(user.id),
+      teams: teams,
+      ledTeams: teams.where((t) => ledIds.contains(t.id)).toList(),
+      queueMemberships: teams.where((t) => queueIds.contains(t.id)).toList(),
+      effectivePermissions: PermissionCatalog.forRole(role.code) ?? const {},
+      maximumAccessScope: await resolveScope(user.id),
+    );
   }
 }

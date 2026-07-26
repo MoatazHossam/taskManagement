@@ -2,35 +2,504 @@ import 'domain_enums.dart';
 
 typedef EntityId = String;
 
-class Organization { const Organization({required this.id,required this.nameAr,this.nameEn}); final EntityId id; final String nameAr; final String? nameEn; }
-class OrganizationUser { const OrganizationUser({required this.id,required this.employeeNumber,required this.nameAr,this.nameEn,required this.departmentId,this.managerId,required this.roleId,required this.status}); final EntityId id,employeeNumber,nameAr,departmentId,roleId; final String? nameEn,managerId; final UserStatus status; }
-class Department { const Department({required this.id,required this.code,required this.nameAr,this.nameEn,this.parentDepartmentId,this.managerUserId}); final EntityId id; final String code,nameAr; final String? nameEn,parentDepartmentId,managerUserId; }
-class Team { const Team({required this.id,required this.code,required this.departmentId,required this.nameAr,this.nameEn,this.managerUserId,this.isQueueEnabled=false}); final EntityId id,code,departmentId,nameAr; final String? nameEn,managerUserId; final bool isQueueEnabled; }
-class TeamMembership { const TeamMembership({required this.id,required this.teamId,required this.userId,required this.membershipRole,required this.joinedAt,this.leftAt}); final EntityId id,teamId,userId; final TeamMembershipRole membershipRole; final DateTime joinedAt; final DateTime? leftAt; }
-class Role { const Role({required this.id,required this.code,required this.nameAr,this.nameEn}); final EntityId id; final SystemRoleCode code; final String nameAr; final String? nameEn; }
-class Permission { const Permission({required this.id,required this.code}); final EntityId id; final PermissionCode code; }
-class RolePermission { const RolePermission({required this.id,required this.roleId,required this.permissionId}); final EntityId id,roleId,permissionId; }
-class TaskPriority { const TaskPriority({required this.id,required this.code,required this.labelAr,this.labelEn,required this.level}); final EntityId id; final String code,labelAr; final String? labelEn; final int level; }
-class TaskCategory { const TaskCategory({required this.id,required this.code,required this.labelAr,this.labelEn,required this.defaultPriorityId}); final EntityId id,code,labelAr,defaultPriorityId; final String? labelEn; }
-class ConfidentialityLevel { const ConfidentialityLevel({required this.id,required this.code,required this.labelAr,this.labelEn,required this.level}); final EntityId id,code,labelAr; final String? labelEn; final int level; }
-class ApprovalRule { const ApprovalRule({required this.id,required this.code,required this.nameAr,this.nameEn}); final EntityId id,code,nameAr; final String? nameEn; }
-class EscalationRule { const EscalationRule({required this.id,required this.code,required this.nameAr,this.nameEn}); final EntityId id,code,nameAr; final String? nameEn; }
-class NotificationTemplate { const NotificationTemplate({required this.id,required this.code,required this.titleAr,this.titleEn,required this.messageAr,this.messageEn}); final EntityId id,code,titleAr,messageAr; final String? titleEn,messageEn; }
-class TaskTemplate { const TaskTemplate({required this.id,required this.titleAr,this.titleEn,required this.categoryId,required this.priorityId}); final EntityId id,titleAr,categoryId,priorityId; final String? titleEn; }
-class Task {
- Task({required this.id,required this.taskNumber,required this.titleAr,this.titleEn,required this.descriptionAr,this.descriptionEn,required this.creatorId,required this.creatorRoleCode,required this.creationSource,required this.assignmentMode,this.leadOwnerId,this.assignedTeamId,this.parentTaskId,this.batchId,required this.priorityId,required this.categoryId,required this.status,required this.confidentialityLevelId,required this.visibilityType,this.plannedStartDate,required this.dueDate,this.dueTime,this.estimatedEffortMinutes,required this.progressPercentage,required this.approvalRequired,required this.completionEvidenceRequired,required this.allowDecline,required this.allowExtension,this.approverId,required this.approvalStatus,required this.isPersonal,required this.isRecurring,this.recurrenceRuleId,this.recurrenceSourceTaskId,required this.createdAt,required this.updatedAt,this.acknowledgedAt,this.startedAt,this.completedAt,this.cancelledAt,this.lastSyncedAt,this.localVersion=1,this.serverVersion,this.syncState=LocalEntitySyncState.synced,this.isLocallyModified=false,this.isDeleted=false}) { if(titleAr.trim().isEmpty) throw ArgumentError.value(titleAr,'titleAr'); if(progressPercentage<0||progressPercentage>100) throw RangeError.range(progressPercentage,0,100,'progressPercentage'); if(plannedStartDate!=null&&dueDate.isBefore(plannedStartDate!)) throw ArgumentError('dueDate must not precede plannedStartDate'); }
- final EntityId id,taskNumber,titleAr,descriptionAr,creatorId,priorityId,categoryId,confidentialityLevelId; final String? titleEn,descriptionEn,leadOwnerId,assignedTeamId,parentTaskId,batchId,dueTime,approverId,recurrenceRuleId,recurrenceSourceTaskId; final SystemRoleCode creatorRoleCode; final TaskCreationSource creationSource; final AssignmentMode assignmentMode; final TaskStatus status; final TaskVisibilityType visibilityType; final DateTime? plannedStartDate,acknowledgedAt,startedAt,completedAt,cancelledAt,lastSyncedAt; final DateTime dueDate,createdAt,updatedAt; final int? estimatedEffortMinutes,serverVersion; final int progressPercentage,localVersion; final bool approvalRequired,completionEvidenceRequired,allowDecline,allowExtension,isPersonal,isRecurring,isLocallyModified,isDeleted; final ApprovalStatus approvalStatus; final LocalEntitySyncState syncState;
+class Organization {
+  const Organization({required this.id, required this.nameAr, this.nameEn});
+  final EntityId id;
+  final String nameAr;
+  final String? nameEn;
 }
-class TaskAssignment { TaskAssignment({required this.id,required this.taskId,required this.userId,required this.assignmentRole,required this.assignmentStatus,this.isPrimary=false,required this.assignedAt,this.contributionPercentage,required this.createdAt,required this.updatedAt}) { if(contributionPercentage!=null&&(contributionPercentage!<0||contributionPercentage!>100)) throw RangeError.range(contributionPercentage!,0,100); } final EntityId id,taskId,userId; final AssignmentRole assignmentRole; final AssignmentStatus assignmentStatus; final bool isPrimary; final DateTime assignedAt,createdAt,updatedAt; final int? contributionPercentage; }
-class ChecklistItem { const ChecklistItem({required this.id,required this.taskId,required this.titleAr,this.titleEn,required this.isMandatory,required this.isCompleted}); final EntityId id,taskId,titleAr; final String? titleEn; final bool isMandatory,isCompleted; }
-class TaskComment { const TaskComment({required this.id,required this.taskId,required this.authorId,required this.body,required this.createdAt,this.mentionUserIds=const [],this.syncState=CommentSyncState.synced}); final EntityId id,taskId,authorId; final String body; final DateTime createdAt; final List<String> mentionUserIds; final CommentSyncState syncState; }
-class TaskAttachment { TaskAttachment({required this.id,required this.taskId,required this.fileName,required this.fileType,required this.sizeBytes,required this.category,required this.uploadedBy,required this.createdAt}) { if(sizeBytes<0) throw RangeError.value(sizeBytes); } final EntityId id,taskId,uploadedBy; final String fileName,fileType; final int sizeBytes; final AttachmentCategory category; final DateTime createdAt; }
-class TaskBlocker { const TaskBlocker({required this.id,required this.taskId,required this.reportedBy,required this.type,required this.description,required this.startedAt,required this.status}); final EntityId id,taskId,reportedBy; final BlockerType type; final String description; final DateTime startedAt; final BlockerStatus status; }
-class DeadlineExtensionRequest { const DeadlineExtensionRequest({required this.id,required this.taskId,required this.requestedBy,required this.currentDueDate,required this.requestedDueDate,required this.reason,required this.status}); final EntityId id,taskId,requestedBy; final DateTime currentDueDate,requestedDueDate; final String reason; final ExtensionRequestStatus status; }
-class TaskApproval { const TaskApproval({required this.id,required this.taskId,required this.approverId,required this.status,required this.submittedAt,required this.sequenceNumber}); final EntityId id,taskId,approverId; final ApprovalStatus status; final DateTime submittedAt; final int sequenceNumber; }
-class AuditEvent { const AuditEvent({required this.id,this.taskId,required this.entityType,required this.entityId,required this.eventType,required this.performedBy,required this.performedAt,this.reason}); final EntityId id,entityId,performedBy; final String? taskId,reason; final String entityType; final AuditEventType eventType; final DateTime performedAt; }
-class AppNotification { const AppNotification({required this.id,required this.recipientId,required this.type,required this.titleAr,this.titleEn,required this.messageAr,this.messageEn,this.taskId,required this.createdAt,required this.isRead,required this.deliveryChannel,required this.deliveryStatus}); final EntityId id,recipientId; final NotificationType type; final String titleAr,messageAr; final String? titleEn,messageEn,taskId; final DateTime createdAt; final bool isRead; final NotificationDeliveryChannel deliveryChannel; final NotificationDeliveryStatus deliveryStatus; }
-class RecurrenceRule { RecurrenceRule({required this.id,required this.frequency,required this.interval,required this.startDate,required this.endType,required this.createdBy}) { if(interval<=0) throw RangeError.value(interval); } final EntityId id,createdBy; final RecurrenceFrequency frequency; final int interval; final DateTime startDate; final RecurrenceEndType endType; }
-class SyncOperation { const SyncOperation({required this.id,required this.entityType,required this.entityId,required this.operationType,required this.payloadJson,required this.createdAt,required this.status,this.conflictType=SyncConflictType.none}); final EntityId id,entityId; final String entityType,payloadJson; final SyncOperationType operationType; final DateTime createdAt; final SyncOperationStatus status; final SyncConflictType conflictType; }
-class SavedTaskFilter { const SavedTaskFilter({required this.id,required this.userId,required this.name,required this.filterJson,required this.isDefault}); final EntityId id,userId; final String name,filterJson; final bool isDefault; }
-class AppSetting { const AppSetting({required this.key,required this.value}); final String key,value; }
+
+class OrganizationUser {
+  const OrganizationUser({
+    required this.id,
+    required this.employeeNumber,
+    required this.nameAr,
+    this.nameEn,
+    required this.departmentId,
+    this.managerId,
+    required this.roleId,
+    required this.status,
+  });
+  final EntityId id, employeeNumber, nameAr, departmentId, roleId;
+  final String? nameEn, managerId;
+  final UserStatus status;
+}
+
+class Department {
+  const Department({
+    required this.id,
+    required this.code,
+    required this.nameAr,
+    this.nameEn,
+    this.parentDepartmentId,
+    this.managerUserId,
+  });
+  final EntityId id;
+  final String code, nameAr;
+  final String? nameEn, parentDepartmentId, managerUserId;
+}
+
+class Team {
+  const Team({
+    required this.id,
+    required this.code,
+    required this.departmentId,
+    required this.nameAr,
+    this.nameEn,
+    this.managerUserId,
+    this.isQueueEnabled = false,
+  });
+  final EntityId id, code, departmentId, nameAr;
+  final String? nameEn, managerUserId;
+  final bool isQueueEnabled;
+}
+
+class TeamMembership {
+  const TeamMembership({
+    required this.id,
+    required this.teamId,
+    required this.userId,
+    required this.membershipRole,
+    required this.joinedAt,
+    this.leftAt,
+  });
+  final EntityId id, teamId, userId;
+  final TeamMembershipRole membershipRole;
+  final DateTime joinedAt;
+  final DateTime? leftAt;
+}
+
+class Role {
+  const Role({
+    required this.id,
+    required this.code,
+    required this.nameAr,
+    this.nameEn,
+  });
+  final EntityId id;
+  final SystemRoleCode code;
+  final String nameAr;
+  final String? nameEn;
+}
+
+class Permission {
+  const Permission({required this.id, required this.code});
+  final EntityId id;
+  final PermissionCode code;
+}
+
+class RolePermission {
+  const RolePermission({
+    required this.id,
+    required this.roleId,
+    required this.permissionId,
+  });
+  final EntityId id, roleId, permissionId;
+}
+
+class TaskPriority {
+  const TaskPriority({
+    required this.id,
+    required this.code,
+    required this.labelAr,
+    this.labelEn,
+    required this.level,
+  });
+  final EntityId id;
+  final String code, labelAr;
+  final String? labelEn;
+  final int level;
+}
+
+class TaskCategory {
+  const TaskCategory({
+    required this.id,
+    required this.code,
+    required this.labelAr,
+    this.labelEn,
+    required this.defaultPriorityId,
+  });
+  final EntityId id, code, labelAr, defaultPriorityId;
+  final String? labelEn;
+}
+
+class ConfidentialityLevel {
+  const ConfidentialityLevel({
+    required this.id,
+    required this.code,
+    required this.labelAr,
+    this.labelEn,
+    required this.level,
+  });
+  final EntityId id, code, labelAr;
+  final String? labelEn;
+  final int level;
+}
+
+class ApprovalRule {
+  const ApprovalRule({
+    required this.id,
+    required this.code,
+    required this.nameAr,
+    this.nameEn,
+  });
+  final EntityId id, code, nameAr;
+  final String? nameEn;
+}
+
+class EscalationRule {
+  const EscalationRule({
+    required this.id,
+    required this.code,
+    required this.nameAr,
+    this.nameEn,
+  });
+  final EntityId id, code, nameAr;
+  final String? nameEn;
+}
+
+class NotificationTemplate {
+  const NotificationTemplate({
+    required this.id,
+    required this.code,
+    required this.titleAr,
+    this.titleEn,
+    required this.messageAr,
+    this.messageEn,
+  });
+  final EntityId id, code, titleAr, messageAr;
+  final String? titleEn, messageEn;
+}
+
+class TaskTemplate {
+  const TaskTemplate({
+    required this.id,
+    required this.titleAr,
+    this.titleEn,
+    required this.categoryId,
+    required this.priorityId,
+  });
+  final EntityId id, titleAr, categoryId, priorityId;
+  final String? titleEn;
+}
+
+class Task {
+  Task({
+    required this.id,
+    required this.taskNumber,
+    required this.titleAr,
+    this.titleEn,
+    required this.descriptionAr,
+    this.descriptionEn,
+    required this.creatorId,
+    required this.creatorRoleCode,
+    required this.creationSource,
+    required this.assignmentMode,
+    this.leadOwnerId,
+    this.assignedTeamId,
+    this.parentTaskId,
+    this.batchId,
+    required this.priorityId,
+    required this.categoryId,
+    required this.status,
+    required this.confidentialityLevelId,
+    required this.visibilityType,
+    this.plannedStartDate,
+    required this.dueDate,
+    this.dueTime,
+    this.estimatedEffortMinutes,
+    required this.progressPercentage,
+    required this.approvalRequired,
+    required this.completionEvidenceRequired,
+    required this.allowDecline,
+    required this.allowExtension,
+    this.approverId,
+    required this.approvalStatus,
+    required this.isPersonal,
+    required this.isRecurring,
+    this.recurrenceRuleId,
+    this.recurrenceSourceTaskId,
+    required this.createdAt,
+    required this.updatedAt,
+    this.acknowledgedAt,
+    this.startedAt,
+    this.completedAt,
+    this.cancelledAt,
+    this.lastSyncedAt,
+    this.localVersion = 1,
+    this.serverVersion,
+    this.syncState = LocalEntitySyncState.synced,
+    this.isLocallyModified = false,
+    this.isDeleted = false,
+  }) {
+    if (titleAr.trim().isEmpty) throw ArgumentError.value(titleAr, 'titleAr');
+    if (progressPercentage < 0 || progressPercentage > 100)
+      throw RangeError.range(progressPercentage, 0, 100, 'progressPercentage');
+    if (plannedStartDate != null && dueDate.isBefore(plannedStartDate!))
+      throw ArgumentError('dueDate must not precede plannedStartDate');
+  }
+  final EntityId id,
+      taskNumber,
+      titleAr,
+      descriptionAr,
+      creatorId,
+      priorityId,
+      categoryId,
+      confidentialityLevelId;
+  final String? titleEn,
+      descriptionEn,
+      leadOwnerId,
+      assignedTeamId,
+      parentTaskId,
+      batchId,
+      dueTime,
+      approverId,
+      recurrenceRuleId,
+      recurrenceSourceTaskId;
+  final SystemRoleCode creatorRoleCode;
+  final TaskCreationSource creationSource;
+  final AssignmentMode assignmentMode;
+  final TaskStatus status;
+  final TaskVisibilityType visibilityType;
+  final DateTime? plannedStartDate,
+      acknowledgedAt,
+      startedAt,
+      completedAt,
+      cancelledAt,
+      lastSyncedAt;
+  final DateTime dueDate, createdAt, updatedAt;
+  final int? estimatedEffortMinutes, serverVersion;
+  final int progressPercentage, localVersion;
+  final bool approvalRequired,
+      completionEvidenceRequired,
+      allowDecline,
+      allowExtension,
+      isPersonal,
+      isRecurring,
+      isLocallyModified,
+      isDeleted;
+  final ApprovalStatus approvalStatus;
+  final LocalEntitySyncState syncState;
+}
+
+class TaskAssignment {
+  TaskAssignment({
+    required this.id,
+    required this.taskId,
+    required this.userId,
+    required this.assignmentRole,
+    required this.assignmentStatus,
+    this.isPrimary = false,
+    required this.assignedAt,
+    this.contributionPercentage,
+    required this.createdAt,
+    required this.updatedAt,
+  }) {
+    if (contributionPercentage != null &&
+        (contributionPercentage! < 0 || contributionPercentage! > 100))
+      throw RangeError.range(contributionPercentage!, 0, 100);
+  }
+  final EntityId id, taskId, userId;
+  final AssignmentRole assignmentRole;
+  final AssignmentStatus assignmentStatus;
+  final bool isPrimary;
+  final DateTime assignedAt, createdAt, updatedAt;
+  final int? contributionPercentage;
+}
+
+class ChecklistItem {
+  const ChecklistItem({
+    required this.id,
+    required this.taskId,
+    required this.titleAr,
+    this.titleEn,
+    required this.isMandatory,
+    required this.isCompleted,
+  });
+  final EntityId id, taskId, titleAr;
+  final String? titleEn;
+  final bool isMandatory, isCompleted;
+}
+
+class TaskComment {
+  const TaskComment({
+    required this.id,
+    required this.taskId,
+    required this.authorId,
+    required this.body,
+    required this.createdAt,
+    this.mentionUserIds = const [],
+    this.syncState = CommentSyncState.synced,
+  });
+  final EntityId id, taskId, authorId;
+  final String body;
+  final DateTime createdAt;
+  final List<String> mentionUserIds;
+  final CommentSyncState syncState;
+}
+
+class TaskAttachment {
+  TaskAttachment({
+    required this.id,
+    required this.taskId,
+    required this.fileName,
+    required this.fileType,
+    required this.sizeBytes,
+    required this.category,
+    required this.uploadedBy,
+    required this.createdAt,
+  }) {
+    if (sizeBytes < 0) throw RangeError.value(sizeBytes);
+  }
+  final EntityId id, taskId, uploadedBy;
+  final String fileName, fileType;
+  final int sizeBytes;
+  final AttachmentCategory category;
+  final DateTime createdAt;
+}
+
+class TaskBlocker {
+  const TaskBlocker({
+    required this.id,
+    required this.taskId,
+    required this.reportedBy,
+    required this.type,
+    required this.description,
+    required this.startedAt,
+    required this.status,
+  });
+  final EntityId id, taskId, reportedBy;
+  final BlockerType type;
+  final String description;
+  final DateTime startedAt;
+  final BlockerStatus status;
+}
+
+class DeadlineExtensionRequest {
+  const DeadlineExtensionRequest({
+    required this.id,
+    required this.taskId,
+    required this.requestedBy,
+    required this.currentDueDate,
+    required this.requestedDueDate,
+    required this.reason,
+    required this.status,
+  });
+  final EntityId id, taskId, requestedBy;
+  final DateTime currentDueDate, requestedDueDate;
+  final String reason;
+  final ExtensionRequestStatus status;
+}
+
+class TaskApproval {
+  const TaskApproval({
+    required this.id,
+    required this.taskId,
+    required this.approverId,
+    required this.status,
+    required this.submittedAt,
+    required this.sequenceNumber,
+  });
+  final EntityId id, taskId, approverId;
+  final ApprovalStatus status;
+  final DateTime submittedAt;
+  final int sequenceNumber;
+}
+
+class AuditEvent {
+  const AuditEvent({
+    required this.id,
+    this.taskId,
+    required this.entityType,
+    required this.entityId,
+    required this.eventType,
+    required this.performedBy,
+    required this.performedAt,
+    this.reason,
+  });
+  final EntityId id, entityId, performedBy;
+  final String? taskId, reason;
+  final String entityType;
+  final AuditEventType eventType;
+  final DateTime performedAt;
+}
+
+class AppNotification {
+  const AppNotification({
+    required this.id,
+    required this.recipientId,
+    required this.type,
+    required this.titleAr,
+    this.titleEn,
+    required this.messageAr,
+    this.messageEn,
+    this.taskId,
+    required this.createdAt,
+    required this.isRead,
+    required this.deliveryChannel,
+    required this.deliveryStatus,
+  });
+  final EntityId id, recipientId;
+  final NotificationType type;
+  final String titleAr, messageAr;
+  final String? titleEn, messageEn, taskId;
+  final DateTime createdAt;
+  final bool isRead;
+  final NotificationDeliveryChannel deliveryChannel;
+  final NotificationDeliveryStatus deliveryStatus;
+}
+
+class RecurrenceRule {
+  RecurrenceRule({
+    required this.id,
+    required this.frequency,
+    required this.interval,
+    required this.startDate,
+    required this.endType,
+    required this.createdBy,
+  }) {
+    if (interval <= 0) throw RangeError.value(interval);
+  }
+  final EntityId id, createdBy;
+  final RecurrenceFrequency frequency;
+  final int interval;
+  final DateTime startDate;
+  final RecurrenceEndType endType;
+}
+
+class SyncOperation {
+  const SyncOperation({
+    required this.id,
+    required this.entityType,
+    required this.entityId,
+    required this.operationType,
+    required this.payloadJson,
+    required this.createdAt,
+    required this.status,
+    this.conflictType = SyncConflictType.none,
+  });
+  final EntityId id, entityId;
+  final String entityType, payloadJson;
+  final SyncOperationType operationType;
+  final DateTime createdAt;
+  final SyncOperationStatus status;
+  final SyncConflictType conflictType;
+}
+
+class SavedTaskFilter {
+  const SavedTaskFilter({
+    required this.id,
+    required this.userId,
+    required this.name,
+    required this.filterJson,
+    required this.isDefault,
+  });
+  final EntityId id, userId;
+  final String name, filterJson;
+  final bool isDefault;
+}
+
+class AppSetting {
+  const AppSetting({required this.key, required this.value});
+  final String key, value;
+}

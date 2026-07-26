@@ -10,7 +10,9 @@ import 'package:organization_task_manager/shared/models/demo_user_profile.dart';
 
 void main() {
   for (final path in ['/app/employee/home', '/app/manager/home']) {
-    testWidgets('unauthenticated access to $path redirects to login', (tester) async {
+    testWidgets('unauthenticated access to $path redirects to login', (
+      tester,
+    ) async {
       final controller = SessionController()..logout();
       await tester.pumpWidget(_app(controller));
       await tester.pumpAndSettle();
@@ -21,7 +23,9 @@ void main() {
     });
   }
 
-  testWidgets('role changes and logout replace protected navigation', (tester) async {
+  testWidgets('role changes and logout replace protected navigation', (
+    tester,
+  ) async {
     final controller = SessionController()
       ..authenticate(demoProfiles.firstWhere((p) => p.id == 'manager'));
     await tester.pumpWidget(_app(controller));
@@ -44,9 +48,9 @@ void main() {
 }
 
 Widget _app(SessionController controller) => ProviderScope(
-      overrides: [
-        localeProvider.overrideWith((ref) => const Locale('en')),
-        sessionProvider.overrideWith((ref) => controller),
-      ],
-      child: const TaskManagementApp(),
-    );
+  overrides: [
+    localeProvider.overrideWith((ref) => const Locale('en')),
+    sessionProvider.overrideWith((ref) => controller),
+  ],
+  child: const TaskManagementApp(),
+);

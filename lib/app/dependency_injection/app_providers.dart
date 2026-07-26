@@ -22,7 +22,9 @@ import '../../features/organization/domain/organization_hierarchy_service.dart';
 
 final localeProvider = StateProvider<Locale?>((ref) => null);
 final themeModeProvider = StateProvider<ThemeMode>((ref) => ThemeMode.system);
-final connectivityProvider = StateProvider<SimulatedConnectivityStatus>((ref) => SimulatedConnectivityStatus.online);
+final connectivityProvider = StateProvider<SimulatedConnectivityStatus>(
+  (ref) => SimulatedConnectivityStatus.online,
+);
 
 class SessionState {
   const SessionState(
@@ -43,17 +45,18 @@ class SessionState {
 
 class SessionController extends StateNotifier<SessionState> {
   SessionController([this.service, this.users])
-      : super(const SessionState(AuthenticationStatus.initializing));
+    : super(const SessionState(AuthenticationStatus.initializing));
   final AuthenticationService? service;
   final UserRepository? users;
   Future<void>? _initialization;
 
-  void beginProfileSelection() => state = const SessionState(AuthenticationStatus.selectingProfile);
+  void beginProfileSelection() =>
+      state = const SessionState(AuthenticationStatus.selectingProfile);
   void authenticate(DemoUserProfile profile) => state = SessionState(
-        AuthenticationStatus.authenticated,
-        profile: profile,
-        role: profile.role,
-      );
+    AuthenticationStatus.authenticated,
+    profile: profile,
+    role: profile.role,
+  );
 
   /// Restores at most once for this controller. The composition root awaits the
   /// in-memory composition root before calling this method.
@@ -84,17 +87,18 @@ class SessionController extends StateNotifier<SessionState> {
 
   Future<void> signInCredentials(String username, String password) async {
     state = const SessionState(AuthenticationStatus.authenticating);
-    await _apply(await service!.signInWithDemoCredentials(
-      username: username,
-      password: password,
-    ));
+    await _apply(
+      await service!.signInWithDemoCredentials(
+        username: username,
+        password: password,
+      ),
+    );
   }
 
   Future<void> unlockPin(String pin) async =>
       _apply(await service!.unlockWithPin(pin));
-  Future<void> unlockBiometric(bool success) async => _apply(
-        await service!.unlockWithBiometrics(simulateSuccess: success),
-      );
+  Future<void> unlockBiometric(bool success) async =>
+      _apply(await service!.unlockWithBiometrics(simulateSuccess: success));
 
   Future<void> _apply(AuthenticationResult result) async {
     if (!result.isSuccess) {
@@ -148,17 +152,34 @@ class SessionController extends StateNotifier<SessionState> {
   }
 }
 
-final authenticationServiceProvider=Provider<AuthenticationService>((ref)=>LocalDemoAuthenticationService(users:ref.watch(userRepositoryProvider),settings:ref.watch(settingsRepositoryProvider),audit:ref.watch(auditRepositoryProvider),clock:const SystemAppClock(),isOffline:()=>ref.read(connectivityProvider)==SimulatedConnectivityStatus.offline));
+final authenticationServiceProvider = Provider<AuthenticationService>(
+  (ref) => LocalDemoAuthenticationService(
+    users: ref.watch(userRepositoryProvider),
+    settings: ref.watch(settingsRepositoryProvider),
+    audit: ref.watch(auditRepositoryProvider),
+    clock: const SystemAppClock(),
+    isOffline: () =>
+        ref.read(connectivityProvider) == SimulatedConnectivityStatus.offline,
+  ),
+);
 final sessionProvider = StateNotifierProvider<SessionController, SessionState>(
   (ref) => SessionController(
     ref.watch(authenticationServiceProvider),
     ref.watch(userRepositoryProvider),
   ),
 );
-final currentDemoProfileProvider = Provider<DemoUserProfile?>((ref) => ref.watch(sessionProvider).profile);
-final activeSessionProvider=Provider<AuthenticationSession?>((ref)=>ref.watch(sessionProvider).session);
-final currentOrganizationUserProvider = Provider<OrganizationUser?>((ref) => ref.watch(sessionProvider).user);
-final currentSystemRoleProvider = Provider<DemoUserRole?>((ref) => ref.watch(sessionProvider).role);
+final currentDemoProfileProvider = Provider<DemoUserProfile?>(
+  (ref) => ref.watch(sessionProvider).profile,
+);
+final activeSessionProvider = Provider<AuthenticationSession?>(
+  (ref) => ref.watch(sessionProvider).session,
+);
+final currentOrganizationUserProvider = Provider<OrganizationUser?>(
+  (ref) => ref.watch(sessionProvider).user,
+);
+final currentSystemRoleProvider = Provider<DemoUserRole?>(
+  (ref) => ref.watch(sessionProvider).role,
+);
 final canRestoreOfflineSessionProvider = FutureProvider<bool>((ref) async {
   final value = await ref
       .watch(settingsRepositoryProvider)
@@ -169,47 +190,153 @@ final canRestoreOfflineSessionProvider = FutureProvider<bool>((ref) async {
 });
 
 final demoDataStoreProvider = Provider<DemoDataStore>((ref) => DemoDataStore());
-final inMemoryUserRepositoryProvider = Provider<InMemoryUserRepository>((ref) => InMemoryUserRepository(ref.watch(demoDataStoreProvider)));
-final inMemoryOrganizationRepositoryProvider = Provider<InMemoryOrganizationRepository>((ref) => InMemoryOrganizationRepository(ref.watch(demoDataStoreProvider)));
-final inMemoryTaskRepositoryProvider = Provider<InMemoryTaskRepository>((ref) => InMemoryTaskRepository(ref.watch(demoDataStoreProvider)));
-final inMemoryConfigurationRepositoryProvider = Provider<InMemoryTaskConfigurationRepository>((ref) => InMemoryTaskConfigurationRepository(ref.watch(demoDataStoreProvider)));
-final inMemoryNotificationRepositoryProvider = Provider<InMemoryNotificationRepository>((ref) => InMemoryNotificationRepository(ref.watch(demoDataStoreProvider)));
-final inMemoryAuditRepositoryProvider = Provider<InMemoryAuditRepository>((ref) => InMemoryAuditRepository(ref.watch(demoDataStoreProvider)));
-final inMemorySyncRepositoryProvider = Provider<InMemorySyncRepository>((ref) => InMemorySyncRepository(ref.watch(demoDataStoreProvider)));
-final inMemorySettingsRepositoryProvider = Provider<InMemorySettingsRepository>((ref) => InMemorySettingsRepository(ref.watch(demoDataStoreProvider)));
-final inMemoryPermissionOverrideRepositoryProvider = Provider<InMemoryPermissionOverrideRepository>((ref) => InMemoryPermissionOverrideRepository(ref.watch(demoDataStoreProvider)));
+final inMemoryUserRepositoryProvider = Provider<InMemoryUserRepository>(
+  (ref) => InMemoryUserRepository(ref.watch(demoDataStoreProvider)),
+);
+final inMemoryOrganizationRepositoryProvider =
+    Provider<InMemoryOrganizationRepository>(
+      (ref) => InMemoryOrganizationRepository(ref.watch(demoDataStoreProvider)),
+    );
+final inMemoryTaskRepositoryProvider = Provider<InMemoryTaskRepository>(
+  (ref) => InMemoryTaskRepository(ref.watch(demoDataStoreProvider)),
+);
+final inMemoryConfigurationRepositoryProvider =
+    Provider<InMemoryTaskConfigurationRepository>(
+      (ref) =>
+          InMemoryTaskConfigurationRepository(ref.watch(demoDataStoreProvider)),
+    );
+final inMemoryNotificationRepositoryProvider =
+    Provider<InMemoryNotificationRepository>(
+      (ref) => InMemoryNotificationRepository(ref.watch(demoDataStoreProvider)),
+    );
+final inMemoryAuditRepositoryProvider = Provider<InMemoryAuditRepository>(
+  (ref) => InMemoryAuditRepository(ref.watch(demoDataStoreProvider)),
+);
+final inMemorySyncRepositoryProvider = Provider<InMemorySyncRepository>(
+  (ref) => InMemorySyncRepository(ref.watch(demoDataStoreProvider)),
+);
+final inMemorySettingsRepositoryProvider = Provider<InMemorySettingsRepository>(
+  (ref) => InMemorySettingsRepository(ref.watch(demoDataStoreProvider)),
+);
+final inMemoryPermissionOverrideRepositoryProvider =
+    Provider<InMemoryPermissionOverrideRepository>(
+      (ref) => InMemoryPermissionOverrideRepository(
+        ref.watch(demoDataStoreProvider),
+      ),
+    );
 
-final userRepositoryProvider = Provider<UserRepository>((ref) => ref.watch(inMemoryUserRepositoryProvider));
-final organizationRepositoryProvider = Provider<OrganizationRepository>((ref) => ref.watch(inMemoryOrganizationRepositoryProvider));
-final taskRepositoryProvider = Provider<TaskRepository>((ref) => ref.watch(inMemoryTaskRepositoryProvider));
-final taskConfigurationRepositoryProvider = Provider<TaskConfigurationRepository>((ref) => ref.watch(inMemoryConfigurationRepositoryProvider));
-final notificationRepositoryProvider = Provider<NotificationRepository>((ref) => ref.watch(inMemoryNotificationRepositoryProvider));
-final auditRepositoryProvider = Provider<AuditRepository>((ref) => ref.watch(inMemoryAuditRepositoryProvider));
-final syncRepositoryProvider = Provider<SyncRepository>((ref) => ref.watch(inMemorySyncRepositoryProvider));
-final settingsRepositoryProvider = Provider<SettingsRepository>((ref) => ref.watch(inMemorySettingsRepositoryProvider));
-final permissionOverrideRepositoryProvider = Provider<PermissionOverrideRepository>((ref) => ref.watch(inMemoryPermissionOverrideRepositoryProvider));
+final userRepositoryProvider = Provider<UserRepository>(
+  (ref) => ref.watch(inMemoryUserRepositoryProvider),
+);
+final organizationRepositoryProvider = Provider<OrganizationRepository>(
+  (ref) => ref.watch(inMemoryOrganizationRepositoryProvider),
+);
+final taskRepositoryProvider = Provider<TaskRepository>(
+  (ref) => ref.watch(inMemoryTaskRepositoryProvider),
+);
+final taskConfigurationRepositoryProvider =
+    Provider<TaskConfigurationRepository>(
+      (ref) => ref.watch(inMemoryConfigurationRepositoryProvider),
+    );
+final notificationRepositoryProvider = Provider<NotificationRepository>(
+  (ref) => ref.watch(inMemoryNotificationRepositoryProvider),
+);
+final auditRepositoryProvider = Provider<AuditRepository>(
+  (ref) => ref.watch(inMemoryAuditRepositoryProvider),
+);
+final syncRepositoryProvider = Provider<SyncRepository>(
+  (ref) => ref.watch(inMemorySyncRepositoryProvider),
+);
+final settingsRepositoryProvider = Provider<SettingsRepository>(
+  (ref) => ref.watch(inMemorySettingsRepositoryProvider),
+);
+final permissionOverrideRepositoryProvider =
+    Provider<PermissionOverrideRepository>(
+      (ref) => ref.watch(inMemoryPermissionOverrideRepositoryProvider),
+    );
 
-final organizationHierarchyServiceProvider = Provider<OrganizationHierarchyService>((ref) => RepositoryOrganizationHierarchyService(users: ref.watch(userRepositoryProvider), organization: ref.watch(organizationRepositoryProvider)));
-final authorizationServiceProvider = Provider<AuthorizationService>((ref) => RepositoryAuthorizationService(users: ref.watch(userRepositoryProvider), organization: ref.watch(organizationRepositoryProvider), hierarchy: ref.watch(organizationHierarchyServiceProvider), overrides: ref.watch(permissionOverrideRepositoryProvider)));
+final organizationHierarchyServiceProvider =
+    Provider<OrganizationHierarchyService>(
+      (ref) => RepositoryOrganizationHierarchyService(
+        users: ref.watch(userRepositoryProvider),
+        organization: ref.watch(organizationRepositoryProvider),
+      ),
+    );
+final authorizationServiceProvider = Provider<AuthorizationService>(
+  (ref) => RepositoryAuthorizationService(
+    users: ref.watch(userRepositoryProvider),
+    organization: ref.watch(organizationRepositoryProvider),
+    hierarchy: ref.watch(organizationHierarchyServiceProvider),
+    overrides: ref.watch(permissionOverrideRepositoryProvider),
+  ),
+);
 
-final currentOrganizationContextProvider = FutureProvider<OrganizationContext?>((ref) async {
-  final user = ref.watch(currentOrganizationUserProvider);
-  if (user == null) return null;
-  final context = await ref.watch(organizationHierarchyServiceProvider).getUserContext(user.id);
-  final permissions = await ref.watch(authorizationServiceProvider).getEffectivePermissions(user.id);
-  return OrganizationContext(user: context.user, role: context.role, organization: context.organization, department: context.department, departmentPath: context.departmentPath, manager: context.manager, directReports: context.directReports, allReports: context.allReports, teams: context.teams, ledTeams: context.ledTeams, queueMemberships: context.queueMemberships, effectivePermissions: permissions, maximumAccessScope: context.maximumAccessScope);
-});
-final currentEffectivePermissionsProvider = FutureProvider<Set<PermissionCode>>((ref) async {
-  final user = ref.watch(currentOrganizationUserProvider);
-  return user == null ? const {} : ref.watch(authorizationServiceProvider).getEffectivePermissions(user.id);
-});
-final currentAccessScopeProvider = FutureProvider<AccessScope?>((ref) async => (await ref.watch(currentOrganizationContextProvider.future))?.maximumAccessScope);
+final currentOrganizationContextProvider = FutureProvider<OrganizationContext?>(
+  (ref) async {
+    final user = ref.watch(currentOrganizationUserProvider);
+    if (user == null) return null;
+    final context = await ref
+        .watch(organizationHierarchyServiceProvider)
+        .getUserContext(user.id);
+    final permissions = await ref
+        .watch(authorizationServiceProvider)
+        .getEffectivePermissions(user.id);
+    return OrganizationContext(
+      user: context.user,
+      role: context.role,
+      organization: context.organization,
+      department: context.department,
+      departmentPath: context.departmentPath,
+      manager: context.manager,
+      directReports: context.directReports,
+      allReports: context.allReports,
+      teams: context.teams,
+      ledTeams: context.ledTeams,
+      queueMemberships: context.queueMemberships,
+      effectivePermissions: permissions,
+      maximumAccessScope: context.maximumAccessScope,
+    );
+  },
+);
+final currentEffectivePermissionsProvider = FutureProvider<Set<PermissionCode>>(
+  (ref) async {
+    final user = ref.watch(currentOrganizationUserProvider);
+    return user == null
+        ? const {}
+        : ref
+              .watch(authorizationServiceProvider)
+              .getEffectivePermissions(user.id);
+  },
+);
+final currentAccessScopeProvider = FutureProvider<AccessScope?>(
+  (ref) async => (await ref.watch(
+    currentOrganizationContextProvider.future,
+  ))?.maximumAccessScope,
+);
 typedef PermissionRequest = ({PermissionCode permission, AccessTarget? target});
-final permissionDecisionProvider = FutureProvider.family<AuthorizationDecision, PermissionRequest>((ref, request) async {
-  final user = ref.watch(currentOrganizationUserProvider);
-  if (user == null) return AuthorizationDecision(allowed: false, permission: request.permission, requiredScope: AccessScope.self, effectiveScope: AccessScope.self, reasonCode: AuthorizationReasonCode.userNotFound, localizedReasonKey: 'permissionDenied');
-  return ref.watch(authorizationServiceProvider).check(userId: user.id, permission: request.permission, target: request.target);
-});
+final permissionDecisionProvider =
+    FutureProvider.family<AuthorizationDecision, PermissionRequest>((
+      ref,
+      request,
+    ) async {
+      final user = ref.watch(currentOrganizationUserProvider);
+      if (user == null)
+        return AuthorizationDecision(
+          allowed: false,
+          permission: request.permission,
+          requiredScope: AccessScope.self,
+          effectiveScope: AccessScope.self,
+          reasonCode: AuthorizationReasonCode.userNotFound,
+          localizedReasonKey: 'permissionDenied',
+        );
+      return ref
+          .watch(authorizationServiceProvider)
+          .check(
+            userId: user.id,
+            permission: request.permission,
+            target: request.target,
+          );
+    });
 
 DemoUserRole? _repositoryRole(String roleId) => switch (roleId) {
   DemoSeedIds.roleEmployee => DemoUserRole.employee,

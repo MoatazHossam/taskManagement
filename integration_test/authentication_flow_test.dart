@@ -16,7 +16,9 @@ void main() {
     expect(find.byType(NavigationBar), findsOneWidget);
   });
 
-  testWidgets('credential login remains a deterministic local flow', (tester) async {
+  testWidgets('credential login remains a deterministic local flow', (
+    tester,
+  ) async {
     app.main();
     await tester.pumpAndSettle();
     await tester.tap(find.text('English'));
