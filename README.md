@@ -4,7 +4,7 @@
 
 This repository will contain a mobile-first organization task-management demo for Android and iOS, with responsive tablet layouts. Its purpose is to validate product concepts, role-aware workflows, navigation, Arabic/English user experience, management reporting, assignment and approval behavior, and local offline demonstrations before an on-premises backend exists.
 
-**Current status:** Phase 01.5B visual-density and mobile-UX refinement is implemented for local review but remains In Progress until Flutter SDK validation and device review are completed. Phase 02 has not started.
+**Current status:** Phase 02 core models and local database is In Progress. Phase 01, Phase 01.5, and Phase 01.5B were locally reviewed by the project owner. This container lacks Flutter/Dart, so Phase 02 generation and quality gates remain pending; Phase 03 has not started.
 
 The authoritative product and business-rules source is [`TASK_MANAGEMENT_DEMO_MASTER_SPEC.md`](TASK_MANAGEMENT_DEMO_MASTER_SPEC.md). Changes must be delivered one explicit phase at a time; no later phase should begin automatically.
 
