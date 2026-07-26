@@ -140,3 +140,7 @@ Drift/SQLite, generated database code, DAOs, companions, SQL, database mappers, 
 The active application uses one deterministic, Flutter-independent `DemoDataStore` and typed in-memory repository implementations. Repository interfaces remain the application boundary and are ready to be replaced by future on-premises API adapters without presentation changes. Runtime mutations and the simulated authentication session reset whenever the application restarts; this is demo state, not production persistence. Authentication roles are a repository-authoritative demo identity. No networking, cloud, Firebase, backend, real biometric, or external identity integration was added.
 
 Phase 04 was not started.
+
+## Organization and permission demo (Phase 04)
+
+Use Ahmed to inspect self-level access, Sara for the full directory and manager assignment authority, Omar for executive reporting without administration, Laila for administration and directory access without executive reporting, and Khaled for Technical Support Queue-scoped claim/release diagnostics. Open **Access summary** from Profile. Managers, senior management, and administrators can browse the read-only organization structure; no organization or permission editing is included. See [AUTHORIZATION.md](AUTHORIZATION.md) for the complete matrix and scope rules.

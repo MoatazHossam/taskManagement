@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import '../../shared/repositories/repositories.dart';
 import '../domain/domain_enums.dart';
+import '../domain/authorization_models.dart';
 import '../domain/entities.dart';
 import 'demo_data_store.dart';
 
@@ -20,12 +21,19 @@ final class InMemoryUserRepository implements UserRepository {
 
 final class InMemoryOrganizationRepository implements OrganizationRepository {
   const InMemoryOrganizationRepository(this.store); final DemoDataStore store;
+  @override Future<Organization?> getOrganization() async => store.organizations.firstOrNull;
   @override Future<List<Department>> getDepartments() async => _copy(store.departments);
   @override Future<Department?> getDepartmentById(String id) async => store.departments.where((e) => e.id == id).firstOrNull;
   @override Future<List<Department>> getChildDepartments(String id) async => _copy(store.departments.where((e) => e.parentDepartmentId == id));
   @override Future<List<Team>> getTeams() async => _copy(store.teams);
+  @override Future<Team?> getTeamById(String id) async => store.teams.where((e) => e.id == id).firstOrNull;
   @override Future<List<Team>> getTeamsByDepartment(String id) async => _copy(store.teams.where((e) => e.departmentId == id));
   @override Future<List<TeamMembership>> getTeamMembers(String teamId) async => _copy(store.memberships.where((e) => e.teamId == teamId && e.leftAt == null));
+  @override Future<List<TeamMembership>> getMembershipsForUser(String userId) async => _copy(store.memberships.where((e) => e.userId == userId && e.leftAt == null));
+  @override Future<List<Role>> getRoles() async => _copy(store.roles);
+  @override Future<Role?> getRoleById(String id) async => store.roles.where((e) => e.id == id).firstOrNull;
+  @override Future<List<Permission>> getPermissions() async => _copy(store.permissions);
+  @override Future<List<RolePermission>> getRolePermissions(String roleId) async => _copy(store.rolePermissions.where((e) => e.roleId == roleId));
 }
 
 final class InMemoryTaskRepository implements TaskRepository {
@@ -97,4 +105,12 @@ final class InMemorySettingsRepository implements SettingsRepository {
   @override Future<void> removeSetting(String key) async{store.settings.remove(key);}
   Future<void> clear() async=>store.settings.clear();
   Future<void> clearAuthenticationSession() async=>store.settings.removeWhere((key,_)=>key.startsWith('authentication.'));
+}
+
+final class InMemoryPermissionOverrideRepository implements PermissionOverrideRepository {
+  const InMemoryPermissionOverrideRepository(this.store);
+  final DemoDataStore store;
+  @override
+  Future<List<PermissionOverride>> getOverridesForUser(String userId) async =>
+      _copy(store.permissionOverrides.where((value) => value.userId == userId));
 }

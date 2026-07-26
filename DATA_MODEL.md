@@ -62,3 +62,11 @@ Drift/SQLite, generated database code, DAOs, companions, SQL, database mappers, 
 The active application uses one deterministic, Flutter-independent `DemoDataStore` and typed in-memory repository implementations. Repository interfaces remain the application boundary and are ready to be replaced by future on-premises API adapters without presentation changes. Runtime mutations and the simulated authentication session reset whenever the application restarts; this is demo state, not production persistence. Authentication roles are a repository-authoritative demo identity. No networking, cloud, Firebase, backend, real biometric, or external identity integration was added.
 
 Phase 04 was not started.
+
+## Phase 04 authorization models
+
+- `OrganizationContext` is an immutable snapshot containing user, role, organization, optional department/manager, department path, direct/all reports, teams, led teams, queue memberships, effective permissions, and maximum scope.
+- `AccessScope` separates self, team, department, organization, and administration reach.
+- `PermissionOverride` records a typed allow/deny, safe reason, and optional explicit scope.
+- `AccessTarget` describes generic ownership, department, team, organization, personal status, and confidentiality without depending on task UI.
+- `AuthorizationDecision` returns allow/deny, permission, required/effective scope, safe reason code, and localization key.

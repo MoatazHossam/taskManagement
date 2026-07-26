@@ -192,3 +192,12 @@ Drift/SQLite, generated database code, DAOs, companions, SQL, database mappers, 
 The active application uses one deterministic, Flutter-independent `DemoDataStore` and typed in-memory repository implementations. Repository interfaces remain the application boundary and are ready to be replaced by future on-premises API adapters without presentation changes. Runtime mutations and the simulated authentication session reset whenever the application restarts; this is demo state, not production persistence. Authentication roles are a repository-authoritative demo identity. No networking, cloud, Firebase, backend, real biometric, or external identity integration was added.
 
 Phase 04 was not started.
+
+## Phase 04 authorization decisions
+
+- Permission codes are centralized as typed `PermissionCode` values; feature code does not invent string permissions.
+- Permission and organizational scope are independent and both must pass.
+- Administrator configuration authority and senior-management executive authority are intentionally separate.
+- Managers may create for others and assign/reassign across the organization.
+- Khaled receives claim/release authority only from his Technical Support Queue membership and only for that queue.
+- UI gates improve affordance but service and router enforcement remain mandatory.
