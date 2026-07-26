@@ -165,3 +165,7 @@ Use focused typed DAOs, explicit per-aggregate mapper extensions, and local repo
 ## ADR-013 — Transactional deterministic seed reset
 
 Seed identifiers and clock-relative timestamps are deterministic. Version mismatch triggers a child-first transactional reset and full reseed. Generated Drift output is committed only when produced by build_runner and is never authored manually.
+
+## ADR-016 — Local demo authentication and sessions
+
+**Decision.** Use a replaceable authentication service backed by seeded user, settings, and audit repositories. Database status and role are the local identity source. Persist only demo-safe session identifiers, timestamps, status, and unlock method. Use a 12-hour session and seven-day offline window. PIN `1234` and biometric outcomes are explicit simulations; neither secrets nor biometric data are stored or audited. No real identity, biometric, token, network, backend, Firebase, or cloud dependency is introduced.

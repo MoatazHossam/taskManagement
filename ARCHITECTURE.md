@@ -108,3 +108,7 @@ Foundation screens use `AppPrimaryScrollView` rather than screen-specific bottom
 ## Phase 02B database architecture
 
 Presentation depends on repository interfaces. Riverpod binds those interfaces to local repositories; local repositories depend on focused DAOs and explicit mapper extensions; DAOs alone compose typed Drift queries. `appDatabaseProvider` owns and closes the database, while `databaseInitializationProvider` gates the one-time, post-schema seed and translates startup failures to `DataLayerException`/`AppError`. Tests can override `appDatabaseProvider` with an in-memory database.
+
+## Phase 03 authentication architecture
+
+Authentication presentation delegates to the Riverpod session controller and replaceable `AuthenticationService`. `LocalDemoAuthenticationService` resolves profile mappings through `UserRepository` and coordinates safe settings and audit events through repository contracts. Seeded status and role are authoritative. The startup gate seeds Drift before restore; active, locked, expired, and unauthenticated states drive guarded routing. Offline restore revalidates the user and expiry locally. A future on-premises adapter can replace the service without changing screens, domain sessions, or router policy.
