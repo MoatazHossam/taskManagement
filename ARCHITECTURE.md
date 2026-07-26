@@ -112,3 +112,12 @@ Presentation depends on repository interfaces. Riverpod binds those interfaces t
 ## Phase 03 authentication architecture
 
 Authentication presentation delegates to the Riverpod session controller and replaceable `AuthenticationService`. `LocalDemoAuthenticationService` resolves profile mappings through `UserRepository` and coordinates safe settings and audit events through repository contracts. Seeded status and role are authoritative. The startup gate seeds Drift before restore; active, locked, expired, and unauthenticated states drive guarded routing. Offline restore revalidates the user and expiry locally. A future on-premises adapter can replace the service without changing screens, domain sessions, or router policy.
+
+## Phase 03B router and provider lifecycle
+
+Phase 03B keeps one `GoRouter` instance for each provider scope. A small owned
+`ChangeNotifier` bridges Riverpod session and locale changes to `refreshListenable`,
+so redirects re-evaluate without reconstructing the router or introducing another
+navigation state. Role guards and shells consume the database-derived role held by the
+single session controller. Logout, expiry, lock, unlock, and profile replacement
+therefore refresh the same router immediately.

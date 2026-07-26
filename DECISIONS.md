@@ -169,3 +169,17 @@ Seed identifiers and clock-relative timestamps are deterministic. Version mismat
 ## ADR-016 — Local demo authentication and sessions
 
 **Decision.** Use a replaceable authentication service backed by seeded user, settings, and audit repositories. Database status and role are the local identity source. Persist only demo-safe session identifiers, timestamps, status, and unlock method. Use a 12-hour session and seven-day offline window. PIN `1234` and biometric outcomes are explicit simulations; neither secrets nor biometric data are stored or audited. No real identity, biometric, token, network, backend, Firebase, or cloud dependency is introduced.
+
+## ADR-012 — Authentication state and router refresh
+
+**Context.** Rebuilding `GoRouter` from watched authentication state risks replacing
+navigation state, while reading state only at construction misses later transitions.
+
+**Decision.** Keep a single session controller as the authoritative source for the
+session, database user and role, presentation profile, and safe failure. Memoize its
+startup restoration. Keep one router instance and notify its `refreshListenable` from
+Riverpod session and locale listeners.
+
+**Consequences.** Redirects react immediately without a second navigation framework;
+role access is database-authoritative; provider rebuilds do not repeat restoration.
+The bridge notifier is owned and disposed by the router provider.

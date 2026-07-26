@@ -103,15 +103,24 @@ final class LocalDemoAuthenticationService implements AuthenticationService {
       if (values['${_prefix}status'] == 'expired') return null;
       final user = await users.getUserById(userId);
       if (user == null || user.status != UserStatus.active ||
-          demoProfileUserIds[profileId] != userId) return null;
+          demoProfileUserIds[profileId] != userId) {
+        await _clearActiveSessionSettings();
+        return null;
+      }
+      final databaseRoleCode = _roleCode(_roleForId(user.roleId));
+      if (values['${_prefix}role_code'] != databaseRoleCode) {
+        await _clearActiveSessionSettings();
+        return null;
+      }
       final now = clock.now().toUtc();
-      final expires = DateTime.parse(values['${_prefix}expires_at']!);
-      final offlineExpires = DateTime.parse(values['${_prefix}offline_expires_at']!);
-      if (now.isAfter(expires)) {
+      final expires = DateTime.parse(values['${_prefix}expires_at']!).toUtc();
+      final offlineExpires =
+          DateTime.parse(values['${_prefix}offline_expires_at']!).toUtc();
+      if (!now.isBefore(expires)) {
         await expireSession();
         return null;
       }
-      if (offline && now.isAfter(offlineExpires)) {
+      if (offline && !now.isBefore(offlineExpires)) {
         await _event(AuditEventType.authenticationOfflineDenied, userId,
             'offline_access_expired');
         return null;
@@ -123,8 +132,9 @@ final class LocalDemoAuthenticationService implements AuthenticationService {
         demoProfileId: profileId, systemRoleCode: _roleCode(_roleForId(user.roleId)),
         status: method == AuthenticationUnlockMethod.none
             ? AuthenticationSessionStatus.active : AuthenticationSessionStatus.locked,
-        createdAt: DateTime.parse(values['${_prefix}created_at']!),
-        lastAuthenticatedAt: DateTime.parse(values['${_prefix}last_authenticated_at']!),
+        createdAt: DateTime.parse(values['${_prefix}created_at']!).toUtc(),
+        lastAuthenticatedAt:
+            DateTime.parse(values['${_prefix}last_authenticated_at']!).toUtc(),
         expiresAt: expires, offlineAccessExpiresAt: offlineExpires,
         isOfflineSession: offline, requiresUnlock: method != AuthenticationUnlockMethod.none,
         unlockMethod: method);
@@ -132,7 +142,10 @@ final class LocalDemoAuthenticationService implements AuthenticationService {
       await _event(offline ? AuditEventType.authenticationOfflineUsed
           : AuditEventType.authenticationSessionRestored, userId, 'session_restored', session.id);
       return session;
-    } catch (_) { return null; }
+    } catch (_) {
+      await _clearActiveSessionSettings();
+      return null;
+    }
   }
 
   @override
@@ -187,18 +200,22 @@ final class LocalDemoAuthenticationService implements AuthenticationService {
   Future<void> signOut() async {
     if (_active != null) await _event(AuditEventType.authenticationLogout,
         _active!.userId, 'logout', _active!.id);
-    for (final key in const ['active_user_id','session_id','status','created_at',
-      'last_authenticated_at','expires_at','offline_expires_at','unlock_method']) {
-      await settings.removeSetting('$_prefix$key');
-    }
+    await _clearActiveSessionSettings();
     _active = null;
   }
 
   @override
   Future<AuthenticationResult> switchProfile(String demoProfileId) async {
     final old = _active;
-    if (old != null) await _event(AuditEventType.authenticationProfileSwitched,
-        old.userId, 'profile_switched', old.id);
+    if (old != null) {
+      final nextUserId = demoProfileUserIds[demoProfileId];
+      await _event(
+        AuditEventType.authenticationProfileSwitched,
+        old.userId,
+        'profile_switched',
+        nextUserId == null ? old.userId : '${old.userId}:$nextUserId',
+      );
+    }
     await signOut();
     return signInWithDemoProfile(demoProfileId);
   }
@@ -206,6 +223,7 @@ final class LocalDemoAuthenticationService implements AuthenticationService {
   Future<void> _persist(AuthenticationSession session) async {
     final values = <String,String>{'session_id':session.id,
       'active_user_id':session.userId,'last_profile_id':session.demoProfileId,
+      'role_code':session.systemRoleCode,
       'status':session.status.name,'created_at':session.createdAt.toIso8601String(),
       'last_authenticated_at':session.lastAuthenticatedAt.toIso8601String(),
       'expires_at':session.expiresAt.toIso8601String(),
@@ -214,11 +232,39 @@ final class LocalDemoAuthenticationService implements AuthenticationService {
     for (final entry in values.entries) await settings.saveSetting('$_prefix${entry.key}', entry.value);
   }
 
+  Future<void> _clearActiveSessionSettings() async {
+    for (final key in const [
+      'active_user_id',
+      'session_id',
+      'role_code',
+      'status',
+      'created_at',
+      'last_authenticated_at',
+      'expires_at',
+      'offline_expires_at',
+      'unlock_method',
+    ]) {
+      await settings.removeSetting('$_prefix$key');
+    }
+  }
+
   Future<void> _event(AuditEventType type, String userId, String reason,
-      [String? entityId]) => audit.appendAuditEvent(AuditEvent(
-    id:'auth-audit-${clock.now().toUtc().microsecondsSinceEpoch}-${type.code}',
-    entityType:'authentication_session', entityId:entityId ?? userId,
-    eventType:type, performedBy:userId, performedAt:clock.now().toUtc(), reason:reason));
+      [String? entityId]) async {
+    try {
+      await audit.appendAuditEvent(AuditEvent(
+        id: 'auth-audit-${clock.now().toUtc().microsecondsSinceEpoch}-${type.code}',
+        entityType: 'authentication_session',
+        entityId: entityId ?? userId,
+        eventType: type,
+        performedBy: userId,
+        performedAt: clock.now().toUtc(),
+        reason: reason,
+      ));
+    } catch (_) {
+      // Authentication remains deterministic when local audit persistence fails.
+      // No storage exception or credential input is allowed to reach the UI.
+    }
+  }
 
   static String _roleCode(DemoUserRole role) => switch(role) {
     DemoUserRole.employee => 'employee', DemoUserRole.manager => 'manager',

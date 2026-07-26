@@ -72,3 +72,13 @@ Database/DAO/repository/mapper tests use `NativeDatabase.memory()`, `FixedAppClo
 ## Phase 03 authentication conventions
 
 Authentication service tests use in-memory Drift and a fixed UTC clock. Coverage includes seeded profile/credential resolution, role authority, invalid identity outcomes, safe persistence, restore/expiry, offline behavior, PIN limits, biometric outcomes, switching/logout, and audit records. Tests assert passwords and PIN values never occur in settings or audit payloads. Provider/router tests use overrides and assert transitions and cross-role redirects without loops. Widget tests cover both locales, unlock simulation, errors, expiry, confirmation, dark mode, and responsive constraints.
+
+## Phase 03B authentication validation
+
+Dedicated authentication service, provider, actual-router, widget, and integration
+sources now exercise fail-closed restoration, credential redaction, authoritative role
+transitions, redirect refresh, localization direction, validation, unlock presentation,
+and deterministic local sign-in flows. Integration tests use only the Flutter SDK
+`integration_test` package and the seeded local database. SDK-backed analysis, full
+suite, APK, integration-device, and runtime gates remain required before Phase 03 can
+be marked complete.
