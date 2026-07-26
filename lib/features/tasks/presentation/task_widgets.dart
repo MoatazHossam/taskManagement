@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../core/domain/domain_enums.dart';
+import '../../../core/domain/entities.dart';
 import '../domain/task_query_models.dart';
 
 String statusLabel(TaskStatus value, bool ar) => switch (value) {

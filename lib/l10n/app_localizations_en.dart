@@ -424,4 +424,157 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get employeeCount => 'Employee count';
+
+  @override
+  String get allTasks => 'All tasks';
+
+  @override
+  String get todayTasks => 'Today';
+
+  @override
+  String get thisWeekTasks => 'This week';
+
+  @override
+  String get overdueTasks => 'Overdue';
+
+  @override
+  String get blockedTasks => 'Blocked';
+
+  @override
+  String get awaitingApprovalTasks => 'Awaiting approval';
+
+  @override
+  String get teamQueueTasks => 'Team queue';
+
+  @override
+  String get completedTasks => 'Completed';
+
+  @override
+  String get draftTasks => 'Drafts';
+
+  @override
+  String get searchTasks => 'Search tasks';
+
+  @override
+  String get filters => 'Filters';
+
+  @override
+  String get sort => 'Sort';
+
+  @override
+  String get applyFilters => 'Apply filters';
+
+  @override
+  String get resetFilters => 'Reset filters';
+
+  @override
+  String get saveFilter => 'Save filter';
+
+  @override
+  String get filterName => 'Filter name';
+
+  @override
+  String get defaultFilter => 'Default filter';
+
+  @override
+  String get deleteSavedFilter => 'Delete saved filter';
+
+  @override
+  String get noTasksFound => 'No tasks found';
+
+  @override
+  String get noTasksMatchFilters => 'No tasks match filters';
+
+  @override
+  String get taskDetails => 'Task details';
+
+  @override
+  String get taskNumber => 'Task number';
+
+  @override
+  String get createdBy => 'Created by';
+
+  @override
+  String get assignedTo => 'Assigned to';
+
+  @override
+  String get leadOwner => 'Lead owner';
+
+  @override
+  String get contributors => 'Contributors';
+
+  @override
+  String get sharedAssignees => 'Shared assignees';
+
+  @override
+  String get queueClaimant => 'Queue claimant';
+
+  @override
+  String get dueDate => 'Due date';
+
+  @override
+  String get plannedStart => 'Planned start';
+
+  @override
+  String get estimatedEffort => 'Estimated effort';
+
+  @override
+  String get progress => 'Progress';
+
+  @override
+  String get activity => 'Activity';
+
+  @override
+  String get timeline => 'Timeline';
+
+  @override
+  String get checklist => 'Checklist';
+
+  @override
+  String get subtasks => 'Subtasks';
+
+  @override
+  String get comments => 'Comments';
+
+  @override
+  String get attachments => 'Attachments';
+
+  @override
+  String get approval => 'Approval';
+
+  @override
+  String get blocker => 'Blocker';
+
+  @override
+  String get recurringTask => 'Recurring task';
+
+  @override
+  String get confidential => 'Confidential';
+
+  @override
+  String get restricted => 'Restricted';
+
+  @override
+  String get synced => 'Synced';
+
+  @override
+  String get pendingSynchronization => 'Pending synchronization';
+
+  @override
+  String get synchronizationFailed => 'Synchronization failed';
+
+  @override
+  String get conflict => 'Conflict';
+
+  @override
+  String get localOnly => 'Local only';
+
+  @override
+  String get dueToday => 'Due today';
+
+  @override
+  String get dueTomorrow => 'Due tomorrow';
+
+  @override
+  String get taskActionsLater => 'Task actions will be enabled later.';
 }

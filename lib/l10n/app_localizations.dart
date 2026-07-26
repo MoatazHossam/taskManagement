@@ -907,6 +907,312 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Employee count'**
   String get employeeCount;
+
+  /// No description provided for @allTasks.
+  ///
+  /// In en, this message translates to:
+  /// **'All tasks'**
+  String get allTasks;
+
+  /// No description provided for @todayTasks.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get todayTasks;
+
+  /// No description provided for @thisWeekTasks.
+  ///
+  /// In en, this message translates to:
+  /// **'This week'**
+  String get thisWeekTasks;
+
+  /// No description provided for @overdueTasks.
+  ///
+  /// In en, this message translates to:
+  /// **'Overdue'**
+  String get overdueTasks;
+
+  /// No description provided for @blockedTasks.
+  ///
+  /// In en, this message translates to:
+  /// **'Blocked'**
+  String get blockedTasks;
+
+  /// No description provided for @awaitingApprovalTasks.
+  ///
+  /// In en, this message translates to:
+  /// **'Awaiting approval'**
+  String get awaitingApprovalTasks;
+
+  /// No description provided for @teamQueueTasks.
+  ///
+  /// In en, this message translates to:
+  /// **'Team queue'**
+  String get teamQueueTasks;
+
+  /// No description provided for @completedTasks.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get completedTasks;
+
+  /// No description provided for @draftTasks.
+  ///
+  /// In en, this message translates to:
+  /// **'Drafts'**
+  String get draftTasks;
+
+  /// No description provided for @searchTasks.
+  ///
+  /// In en, this message translates to:
+  /// **'Search tasks'**
+  String get searchTasks;
+
+  /// No description provided for @filters.
+  ///
+  /// In en, this message translates to:
+  /// **'Filters'**
+  String get filters;
+
+  /// No description provided for @sort.
+  ///
+  /// In en, this message translates to:
+  /// **'Sort'**
+  String get sort;
+
+  /// No description provided for @applyFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply filters'**
+  String get applyFilters;
+
+  /// No description provided for @resetFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset filters'**
+  String get resetFilters;
+
+  /// No description provided for @saveFilter.
+  ///
+  /// In en, this message translates to:
+  /// **'Save filter'**
+  String get saveFilter;
+
+  /// No description provided for @filterName.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter name'**
+  String get filterName;
+
+  /// No description provided for @defaultFilter.
+  ///
+  /// In en, this message translates to:
+  /// **'Default filter'**
+  String get defaultFilter;
+
+  /// No description provided for @deleteSavedFilter.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete saved filter'**
+  String get deleteSavedFilter;
+
+  /// No description provided for @noTasksFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No tasks found'**
+  String get noTasksFound;
+
+  /// No description provided for @noTasksMatchFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'No tasks match filters'**
+  String get noTasksMatchFilters;
+
+  /// No description provided for @taskDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Task details'**
+  String get taskDetails;
+
+  /// No description provided for @taskNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Task number'**
+  String get taskNumber;
+
+  /// No description provided for @createdBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Created by'**
+  String get createdBy;
+
+  /// No description provided for @assignedTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Assigned to'**
+  String get assignedTo;
+
+  /// No description provided for @leadOwner.
+  ///
+  /// In en, this message translates to:
+  /// **'Lead owner'**
+  String get leadOwner;
+
+  /// No description provided for @contributors.
+  ///
+  /// In en, this message translates to:
+  /// **'Contributors'**
+  String get contributors;
+
+  /// No description provided for @sharedAssignees.
+  ///
+  /// In en, this message translates to:
+  /// **'Shared assignees'**
+  String get sharedAssignees;
+
+  /// No description provided for @queueClaimant.
+  ///
+  /// In en, this message translates to:
+  /// **'Queue claimant'**
+  String get queueClaimant;
+
+  /// No description provided for @dueDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Due date'**
+  String get dueDate;
+
+  /// No description provided for @plannedStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Planned start'**
+  String get plannedStart;
+
+  /// No description provided for @estimatedEffort.
+  ///
+  /// In en, this message translates to:
+  /// **'Estimated effort'**
+  String get estimatedEffort;
+
+  /// No description provided for @progress.
+  ///
+  /// In en, this message translates to:
+  /// **'Progress'**
+  String get progress;
+
+  /// No description provided for @activity.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity'**
+  String get activity;
+
+  /// No description provided for @timeline.
+  ///
+  /// In en, this message translates to:
+  /// **'Timeline'**
+  String get timeline;
+
+  /// No description provided for @checklist.
+  ///
+  /// In en, this message translates to:
+  /// **'Checklist'**
+  String get checklist;
+
+  /// No description provided for @subtasks.
+  ///
+  /// In en, this message translates to:
+  /// **'Subtasks'**
+  String get subtasks;
+
+  /// No description provided for @comments.
+  ///
+  /// In en, this message translates to:
+  /// **'Comments'**
+  String get comments;
+
+  /// No description provided for @attachments.
+  ///
+  /// In en, this message translates to:
+  /// **'Attachments'**
+  String get attachments;
+
+  /// No description provided for @approval.
+  ///
+  /// In en, this message translates to:
+  /// **'Approval'**
+  String get approval;
+
+  /// No description provided for @blocker.
+  ///
+  /// In en, this message translates to:
+  /// **'Blocker'**
+  String get blocker;
+
+  /// No description provided for @recurringTask.
+  ///
+  /// In en, this message translates to:
+  /// **'Recurring task'**
+  String get recurringTask;
+
+  /// No description provided for @confidential.
+  ///
+  /// In en, this message translates to:
+  /// **'Confidential'**
+  String get confidential;
+
+  /// No description provided for @restricted.
+  ///
+  /// In en, this message translates to:
+  /// **'Restricted'**
+  String get restricted;
+
+  /// No description provided for @synced.
+  ///
+  /// In en, this message translates to:
+  /// **'Synced'**
+  String get synced;
+
+  /// No description provided for @pendingSynchronization.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending synchronization'**
+  String get pendingSynchronization;
+
+  /// No description provided for @synchronizationFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Synchronization failed'**
+  String get synchronizationFailed;
+
+  /// No description provided for @conflict.
+  ///
+  /// In en, this message translates to:
+  /// **'Conflict'**
+  String get conflict;
+
+  /// No description provided for @localOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Local only'**
+  String get localOnly;
+
+  /// No description provided for @dueToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Due today'**
+  String get dueToday;
+
+  /// No description provided for @dueTomorrow.
+  ///
+  /// In en, this message translates to:
+  /// **'Due tomorrow'**
+  String get dueTomorrow;
+
+  /// No description provided for @taskActionsLater.
+  ///
+  /// In en, this message translates to:
+  /// **'Task actions will be enabled later.'**
+  String get taskActionsLater;
 }
 
 class _AppLocalizationsDelegate

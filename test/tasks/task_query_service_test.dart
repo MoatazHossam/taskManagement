@@ -12,7 +12,7 @@ void main() {
   late DemoDataStore store;
   late RepositoryTaskQueryService service;
   setUp(() {
-    const clock = FixedAppClock(DateTime.utc(2026, 7, 26, 12));
+    final clock = FixedAppClock(DateTime.utc(2026, 7, 26, 12));
     store = DemoDataStore(clock: clock);
     final users = InMemoryUserRepository(store);
     final organization = InMemoryOrganizationRepository(store);

@@ -424,4 +424,157 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get employeeCount => 'عدد الموظفين';
+
+  @override
+  String get allTasks => 'كل المهام';
+
+  @override
+  String get todayTasks => 'اليوم';
+
+  @override
+  String get thisWeekTasks => 'هذا الأسبوع';
+
+  @override
+  String get overdueTasks => 'متأخرة';
+
+  @override
+  String get blockedTasks => 'متعطلة';
+
+  @override
+  String get awaitingApprovalTasks => 'بانتظار الموافقة';
+
+  @override
+  String get teamQueueTasks => 'قائمة انتظار الفريق';
+
+  @override
+  String get completedTasks => 'مكتملة';
+
+  @override
+  String get draftTasks => 'المسودات';
+
+  @override
+  String get searchTasks => 'البحث في المهام';
+
+  @override
+  String get filters => 'عوامل التصفية';
+
+  @override
+  String get sort => 'الترتيب';
+
+  @override
+  String get applyFilters => 'تطبيق عوامل التصفية';
+
+  @override
+  String get resetFilters => 'إعادة ضبط التصفية';
+
+  @override
+  String get saveFilter => 'حفظ عامل التصفية';
+
+  @override
+  String get filterName => 'اسم عامل التصفية';
+
+  @override
+  String get defaultFilter => 'عامل التصفية الافتراضي';
+
+  @override
+  String get deleteSavedFilter => 'حذف عامل التصفية المحفوظ';
+
+  @override
+  String get noTasksFound => 'لم يتم العثور على مهام';
+
+  @override
+  String get noTasksMatchFilters => 'لا توجد مهام مطابقة للتصفية';
+
+  @override
+  String get taskDetails => 'تفاصيل المهمة';
+
+  @override
+  String get taskNumber => 'رقم المهمة';
+
+  @override
+  String get createdBy => 'أنشأها';
+
+  @override
+  String get assignedTo => 'معينة إلى';
+
+  @override
+  String get leadOwner => 'المالك الرئيسي';
+
+  @override
+  String get contributors => 'المساهمون';
+
+  @override
+  String get sharedAssignees => 'المكلفون المشتركون';
+
+  @override
+  String get queueClaimant => 'مستلم مهمة قائمة الانتظار';
+
+  @override
+  String get dueDate => 'تاريخ الاستحقاق';
+
+  @override
+  String get plannedStart => 'البداية المخططة';
+
+  @override
+  String get estimatedEffort => 'الجهد المقدر';
+
+  @override
+  String get progress => 'التقدم';
+
+  @override
+  String get activity => 'النشاط';
+
+  @override
+  String get timeline => 'الخط الزمني';
+
+  @override
+  String get checklist => 'قائمة التحقق';
+
+  @override
+  String get subtasks => 'المهام الفرعية';
+
+  @override
+  String get comments => 'التعليقات';
+
+  @override
+  String get attachments => 'المرفقات';
+
+  @override
+  String get approval => 'الموافقة';
+
+  @override
+  String get blocker => 'العائق';
+
+  @override
+  String get recurringTask => 'مهمة متكررة';
+
+  @override
+  String get confidential => 'سري';
+
+  @override
+  String get restricted => 'مقيد';
+
+  @override
+  String get synced => 'تمت المزامنة';
+
+  @override
+  String get pendingSynchronization => 'مزامنة معلقة';
+
+  @override
+  String get synchronizationFailed => 'فشلت المزامنة';
+
+  @override
+  String get conflict => 'تعارض';
+
+  @override
+  String get localOnly => 'محلي فقط';
+
+  @override
+  String get dueToday => 'مستحقة اليوم';
+
+  @override
+  String get dueTomorrow => 'مستحقة غداً';
+
+  @override
+  String get taskActionsLater => 'سيتم تمكين إجراءات المهمة لاحقاً.';
 }
