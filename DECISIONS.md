@@ -149,3 +149,11 @@ These decisions apply to the initial demo and are revisited only under their sta
 **Decision.** Retain only Android and iOS projects, name the Dart package `organization_task_manager`, and temporarily use `com.example.organizationtaskmanager` on both platforms. This identifier must be replaced before production signing. The generator records Flutter 3.38.9, Dart 3.10.8, and SDK constraint `>=3.10.0 <4.0.0`. Phase 01 constraints are `flutter_riverpod ^2.6.1`, `go_router ^16.2.1`, `intl ^0.20.2`, `flutter_lints ^6.0.0`, and `mocktail ^1.0.4`; exact resolution must be refreshed by `flutter pub get` in an SDK-equipped environment.
 
 **Consequences.** No web/desktop platform is advertised or maintained. No database, networking, cloud, Firebase, storage, serialization, AI, or analytics dependency is introduced.
+
+## ADR-012 — Layered surfaces and centralized navigation clearance
+
+**Context.** Phase 01.5 screens used similar outlined cards throughout, dark surfaces lacked separation, and individual scroll views could be obscured by phone navigation.
+
+**Decision.** Define five semantic surface roles (page, standard, elevated/selected, border, and disabled) as a theme extension, and require primary shell screens to use a shared scroll-view primitive that calculates phone navigation, safe-area, and content clearance.
+
+**Consequences.** Reusable components vary surface, border, and minimal elevation by purpose without heavy shadows. Feature screens must not add arbitrary bottom-navigation padding. These tokens are presentation concerns only and introduce no task-domain or infrastructure behavior.
