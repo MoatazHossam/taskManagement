@@ -91,3 +91,7 @@ Drift/SQLite, generated database code, DAOs, companions, SQL, database mappers, 
 The active application uses one deterministic, Flutter-independent `DemoDataStore` and typed in-memory repository implementations. Repository interfaces remain the application boundary and are ready to be replaced by future on-premises API adapters without presentation changes. Runtime mutations and the simulated authentication session reset whenever the application restarts; this is demo state, not production persistence. Authentication roles are a repository-authoritative demo identity. No networking, cloud, Firebase, backend, real biometric, or external identity integration was added.
 
 Phase 04 was not started.
+
+## Phase 04 test conventions
+
+Hierarchy tests use deterministic seed IDs and assert stable employee/code ordering, immutable results, missing references, and visited-set protection for manager and department cycles. Authorization tests assert both positive and negative halves of every role boundary, target-aware queue access, explicit deny precedence, allow-with-scope behavior, organization boundaries, and confidentiality fail-closed behavior. Provider tests must authenticate through the session controller rather than create duplicate current-user state. Router tests verify permission gates and redirect-loop safety independently of UI hiding. Widget tests use both locales, directions, themes, compact phone and tablet constraints, and long Arabic labels.

@@ -1,4 +1,5 @@
 import '../domain/app_clock.dart';
+import '../domain/authorization_models.dart';
 import '../domain/domain_enums.dart';
 import '../domain/entities.dart';
 import 'demo_seed_ids.dart';
@@ -19,6 +20,7 @@ final class DemoDataStore {
   final roles = <Role>[];
   final permissions = <Permission>[];
   final rolePermissions = <RolePermission>[];
+  final permissionOverrides = <PermissionOverride>[];
   final priorities = <TaskPriority>[];
   final categories = <TaskCategory>[];
   final confidentialityLevels = <ConfidentialityLevel>[];
@@ -81,9 +83,15 @@ final class DemoDataStore {
       _membership('membership-khaled', DemoSeedIds.technicalSupportQueue, DemoSeedIds.khaled, TeamMembershipRole.queueMember),
     ]);
     permissions.addAll(PermissionCode.values.where((e) => e != PermissionCode.unknown).map((e) => Permission(id: 'permission-${e.code}', code: e)));
-    for (final role in roles) {
-      for (final permission in permissions) {
-        rolePermissions.add(RolePermission(id: '${role.id}-${permission.id}', roleId: role.id, permissionId: permission.id));
+    const matrix = <String, Set<PermissionCode>>{
+      DemoSeedIds.roleEmployee: {PermissionCode.profileViewSelf, PermissionCode.organizationViewOwnContext, PermissionCode.taskViewOwn, PermissionCode.taskCreateSelf, PermissionCode.taskAssignSelf, PermissionCode.taskRequestExtension, PermissionCode.reportViewSelf},
+      DemoSeedIds.roleManager: {PermissionCode.profileViewSelf, PermissionCode.organizationViewOwnContext, PermissionCode.organizationViewTeam, PermissionCode.organizationViewDepartment, PermissionCode.organizationViewAll, PermissionCode.directoryViewUsers, PermissionCode.directoryViewReportingLines, PermissionCode.taskViewOwn, PermissionCode.taskViewTeam, PermissionCode.taskViewDepartment, PermissionCode.taskCreateSelf, PermissionCode.taskCreateForOthers, PermissionCode.taskAssignSelf, PermissionCode.taskAssignTeam, PermissionCode.taskAssignDepartment, PermissionCode.taskAssignOrganization, PermissionCode.taskReassignTeam, PermissionCode.taskReassignDepartment, PermissionCode.taskReassignOrganization, PermissionCode.taskApprove, PermissionCode.taskRequestExtension, PermissionCode.taskManageRecurrence, PermissionCode.reportViewSelf, PermissionCode.reportViewTeam, PermissionCode.reportViewDepartment, PermissionCode.reportViewEmployeePerformance},
+      DemoSeedIds.roleSenior: {PermissionCode.profileViewSelf, PermissionCode.organizationViewOwnContext, PermissionCode.organizationViewAll, PermissionCode.directoryViewUsers, PermissionCode.directoryViewReportingLines, PermissionCode.taskViewOwn, PermissionCode.taskViewAll, PermissionCode.taskViewConfidential, PermissionCode.taskViewRestricted, PermissionCode.taskCreateForOthers, PermissionCode.taskAssignOrganization, PermissionCode.taskReassignOrganization, PermissionCode.taskApprove, PermissionCode.reportViewSelf, PermissionCode.reportViewTeam, PermissionCode.reportViewDepartment, PermissionCode.reportViewOrganization, PermissionCode.reportViewEmployeePerformance},
+      DemoSeedIds.roleAdministrator: {PermissionCode.profileViewSelf, PermissionCode.organizationViewOwnContext, PermissionCode.organizationViewAll, PermissionCode.directoryViewUsers, PermissionCode.directoryViewReportingLines, PermissionCode.adminView, PermissionCode.adminManageUsers, PermissionCode.adminManageOrganization, PermissionCode.adminManageRoles, PermissionCode.adminManageConfiguration, PermissionCode.adminViewAudit, PermissionCode.adminManageSync, PermissionCode.adminManageSettings},
+    };
+    for (final entry in matrix.entries) {
+      for (final code in entry.value) {
+        rolePermissions.add(RolePermission(id: '${entry.key}-permission-${code.code}', roleId: entry.key, permissionId: 'permission-${code.code}'));
       }
     }
     for (var i = 0; i < 5; i++) {

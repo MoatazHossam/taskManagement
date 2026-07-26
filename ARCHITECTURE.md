@@ -130,3 +130,9 @@ Drift/SQLite, generated database code, DAOs, companions, SQL, database mappers, 
 The active application uses one deterministic, Flutter-independent `DemoDataStore` and typed in-memory repository implementations. Repository interfaces remain the application boundary and are ready to be replaced by future on-premises API adapters without presentation changes. Runtime mutations and the simulated authentication session reset whenever the application restarts; this is demo state, not production persistence. Authentication roles are a repository-authoritative demo identity. No networking, cloud, Firebase, backend, real biometric, or external identity integration was added.
 
 Phase 04 was not started.
+
+## Phase 04 organization and authorization
+
+`OrganizationHierarchyService` resolves paths, descendants, reporting lines, memberships, led teams, queue memberships, and immutable `OrganizationContext` snapshots through repository abstractions. Iterative visited sets bound circular department and manager references. `AuthorizationService` combines the typed role matrix, explicit overrides, organizational scope, target affiliation, queue role, and confidentiality into a safe `AuthorizationDecision`.
+
+Riverpod composes both replaceable services and derives context and permissions from the single authenticated session. Router guards and service decisions enforce protected access; `PermissionGate` is presentation affordance rather than the security boundary. Future on-premises adapters replace repository/service implementations while preserving domain contracts and widgets.

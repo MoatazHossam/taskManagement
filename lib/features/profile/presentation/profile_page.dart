@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../app/dependency_injection/app_providers.dart';
 import '../../../app/localization/localization_extensions.dart';
@@ -60,6 +61,7 @@ class ProfilePage extends ConsumerWidget {
       AppPanel(
         title: context.l10n.demoMode,
         child: Column(children: [
+          ListTile(key: const Key('access-summary'), leading: const Icon(Icons.shield_outlined), title: Text(context.l10n.accessSummary), trailing: const Icon(Icons.chevron_right), onTap: () => context.push('/access-summary')),
           ListTile(leading: const Icon(Icons.palette_outlined), title: Text(context.l10n.foundationGallery), trailing: const Icon(Icons.chevron_right), onTap: openGallery),
           ListTile(leading: const Icon(Icons.switch_account), title: Text(context.l10n.switchProfile), onTap: () async {await ref.read(sessionProvider.notifier).logout();ref.read(sessionProvider.notifier).beginProfileSelection();}),
           ListTile(key: const Key('expire-session'), leading: const Icon(Icons.timer_off_outlined), title: Text(context.l10n.expireSession), onTap: () => ref.read(sessionProvider.notifier).expire()),
