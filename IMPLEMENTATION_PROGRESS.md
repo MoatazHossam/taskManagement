@@ -5,7 +5,7 @@ Statuses: `Not Started`, `In Progress`, `Completed`, or `Blocked`. Dates use ISO
 | Phase | Status | Started date | Completed date | Deliverables | Tests | Static-analysis result | Known issues | Notes |
 |---|---|---|---|---|---|---|---|---|
 | Phase 00 — Project Governance | Completed | 2026-07-26 | 2026-07-26 | Repository inspection; governance documents; ADRs; approved directory skeleton; ignore policy | Structural/document consistency checks passed; no code tests applicable | Not runnable: no Flutter project or `analysis_options.yaml`; intended policy documented | Flutter initialization remains for Phase 01 | Existing specification and ignore rules preserved/improved; no existing app, source, tests, packages, state management, or localization existed |
-| Phase 01 — Flutter Foundation | Not Started | — | — | Flutter setup, theme, ARB localization, routing, Riverpod/DI, reusable shell, mock profile selection | Not run | Not run | Requires Flutter initialization | Recommended next phase; do not begin without explicit request |
+| Phase 01 — Flutter Foundation | In Progress | 2026-07-26 | — | Android/iOS setup; Riverpod session/settings; ARB localization; Material 3 themes; guarded go_router role shells; responsive and state widgets; UI gallery; tests | Added but not executable in this container (`flutter` absent) | Not executable in this container (`flutter` absent) | SDK commands unavailable; lockfile must be resolved and validation completed in an SDK-equipped environment | Desktop/web boilerplate removed; Phase 02 remains Not Started |
 | Phase 02 — Core Models and Local Database | Not Started | — | — | Enums, entities, Drift schema, seed data, contracts, local repositories | Not run | Not run | None recorded | Planned |
 | Phase 03 — Authentication and Role Switching | Not Started | — | — | Splash, language selection, demo login/profiles, current-user context, role navigation | Not run | Not run | None recorded | Planned |
 | Phase 04 — Organization and Permissions | Not Started | — | — | Departments, teams, users, reporting lines, roles, permission/confidentiality checks | Not run | Not run | None recorded | Planned |
@@ -36,3 +36,12 @@ Statuses: `Not Started`, `In Progress`, `Completed`, or `Blocked`. Dates use ISO
 ## Repository conflicts found
 
 No conflict with the master specification was found. The pre-change repository was an uninitialized foundation, not an application: it had no package manifest, analyzer configuration, platforms, `lib/`, tests, state-management choice, or localization catalogs. The existing `.gitignore` appeared derived from Flutter SDK/repository rules rather than a compact application template; it was retained in intent and normalized for an application repository without unignoring secrets or generated output.
+
+
+## Phase 01 implementation record
+
+- Pre-change inconsistency: commit `d2f4c0c` had already run the default Flutter generator after Phase 00 and included web/Linux/macOS/Windows despite the mobile-only phase request, while Phase 00 documentation still said the repository was uninitialized. Phase 01 retained Android/iOS and removed unsupported generated platforms.
+- Added the application bootstrap, localization catalogs/accessor, providers, guarded router, role destination configurations, responsive shell, theme tokens, demo personas, profile/settings, connectivity banners, foundation states, gallery, errors, and unit/widget test sources.
+- Dependencies declared: Flutter localization SDK, `flutter_riverpod`, `go_router`, `intl`, `flutter_lints`, `mocktail`, and Flutter test SDK only.
+- Validation remains gated because this execution environment reports `flutter: command not found` and `dart: command not found`. Phase 01 therefore remains In Progress rather than inaccurately claiming completion.
+- Phase 02 remains Not Started. No task domain, Drift schema, backend, Firebase/cloud integration, external API, or real AI was introduced.

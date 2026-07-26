@@ -92,3 +92,9 @@ Pure unit tests cover domain rules, repository mappings/logic, report calculatio
 ## 13. Prohibited dependencies and patterns
 
 Do not add Firebase, cloud storage/database/AI/authentication, outbound analytics, ads, social login, external notification services, real external APIs, or project-management packages. Also prohibited are direct storage/service access from presentation, multiple state-management frameworks, business logic in widgets, hardcoded user-facing strings, untyped status strings, global mutable service locators, storage models leaking into domain/UI, authorization based only on button visibility, blanket analyzer exclusions, and speculative abstractions without a demonstrated use.
+
+## Phase 01 implementation record
+
+The composition root uses `ProviderScope`; Riverpod providers own locale, theme, connectivity, and the replaceable in-memory session boundary. `go_router` defines public and authenticated role paths, with pure role-access decisions and redirects. `MaterialApp.router` consumes generated-compatible ARB localization, centralized Material 3 light/dark themes, and system theme mode.
+
+`AppResponsiveShell` selects bottom navigation below the tablet breakpoint and a navigation rail on tablets while constraining readable content width. Employee, manager, senior-management, and administrator configurations share this shell. Connectivity is explicitly a deterministic UI simulation: it performs no network checks, queues no work, and has no persistence. Authentication similarly stores no credentials and is designed to be replaced behind providers.
