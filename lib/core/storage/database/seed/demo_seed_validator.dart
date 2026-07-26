@@ -1,4 +1,5 @@
-import '../app_database.dart'; import 'demo_seed_ids.dart';
+import '../app_database.dart';
+import 'demo_seed_ids.dart';
 final class SeedValidationResult { const SeedValidationResult(this.errors); final List<String> errors; bool get isValid=>errors.isEmpty; void throwIfInvalid(){if(!isValid)throw StateError('Invalid demo seed: ${errors.join(', ')}');} }
 class DemoSeedValidator { const DemoSeedValidator(this.db); final AppDatabase db;
  Future<SeedValidationResult> validate() async { final errors=<String>[]; Future<int> count(String table,[String? where]) async=>(await db.customSelect('SELECT COUNT(*) AS c FROM $table${where==null?'':' WHERE $where'}').getSingle()).read<int>('c');

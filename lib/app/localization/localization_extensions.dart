@@ -1,12 +1,18 @@
 import 'package:flutter/widgets.dart';
 import '../../l10n/app_localizations.dart';
 
-extension LocalizationContext on BuildContext { AppLocalizations get l10n => AppLocalizations.of(this)!; }
+extension LocalizationContextExtension on BuildContext {
+  AppLocalizations get l10n => AppLocalizations.of(this)!;
+
+  Locale get currentLocale => Localizations.localeOf(this);
+
+  bool get isArabic => Localizations.localeOf(this).languageCode == 'ar';
+}
 
 // Compatibility accessors are sourced verbatim from the ARB catalogs. They can be
 // removed after `flutter gen-l10n` runs in an SDK-equipped environment.
 extension Phase03AuthenticationLocalizations on AppLocalizations {
-  bool get _ar=>locale.languageCode=='ar';
+  bool get _ar => localeName.startsWith('ar');
   String get showPassword=>_ar?'إظهار كلمة المرور':'Show password';
   String get hidePassword=>_ar?'إخفاء كلمة المرور':'Hide password';
   String get demoCredentialsHelper=>_ar?'للعرض فقط: employee أو manager أو executive أو admin أو support / demo123':'Demo only: employee, manager, executive, admin, or support / demo123';
