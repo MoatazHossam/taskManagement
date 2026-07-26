@@ -15,7 +15,7 @@ class SplashPage extends ConsumerStatefulWidget {
   @override ConsumerState<SplashPage> createState()=>_SplashPageState();
 }
 class _SplashPageState extends ConsumerState<SplashPage> {
-  @override void initState(){super.initState();Future.microtask(() async {await ref.read(databaseInitializationProvider.future);await ref.read(sessionProvider.notifier).initialize(offline:ref.read(connectivityProvider)==SimulatedConnectivityStatus.offline);});}
+  @override void initState(){super.initState();Future.microtask(() async {ref.read(demoDataStoreProvider);await ref.read(sessionProvider.notifier).initialize(offline:ref.read(connectivityProvider)==SimulatedConnectivityStatus.offline);});}
   @override
   Widget build(BuildContext context) => Scaffold(body: AppLoadingIdentity(title: context.l10n.appName, label: context.l10n.loading));
 }

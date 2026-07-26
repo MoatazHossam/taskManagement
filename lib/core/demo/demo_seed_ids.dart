@@ -1,0 +1,33 @@
+abstract final class DemoSeedIds {
+  static const organization = 'org-demo';
+  static const executive = 'department-executive';
+  static const operations = 'department-operations';
+  static const finance = 'department-finance';
+  static const humanResources = 'department-hr';
+  static const informationTechnology = 'department-it';
+  static const fieldOperations = 'team-field-operations';
+  static const serviceCoordination = 'team-service-coordination';
+  static const accountsPayable = 'team-accounts-payable';
+  static const reporting = 'team-reporting';
+  static const recruitment = 'team-recruitment';
+  static const employeeServices = 'team-employee-services';
+  static const technicalSupportQueue = 'team-technical-support-queue';
+  static const applicationSupport = 'team-application-support';
+  static const ahmed = 'user-ahmed-hassan';
+  static const sara = 'user-sara-mahmoud';
+  static const omar = 'user-omar-al-nuaimi';
+  static const laila = 'user-laila-youssef';
+  static const khaled = 'user-khaled-ibrahim';
+  static const roleEmployee = 'role-employee';
+  static const roleManager = 'role-manager';
+  static const roleSenior = 'role-senior-management';
+  static const roleAdministrator = 'role-administrator';
+  static const priorityLow = 'priority-low';
+  static const priorityNormal = 'priority-normal';
+  static const priorityHigh = 'priority-high';
+  static const priorityUrgent = 'priority-urgent';
+  static const priorityCritical = 'priority-critical';
+  static const confidentialityInternal = 'confidentiality-internal';
+  static String scenario(int number) =>
+      'scenario-${number.toString().padLeft(2, '0')}';
+}

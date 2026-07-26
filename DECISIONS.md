@@ -181,5 +181,14 @@ startup restoration. Keep one router instance and notify its `refreshListenable`
 Riverpod session and locale listeners.
 
 **Consequences.** Redirects react immediately without a second navigation framework;
-role access is database-authoritative; provider rebuilds do not repeat restoration.
+role access is repository-authoritative demo identity; provider rebuilds do not repeat restoration.
 The bridge notifier is owned and disposed by the router provider.
+
+
+## Emergency deadline persistence pivot (2026-07-26)
+
+Drift/SQLite, generated database code, DAOs, companions, SQL, database mappers, and build_runner are removed from the active deadline demo. The historical Phase 02 implementation is retained under `archive/drift_phase_02/` outside active compilation.
+
+The active application uses one deterministic, Flutter-independent `DemoDataStore` and typed in-memory repository implementations. Repository interfaces remain the application boundary and are ready to be replaced by future on-premises API adapters without presentation changes. Runtime mutations and the simulated authentication session reset whenever the application restarts; this is demo state, not production persistence. Authentication roles are a repository-authoritative demo identity. No networking, cloud, Firebase, backend, real biometric, or external identity integration was added.
+
+Phase 04 was not started.
