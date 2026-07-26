@@ -11,6 +11,7 @@ import '../../features/organization/presentation/access_summary_page.dart';
 import '../../features/organization/presentation/organization_pages.dart';
 import '../../features/organization/presentation/widgets/authorization_widgets.dart';
 import '../../features/tasks/presentation/task_pages.dart';
+import '../../features/tasks/presentation/task_creation_pages.dart';
 
 abstract final class AppRoutes {
   static const splash = '/splash',
@@ -95,7 +96,13 @@ final routerProvider = Provider<GoRouter>((ref) {
               ? PermissionCode.reportViewOrganization
               : PermissionCode.reportViewDepartment;
         if (path.startsWith('/app/admin/')) required = PermissionCode.adminView;
-        if (path == '/tasks' || path.startsWith('/tasks/')) {
+        if (path.startsWith('/tasks/create') || path.endsWith('/edit-draft')) {
+          final permissions = await ref.read(authorizationServiceProvider).getEffectivePermissions(user.id);
+          if (!permissions.contains(PermissionCode.taskCreateSelf) &&
+              !permissions.contains(PermissionCode.taskCreateForOthers)) {
+            return '/access-denied';
+          }
+        } else if (path == '/tasks' || path.startsWith('/tasks/')) {
           final permissions = await ref.read(authorizationServiceProvider).getEffectivePermissions(user.id);
           if (!permissions.any(const {PermissionCode.taskViewOwn, PermissionCode.taskViewTeam,
             PermissionCode.taskViewDepartment, PermissionCode.taskViewAll}.contains)) return '/access-denied';
@@ -114,6 +121,11 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/tasks',
         builder: (c, s) => const TaskListPage(),
       ),
+      GoRoute(path: '/tasks/create', builder: (c, s) => const TaskCreationPage()),
+      GoRoute(path: '/tasks/create/template', builder: (c, s) => const TaskCreationPage()),
+      GoRoute(path: '/tasks/create/review', builder: (c, s) => const TaskCreationPage(initialStep: 3)),
+      GoRoute(path: '/tasks/create/success/:taskId', builder: (c, s) => TaskCreationSuccessPage(taskId: s.pathParameters['taskId']!)),
+      GoRoute(path: '/tasks/:taskId/edit-draft', builder: (c, s) => TaskCreationPage(draftId: s.pathParameters['taskId']!)),
       GoRoute(
         path: '/tasks/:taskId',
         builder: (c, s) => TaskDetailsPage(taskId: s.pathParameters['taskId']!),

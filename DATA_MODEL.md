@@ -78,3 +78,7 @@ advanced filter sets, and sorting. `TaskQueryResult` contains immutable `TaskLis
 projections plus authorization counts and generation time. `TaskDetails` safely
 aggregates related repositories. `TaskTimelineEntry` is a sanitized audit projection.
 `TaskSavedFilter` binds a name and query and exists only for the process lifetime.
+
+## Phase 06 creation value objects
+
+`TaskDraft` is an immutable, Flutter-independent command model with bilingual content, single-owner assignment, configuration references, planning/workflow flags, template source, stable identity, and timestamps. `TaskCreationDefaults` contains the centrally resolved initial draft and owner lock. `TaskCreationOptions` contains permitted configuration, templates, and active owner candidates. `TaskValidationResult` contains typed field issues. `TaskCreationResult` returns a safe typed status, optional task, validation issues, message key, reason code, and draft/submission discriminator; raw exceptions never cross the service boundary.

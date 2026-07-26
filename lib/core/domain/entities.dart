@@ -205,7 +205,7 @@ class Task {
     required this.confidentialityLevelId,
     required this.visibilityType,
     this.plannedStartDate,
-    required this.dueDate,
+    this.dueDate,
     this.dueTime,
     this.estimatedEffortMinutes,
     required this.progressPercentage,
@@ -232,10 +232,15 @@ class Task {
     this.isLocallyModified = false,
     this.isDeleted = false,
   }) {
-    if (titleAr.trim().isEmpty) throw ArgumentError.value(titleAr, 'titleAr');
+    if (status != TaskStatus.draft &&
+        titleAr.trim().isEmpty &&
+        (titleEn?.trim().isEmpty ?? true))
+      throw ArgumentError('At least one task title is required');
     if (progressPercentage < 0 || progressPercentage > 100)
       throw RangeError.range(progressPercentage, 0, 100, 'progressPercentage');
-    if (plannedStartDate != null && dueDate.isBefore(plannedStartDate!))
+    if (plannedStartDate != null &&
+        dueDate != null &&
+        dueDate!.isBefore(plannedStartDate!))
       throw ArgumentError('dueDate must not precede plannedStartDate');
   }
   final EntityId id,
@@ -267,7 +272,8 @@ class Task {
       completedAt,
       cancelledAt,
       lastSyncedAt;
-  final DateTime dueDate, createdAt, updatedAt;
+  final DateTime? dueDate;
+  final DateTime createdAt, updatedAt;
   final int? estimatedEffortMinutes, serverVersion;
   final int progressPercentage, localVersion;
   final bool approvalRequired,

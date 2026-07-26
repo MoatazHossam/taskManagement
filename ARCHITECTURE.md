@@ -151,3 +151,9 @@ contract without changing task presentation.
 ### Phase 05B task presentation boundary
 
 `TaskPageContext` configures employee, manager, senior-management, and generic task destinations without role-name checks in reusable widgets. `TaskPresentation` is the centralized locale-aware mapping for domain codes. Manager scope is query state and therefore updates without reconstructing the route. Runtime saved filters remain in `RepositoryTaskQueryService`; no persistence, networking, or mutation layer was added.
+
+## Phase 06 task command boundary
+
+`TaskCreationService` is the Flutter-independent command boundary. Its repository implementation composes the existing user, organization, task-configuration, task, audit, and sync ports with `AuthorizationService`; widgets never mutate `DemoDataStore`. `TaskIdentityService` is a replaceable deterministic identity port. Riverpod owns one immutable `TaskDraft`, loads defaults/options centrally, and invalidates query projections after mutation. A future on-premises task-command adapter can replace this implementation without changing the form.
+
+A first draft save creates the task record and permanent number. Submit updates that record, creates its single-owner assignment, appends a meaningful audit event, and queues a pending local sync operation. Runtime draft/form state resets with the in-memory composition root, logout, or profile change.

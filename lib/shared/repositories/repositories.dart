@@ -44,6 +44,7 @@ abstract interface class TaskRepository {
   Future<List<TaskApproval>> getApprovals(String id);
   Future<void> insertTaskRecord(Task task);
   Future<void> updateTaskRecord(Task task);
+  Future<void> deleteTaskRecord(String id);
   Future<void> insertAssignments(List<TaskAssignment> values);
 }
 
