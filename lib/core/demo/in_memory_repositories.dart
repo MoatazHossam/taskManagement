@@ -142,6 +142,11 @@ final class InMemoryTaskRepository implements TaskRepository {
     if (index < 0) throw StateError('Unknown task ${task.id}');
     store.tasks[index] = task;
   }
+  @override
+  Future<void> deleteTaskRecord(String id) async {
+    store.tasks.removeWhere((e) => e.id == id);
+    store.assignments.removeWhere((e) => e.taskId == id);
+  }
 
   @override
   Future<void> insertAssignments(List<TaskAssignment> values) async =>

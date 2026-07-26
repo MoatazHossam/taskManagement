@@ -107,3 +107,7 @@ reading `DemoDataStore` from widgets.
 ## Phase 05B validation matrix
 
 Validate English and Arabic task identities, enum-label localization, manager scopes, the critical preset, filters/sort/runtime saved filters, compact cards, details sections, assignment labels, checklist empty state, timeline ordering/localization, LTR progress semantics, and the five-tab navigation cap. Exercise 320 px phone and 700+ px tablet surfaces in light and dark themes. Phase 05 remains in progress until Flutter analysis, tests, debug APK build, and simulator run succeed locally.
+
+## Phase 06 task-creation testing
+
+Creation tests use `FixedAppClock` to make past-date and numbering behavior deterministic. They inject repository-backed authorization to verify that owner-state injection cannot bypass employee self-only policy or administrator separation. Draft identity is checked across updates, and a second submit of the same draft ID must return `duplicateSubmission` without inserting another task. Every test gets a new `DemoDataStore`, which proves runtime mutation reset and preserves the 15 seeded scenarios.

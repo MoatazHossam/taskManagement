@@ -156,3 +156,7 @@ when the application restarts.
 ## Phase 05B task experience
 
 The read-only task experience provides role-specific task pages, manager scope selection, senior-management critical triage, compact responsive cards, advanced filters and sorting, session-only saved filters, and localized grouped details. Task progress retains left-to-right mathematical direction in both locales. No task actions, backend, database, cloud, or real synchronization are included; Phase 06 has not started.
+
+## Phase 06 demo walkthrough
+
+Sign in as Ahmed and open `/tasks/create`: his owner is locked to Ahmed. Enter either bilingual title, choose category/priority/confidentiality and an optional future due date, review, confirm, then open the new details view. Sign in as Sara to search the full active organization and assign one owner, or save an incomplete private draft and reopen it through `/tasks/<id>/edit-draft`. Omar sees creation only through his explicit operational permission. Laila is redirected to Access Denied because administration does not imply task creation. All mutations are deterministic and reset at restart.

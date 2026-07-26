@@ -74,7 +74,7 @@ final class RepositoryTaskQueryService implements TaskQueryService {
     final assignments = await tasks.getTaskAssignments(task.id);
     final ownerAssignment = assignments.where((a) => a.isPrimary || a.assignmentRole == AssignmentRole.owner || a.assignmentRole == AssignmentRole.leadOwner).firstOrNull;
     final blockers = await tasks.getBlockers(task.id);
-    final now = clock.now(); final due = task.dueDate.toLocal(); final today = now.toLocal();
+    final now = clock.now(); final due = task.dueDate?.toLocal(); final today = now.toLocal();
     final start = DateTime(today.year, today.month, today.day).subtract(Duration(days: today.weekday - 1));
     final end = start.add(const Duration(days: 7));
     return TaskListItem(task: task, priority: await configuration.getPriorityById(task.priorityId),
@@ -83,8 +83,8 @@ final class RepositoryTaskQueryService implements TaskQueryService {
       assignments: assignments, primaryOwner: ownerAssignment == null ? null : await users.getUserById(ownerAssignment.userId),
       assignedTeam: task.assignedTeamId == null ? null : await organization.getTeamById(task.assignedTeamId!),
       hasActiveBlocker: blockers.any((b) => b.status == BlockerStatus.active),
-      isOverdue: due.isBefore(now.toLocal()) && !closedTaskStatuses.contains(task.status),
-      isDueToday: _sameDay(due, today), isDueThisWeek: !due.isBefore(start) && due.isBefore(end));
+      isOverdue: due != null && due.isBefore(now.toLocal()) && !closedTaskStatuses.contains(task.status),
+      isDueToday: due != null && _sameDay(due, today), isDueThisWeek: due != null && !due.isBefore(start) && due.isBefore(end));
   }
 
   bool _matches(TaskListItem i, TaskQuery q) {
@@ -118,7 +118,7 @@ final class RepositoryTaskQueryService implements TaskQueryService {
     TaskListView.critical => i.priority?.code == 'critical' || i.priority?.code == 'urgent' || i.isOverdue ||
       i.hasActiveBlocker || i.task.approvalStatus == ApprovalStatus.pending || i.task.status == TaskStatus.completionRequested };
   bool _boolean(TaskBooleanFilter f, bool value) => f == TaskBooleanFilter.any || (f == TaskBooleanFilter.yes) == value;
-  bool _range(DateTime value, DateTime? from, DateTime? to) => (from == null || !value.isBefore(from)) && (to == null || !value.isAfter(to));
+  bool _range(DateTime? value, DateTime? from, DateTime? to) => value == null ? from == null && to == null : (from == null || !value.isBefore(from)) && (to == null || !value.isAfter(to));
   String _normalize(String value) => value.trim().toLowerCase().replaceAll(RegExp('[\u064B-\u065F\u0670]'), '').replaceAll('ـ', '');
   bool _sameDay(DateTime a, DateTime b) => a.year == b.year && a.month == b.month && a.day == b.day;
   int _compare(TaskListItem a, TaskListItem b, TaskQuery q) {

@@ -30,14 +30,14 @@ class TaskProgressIndicator extends StatelessWidget {
 }
 
 String dueDateLabel(BuildContext context, TaskListItem item, DateTime now) {
-  final t=item.task; final due=DateTime(t.dueDate.year,t.dueDate.month,t.dueDate.day); final today=DateTime(now.year,now.month,now.day);
+  final t=item.task; if (t.dueDate == null) return TaskPresentation.text(context,'No due date','بلا موعد استحقاق'); final due=DateTime(t.dueDate!.year,t.dueDate!.month,t.dueDate!.day); final today=DateTime(now.year,now.month,now.day);
   final days=due.difference(today).inDays;
-  if (closedTaskStatuses.contains(t.status)) return t.status==TaskStatus.completed && days>=0 ? TaskPresentation.text(context,'Completed on time','أُنجزت في الموعد') : MaterialLocalizations.of(context).formatMediumDate(t.dueDate);
+  if (closedTaskStatuses.contains(t.status)) return t.status==TaskStatus.completed && days>=0 ? TaskPresentation.text(context,'Completed on time','أُنجزت في الموعد') : MaterialLocalizations.of(context).formatMediumDate(t.dueDate!);
   if(days<0) return TaskPresentation.text(context,'Overdue by ${-days} days','متأخرة ${-days} أيام');
   if(days==0) return TaskPresentation.text(context,'Due today','مستحقة اليوم');
   if(days==1) return TaskPresentation.text(context,'Due tomorrow','مستحقة غداً');
   if(days<=7) return TaskPresentation.text(context,'Due this week','مستحقة هذا الأسبوع');
-  return MaterialLocalizations.of(context).formatMediumDate(t.dueDate);
+  return MaterialLocalizations.of(context).formatMediumDate(t.dueDate!);
 }
 
 class TaskCard extends StatelessWidget {

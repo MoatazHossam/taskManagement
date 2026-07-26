@@ -11,8 +11,8 @@ Statuses: `Not Started`, `In Progress`, `Completed`, or `Blocked`. Dates use ISO
 | Phase 02 — Core Models and Local Database | Completed | 2026-07-26 | 2026-07-26 | Enums, entities, Drift schema, seed data, contracts, local repositories | Passed locally by project owner | Passed locally by project owner | None recorded | Phase 02 locally generated, analyzed, tested, and run successfully by project owner |
 | Phase 03 — Authentication and Role Switching | Completed | 2026-07-26 | 2026-07-26 | In-memory demo authentication, simulated sessions and unlock, audit, and guarded role navigation | Passed locally by project owner | Passed locally by project owner | None recorded | Completion confirmed by project owner before Phase 04 |
 | Phase 04 — Organization and Permissions | Completed | 2026-07-26 | 2026-07-26 | Departments, teams, users, reporting lines, roles, permission/confidentiality checks | Added; SDK execution unavailable | SDK execution unavailable | Flutter and Dart are not installed in this container | Phase 05 remains Not Started |
-| Phase 05 — Task Foundation | In Progress | 2026-07-26 | — | Task models/list, filters, sorting, details, badges, timeline | Not run | Not run | None recorded | Planned |
-| Phase 06 — Task Creation | Not Started | — | — | Personal/organizational task creation, multi-step form, validation, review | Not run | Not run | None recorded | Planned |
+| Phase 05 — Task Foundation | Completed | 2026-07-26 | 2026-07-26 | Task models/list, filters, sorting, details, badges, timeline | Accepted | Accepted | None recorded | Complete |
+| Phase 06 — Task Creation | In Progress | 2026-07-26 | — | Personal/organizational task creation, multi-step form, validation, review | Pending | Pending | None recorded | Active |
 | Phase 07 — Assignment Modes | Not Started | — | — | Single owner, lead/contributors, individual copies, team queue, shared completion | Not run | Not run | None recorded | Planned |
 | Phase 08 — Task Execution | Not Started | — | — | Lifecycle actions, progress, blocker, completion/submit, correction/reopen/cancel | Not run | Not run | None recorded | Planned |
 | Phase 09 — Collaboration | Not Started | — | — | Comments, replies, mentions, attachments, voice simulation, checklists, subtasks, evidence | Not run | Not run | None recorded | Planned |
@@ -121,3 +121,7 @@ manual device acceptance remain open. Phase 06 remains Not Started.
 ## Phase 05B — In Progress
 
 Implemented the task UX refinement source: localized presentation metadata, role identity, manager query scope, critical preset, compact responsive cards, advanced controls, runtime saved-filter UI, grouped read-only details, assignment summaries, rich due labels, localized timeline, and five-destination primary navigation. Local Flutter validation remains required. Phase 06 is **Not Started**.
+
+## Phase 06 implementation record
+
+**Status: In Progress.** Phase 05 and Phase 05B are accepted and Completed. The Phase 06 source now includes the repository-backed creation/identity services, immutable draft and typed results, centralized permission/validation policy, private deterministic drafts, single-owner persistence, audit/sync mutations, Riverpod controller/providers, protected routes, bilingual responsive four-step UI, success state, and service/identity tests. The Flutter and Dart SDK executables are absent from this container, so generation, formatting, analyzer, test, APK, runtime, widget, router, and integration acceptance gates could not run; Phase 06 therefore is not marked Completed. Phase 07 remains **Not Started**.

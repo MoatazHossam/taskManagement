@@ -219,3 +219,11 @@ Phase 04 was not started.
 - Senior-management critical tasks are an OR preset: urgent/critical, overdue, blocked, or awaiting approval.
 - Primary role navigation is capped at five destinations; secondary manager/admin destinations are represented by More.
 - Timeline labels are locale presentation metadata rather than audit storage codes.
+
+## Phase 06 — task creation decisions
+
+- Phase 06 creates only `singleOwner` tasks. Contributors, copies, queues, shared completion, claiming, and advanced reassignment remain Phase 07.
+- Employees can create only self-owned tasks; managers can select any active organization user; senior management follows explicit permissions; administrator status grants nothing operational.
+- Drafts are private to their creator and receive their permanent deterministic number on first save. Submission is one-way and duplicate draft submission is rejected.
+- Templates replace only fields they supply after overwrite confirmation and never select an owner.
+- New runtime tasks are locally modified and `pending`; no network or retry behavior exists.
