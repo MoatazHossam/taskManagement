@@ -1,3 +1,9 @@
 import 'package:drift/drift.dart';
 import '../app_database.dart';
-class SettingsDao { const SettingsDao(this.database); final AppDatabase database; Future<String?> read(String key) async =>(await database.customSelect('SELECT value FROM app_settings WHERE key = ?',variables:[Variable(key)]).getSingleOrNull())?.read<String>('value'); Future<void> write(String key,String value)=>database.customStatement("INSERT INTO app_settings (key,value,updated_at) VALUES (?,?,CURRENT_TIMESTAMP) ON CONFLICT(key) DO UPDATE SET value=excluded.value, updated_at=excluded.updated_at",[key,value]); Future<void> remove(String key)=>database.customStatement('DELETE FROM app_settings WHERE key=?',[key]); }
+@DriftAccessor()
+class SettingsDao extends DatabaseAccessor<AppDatabase> { SettingsDao(AppDatabase db):super(db);
+ Future<AppSetting?> get(String key)=>(db.select(db.appSettings)..where((t)=>t.key.equals(key))).getSingleOrNull();
+ Future<List<AppSetting>> getAll()=>db.select(db.appSettings).get();
+ Future<void> upsert(AppSettingsCompanion value)=>db.into(db.appSettings).insertOnConflictUpdate(value);
+ Future<int> remove(String key)=>(db.delete(db.appSettings)..where((t)=>t.key.equals(key))).go();
+}

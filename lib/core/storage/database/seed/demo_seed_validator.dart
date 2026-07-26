@@ -1,0 +1,9 @@
+import '../app_database.dart'; import 'demo_seed_ids.dart';
+final class SeedValidationResult { const SeedValidationResult(this.errors); final List<String> errors; bool get isValid=>errors.isEmpty; void throwIfInvalid(){if(!isValid)throw StateError('Invalid demo seed: ${errors.join(', ')}');} }
+class DemoSeedValidator { const DemoSeedValidator(this.db); final AppDatabase db;
+ Future<SeedValidationResult> validate() async { final errors=<String>[]; Future<int> count(String table,[String? where]) async=>(await db.customSelect('SELECT COUNT(*) AS c FROM $table${where==null?'':' WHERE $where'}').getSingle()).read<int>('c');
+  if(await count('users',"id IN ('${DemoSeedIds.ahmed}','${DemoSeedIds.sara}','${DemoSeedIds.omar}','${DemoSeedIds.laila}','${DemoSeedIds.khaled}')")!=5)errors.add('primary personas'); if(await count('departments')<5)errors.add('departments'); if(await count('teams')<8)errors.add('teams'); if(await count('priorities')!=5)errors.add('priorities'); if(await count('categories')!=10)errors.add('categories'); if(await count('confidentiality_levels')!=4)errors.add('confidentiality');
+  for(var i=1;i<=15;i++){if(await count('tasks',"id='${DemoSeedIds.scenario(i)}'")!=1)errors.add('SCN-$i');}
+  if(await count('tasks',"batch_id='batch-policy-annual'")!=12)errors.add('individual copies'); if(await count('tasks',"recurrence_source_task_id='scenario-10'")!=3)errors.add('recurrence occurrences'); if(await count('sync_operations',"status IN ('pending','conflict')")<2)errors.add('sync examples'); if(await count('audit_events')<5)errors.add('audit examples');
+  final invalid=await count('tasks','priority_id NOT IN (SELECT id FROM priorities) OR category_id NOT IN (SELECT id FROM categories)'); if(invalid>0)errors.add('task configuration references'); return SeedValidationResult(errors); }
+}

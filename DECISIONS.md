@@ -157,3 +157,11 @@ These decisions apply to the initial demo and are revisited only under their sta
 **Decision.** Define five semantic surface roles (page, standard, elevated/selected, border, and disabled) as a theme extension, and require primary shell screens to use a shared scroll-view primitive that calculates phone navigation, safe-area, and content clearance.
 
 **Consequences.** Reusable components vary surface, border, and minimal elevation by purpose without heavy shadows. Feature screens must not add arbitrary bottom-navigation padding. These tokens are presentation concerns only and introduce no task-domain or infrastructure behavior.
+
+## ADR-012 — Explicit local persistence boundary
+
+Use focused typed DAOs, explicit per-aggregate mapper extensions, and local repository implementations. Unknown stored enum codes map to `unknown`; all persisted times cross the mapping boundary as UTC. Audit is append-only through its contract. Sync persistence models local operations only and performs no networking.
+
+## ADR-013 — Transactional deterministic seed reset
+
+Seed identifiers and clock-relative timestamps are deterministic. Version mismatch triggers a child-first transactional reset and full reseed. Generated Drift output is committed only when produced by build_runner and is never authored manually.

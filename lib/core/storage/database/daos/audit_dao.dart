@@ -1,0 +1,3 @@
+import 'package:drift/drift.dart'; import '../app_database.dart';
+@DriftAccessor()
+class AuditDao extends DatabaseAccessor<AppDatabase> { AuditDao(AppDatabase db):super(db); Future<List<AuditEvent>> getAuditEvents()=>(db.select(db.auditEvents)..orderBy([(t)=>OrderingTerm.desc(t.performedAt)])).get(); Future<List<AuditEvent>> getAuditEventsForTask(String id)=>(db.select(db.auditEvents)..where((t)=>t.taskId.equals(id))..orderBy([(t)=>OrderingTerm.desc(t.performedAt)])).get(); Future<List<AuditEvent>> getAuditEventsForEntity(String type,String id)=>(db.select(db.auditEvents)..where((t)=>t.entityType.equals(type)&t.entityId.equals(id))).get(); Future<void> appendAuditEvent(AuditEventsCompanion v)=>db.into(db.auditEvents).insert(v); }
