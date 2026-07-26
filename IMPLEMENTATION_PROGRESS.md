@@ -6,6 +6,7 @@ Statuses: `Not Started`, `In Progress`, `Completed`, or `Blocked`. Dates use ISO
 |---|---|---|---|---|---|---|---|---|
 | Phase 00 — Project Governance | Completed | 2026-07-26 | 2026-07-26 | Repository inspection; governance documents; ADRs; approved directory skeleton; ignore policy | Structural/document consistency checks passed; no code tests applicable | Not runnable: no Flutter project or `analysis_options.yaml`; intended policy documented | Flutter initialization remains for Phase 01 | Existing specification and ignore rules preserved/improved; no existing app, source, tests, packages, state management, or localization existed |
 | Phase 01 — Flutter Foundation | In Progress | 2026-07-26 | — | Android/iOS setup; Riverpod session/settings; ARB localization; Material 3 themes; guarded go_router role shells; responsive and state widgets; UI gallery; tests | Added but not executable in this container (`flutter` absent) | Not executable in this container (`flutter` absent) | SDK commands unavailable; lockfile must be resolved and validation completed in an SDK-equipped environment | Desktop/web boilerplate removed; Phase 02 remains Not Started |
+| Phase 01.5 — Design System and Demo UX Foundation | In Progress | 2026-07-26 | — | Enterprise color/type/spacing tokens; reusable avatars, badges, metrics, panels, task previews, and states; redesigned authentication, role dashboards, profile/settings, responsive navigation, and UI gallery | Static repository checks passed; Flutter checks unavailable in this container | Not executable in this container (`flutter` absent) | SDK commands and visual screenshot capture unavailable | Advanced animation, illustration, chart, tablet, icon, accessibility, and pixel-level polish remain explicitly deferred |
 | Phase 02 — Core Models and Local Database | Not Started | — | — | Enums, entities, Drift schema, seed data, contracts, local repositories | Not run | Not run | None recorded | Planned |
 | Phase 03 — Authentication and Role Switching | Not Started | — | — | Splash, language selection, demo login/profiles, current-user context, role navigation | Not run | Not run | None recorded | Planned |
 | Phase 04 — Organization and Permissions | Not Started | — | — | Departments, teams, users, reporting lines, roles, permission/confidentiality checks | Not run | Not run | None recorded | Planned |
@@ -45,3 +46,11 @@ No conflict with the master specification was found. The pre-change repository w
 - Dependencies declared: Flutter localization SDK, `flutter_riverpod`, `go_router`, `intl`, `flutter_lints`, `mocktail`, and Flutter test SDK only.
 - Validation remains gated because this execution environment reports `flutter: command not found` and `dart: command not found`. Phase 01 therefore remains In Progress rather than inaccurately claiming completion.
 - Phase 02 remains Not Started. No task domain, Drift schema, backend, Firebase/cloud integration, external API, or real AI was introduced.
+
+## Phase 01.5 implementation record
+
+- Established a restrained enterprise visual language around a teal brand color, neutral surfaces, semantic operational colors, an 8-point spacing rhythm, moderate radii, minimal elevation, and bilingual-safe typography.
+- Added reusable avatar, badge, metric, panel, task-preview, page-header, and application-state components for later task phases.
+- Redesigned language selection, simulated login/profile selection, employee/manager dashboard presentations, profile/settings, phone/tablet navigation shell, and the foundation gallery.
+- Kept dashboard information explicitly demonstrative: no task domain model or persistence was introduced ahead of Phase 05.
+- Deferred advanced animations, micro-interactions, final illustration/chart work, detailed tablet optimization, pixel-level correction, final icons, accessibility audit, and complete cross-screen review as requested.
