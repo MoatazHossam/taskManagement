@@ -94,3 +94,12 @@ service/provider/router/widget/integration test sources. ARB catalogs parse and 
 matching keys/placeholders. This container still has no Flutter or Dart executable, so
 analysis, SDK tests, integration-device execution, debug APK, and runtime acceptance
 remain open. Phase 04 remains **Not Started**.
+
+
+## Emergency deadline persistence pivot (2026-07-26)
+
+Drift/SQLite, generated database code, DAOs, companions, SQL, database mappers, and build_runner are removed from the active deadline demo. The historical Phase 02 implementation is retained under `archive/drift_phase_02/` outside active compilation.
+
+The active application uses one deterministic, Flutter-independent `DemoDataStore` and typed in-memory repository implementations. Repository interfaces remain the application boundary and are ready to be replaced by future on-premises API adapters without presentation changes. Runtime mutations and the simulated authentication session reset whenever the application restarts; this is demo state, not production persistence. Authentication roles are a repository-authoritative demo identity. No networking, cloud, Firebase, backend, real biometric, or external identity integration was added.
+
+Phase 04 was not started.

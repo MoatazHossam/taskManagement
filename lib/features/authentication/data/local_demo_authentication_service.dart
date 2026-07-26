@@ -1,7 +1,7 @@
 import '../../../core/domain/app_clock.dart';
 import '../../../core/domain/domain_enums.dart';
 import '../../../core/domain/entities.dart';
-import '../../../core/storage/database/seed/demo_seed_ids.dart';
+import '../../../core/demo/demo_seed_ids.dart';
 import '../../../shared/enums/app_enums.dart';
 import '../../../shared/models/demo_profile_user_mapping.dart';
 import '../../../shared/models/demo_user_profile.dart';
@@ -71,15 +71,15 @@ final class LocalDemoAuthenticationService implements AuthenticationService {
         await _event(AuditEventType.authenticationLoginFailed, user.id, 'inactive_user');
         return const AuthenticationResult.failure(AuthenticationFailure.inactiveUser);
       }
-      final databaseRole = _roleForId(user.roleId);
-      if (databaseRole != profile.role) {
+      final repositoryRole = _roleForId(user.roleId);
+      if (repositoryRole != profile.role) {
         await _event(AuditEventType.authenticationLoginFailed, user.id, 'role_mismatch');
         return const AuthenticationResult.failure(AuthenticationFailure.roleMismatch);
       }
       final now = clock.now().toUtc();
       final session = AuthenticationSession(id: 'auth-${now.microsecondsSinceEpoch}',
         userId: user.id, demoProfileId: profileId,
-        systemRoleCode: _roleCode(databaseRole),
+        systemRoleCode: _roleCode(repositoryRole),
         status: AuthenticationSessionStatus.active, createdAt: now,
         lastAuthenticatedAt: now,
         expiresAt: now.add(DemoAuthenticationConfig.sessionDuration),
@@ -107,8 +107,8 @@ final class LocalDemoAuthenticationService implements AuthenticationService {
         await _clearActiveSessionSettings();
         return null;
       }
-      final databaseRoleCode = _roleCode(_roleForId(user.roleId));
-      if (values['${_prefix}role_code'] != databaseRoleCode) {
+      final repositoryRoleCode = _roleCode(_roleForId(user.roleId));
+      if (values['${_prefix}role_code'] != repositoryRoleCode) {
         await _clearActiveSessionSettings();
         return null;
       }

@@ -50,3 +50,12 @@ the active database user, parses timestamps as UTC, and fails closed for missing
 malformed values. Normal and offline expiry use exclusive boundaries. Invalid restore
 clears only active authentication keys; language, theme, and the non-sensitive last
 profile are preserved. Audit writes use workflow codes and are isolated from UI errors.
+
+
+## Emergency deadline persistence pivot (2026-07-26)
+
+Drift/SQLite, generated database code, DAOs, companions, SQL, database mappers, and build_runner are removed from the active deadline demo. The historical Phase 02 implementation is retained under `archive/drift_phase_02/` outside active compilation.
+
+The active application uses one deterministic, Flutter-independent `DemoDataStore` and typed in-memory repository implementations. Repository interfaces remain the application boundary and are ready to be replaced by future on-premises API adapters without presentation changes. Runtime mutations and the simulated authentication session reset whenever the application restarts; this is demo state, not production persistence. Authentication roles are a repository-authoritative demo identity. No networking, cloud, Firebase, backend, real biometric, or external identity integration was added.
+
+Phase 04 was not started.
